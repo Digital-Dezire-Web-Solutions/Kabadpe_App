@@ -13,6 +13,7 @@ export default function RootLayout() {
       <Stack.Screen name="Spalsh" options={{animation : 'fade_from_bottom'}}  />
       <Stack.Screen name="ForogotPassword" options={{animation : "simple_push"}}  />
       <Stack.Screen name="CreateAccount" options={{animation : "fade_from_bottom"}}  />
+      <Stack.Screen name="ApntList" options={{animation : "slide_from_right"}}  />
 
 
 

@@ -650,12 +650,13 @@ saveBtn:{
 
   apntCardBx:{
     position : 'relative',
-    width : wp('85%'),
+    width : '100%',
+    marginHorizontal : 'auto',
     // width : 300,
     backgroundColor : "#eff7cf",
     borderRadius : 12,
     paddingVertical : 12,
-    marginRight : 12,
+    marginBottom : 16,
   },
   
 })

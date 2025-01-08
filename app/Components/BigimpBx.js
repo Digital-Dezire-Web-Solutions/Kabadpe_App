@@ -11,13 +11,14 @@ const BigimpBx = ({impData}) => {
     <View style={styles.bigImpBx}>
         <Image style={styles.bigImpImg} source={impData.icon} />
 
+        <View style={styles.impInfoFlex}>
         <View style={styles.inlineText}>
           <Text style={styles.impValue}> {impData.textOne} </Text>
         {impData.kgText ? <Text style={styles.reltText}> {impData.kgText} </Text> : impData.crText ? <Text style={styles.reltText}> {impData.crText} </Text> : impData.kwhText ? <Text style={styles.reltText}> {impData.kwhText} </Text> : impData.thText ? <Text style={styles.reltText}> {impData.thText} </Text> : null}
         </View>
       
         <Text style={styles.impText}> {impData.text} </Text>
-      
+        </View>
     </View>
     
   )
@@ -34,6 +35,10 @@ const styles = StyleSheet.create({
     color : "#026874",
   },
 
+  impInfoFlex:{
+    position : 'relative',
+  },
+
   reltText:{
     position : 'relative',
     top : 2,
@@ -46,18 +51,19 @@ const styles = StyleSheet.create({
 
     bigImpBx:{
         position : 'relative',
-        width : wp('30%'),
+        width : 'max-content',
         marginBottom : 20,
-        marginRight : 12,
+        marginRight : 16,
         justifyContent : 'flex-start',
-        alignItems : 'center'
+        alignItems : 'center',
+        flexDirection : 'row',
+        gap : 9,
     },
 
     inlineText:{
       flexDirection : 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      textAlign : 'center',
+      justifyContent: 'flex-start',
     },
 
     impText:{
@@ -68,8 +74,8 @@ const styles = StyleSheet.create({
     },
 
     bigImpImg:{
-      width : 38,
-      height : 38,
+      width : 32,
+      height : 32,
       // width : wp('10%'),
       // height : hp('5%'),
         objectFit : 'cover',

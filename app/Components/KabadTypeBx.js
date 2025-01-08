@@ -5,14 +5,14 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 const KabadTypeBx = ({kabadItem}) => {
 
     const {height ,  width} = Dimensions.get('window');
-    
+    // {backgroundColor : kabadItem.bgColor}
   return (
     <View style={[styles.kabadTypeBx]}>
-        <View style={[styles.kabadImgBx , {backgroundColor : kabadItem.bgColor}]}>
+        <View style={[styles.kabadImgBx ]}>
             <Image style={styles.kabadImg} source={kabadItem.img} />
         </View>
 
-        <Text style={styles.kabadTitleText}> {kabadItem.title} </Text>
+        {/* <Text style={styles.kabadTitleText}> {kabadItem.title} </Text> */}
             
     </View>
   )
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
 
     kabadTypeBx:{
         position : 'relative',
-        width : wp('19%'),
-        marginRight : 15,
+        width : 'max-content',
+        marginRight : 4,
     },
 
     kabadTitleText:{
@@ -37,14 +37,13 @@ const styles = StyleSheet.create({
 
     kabadImgBx:{
         position : 'relative',
-        width : 76,
+        width : 60,
         // width : wp('19.5%'),
-        height : 76,
+        height : 60,
         // height : hp('9.4%'),
         borderRadius : 50,
         alignItems : 'center',
         justifyContent : 'center',
-        marginBottom : 6,
     },
 
     kabadImg:{

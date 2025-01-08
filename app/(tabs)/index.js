@@ -10,83 +10,37 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import BigimpBx from '../Components/BigimpBx';
 import ProdCard from '../Components/ProdCard';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
 // import * as Animatable from 'react-native-animatable';
 
 const index = () => {
   const { height, width } = Dimensions.get('window');
+  const router =  useRouter();
  
 
   
-
-
-  const ApntData = [
-
-    {
-      id: 1,
-      image: require('@/assets/images/user-img.png'),
-      nameTitle: 'Kabadi Name',
-      name: 'Rajesh Verma',
-      date: '10-May-2024, 8 Am - 10 Pm'
-    },
-
-    {
-      id: 2,
-      image: require('@/assets/images/user-img.png'),
-      nameTitle: 'Kabadi Name',
-      name: 'Rahul Verma',
-      date: '15-Jul-2024, 8 Am - 10 Pm'
-    },
-
-
-    {
-      id: 3,
-      image: require('@/assets/images/user-img.png'),
-      nameTitle: 'Kabadi Name',
-      name: 'Ankit Desai',
-      date: '20-May-2024, 8 Am - 10 Pm'
-    },
-
-
-    {
-      id: 4,
-      image: require('@/assets/images/user-img.png'),
-      nameTitle: 'Kabadi Name',
-      name: 'Pankaj Tripati',
-      date: '05-June-2024, 8 Am - 10 Pm'
-    },
-
-
-
-    {
-      id: 5,
-      image: require('@/assets/images/user-img.png'),
-      nameTitle: 'Kabadi Name',
-      name: 'Rohan Mishra',
-      date: '24-May-2024, 8 Am - 10 Pm'
-    },
-
-
-  ]
+ 
 
   const kabadListData = [
 
     {
       id: 1,
-      img: require('@/assets/images/kabad-type-img-1.png'),
+      img: require('@/assets/images/kabad-type-w.png'),
       title: 'Paper',
       bgColor: "#cdce5a",
     },
 
     {
       id: 2,
-      img: require('@/assets/images/kabad-type-img-2.png'),
+      img: require('@/assets/images/kabad-type-w-2.png'),
       title: 'Plastic',
       bgColor: "#73c395",
     },
 
     {
       id: 3,
-      img: require('@/assets/images/kabad-type-img-3.png'),
+      img: require('@/assets/images/kabad-type-w-3.png'),
       title: 'Clothes',
       bgColor: "#9dbc6e",
 
@@ -94,7 +48,7 @@ const index = () => {
 
     {
       id: 4,
-      img: require('@/assets/images/kabad-type-img-4.png'),
+      img: require('@/assets/images/kabad-type-w-4.png'),
       title: 'Vehicle',
       bgColor: "#6abac1",
 
@@ -102,7 +56,7 @@ const index = () => {
 
     {
       id: 5,
-      img: require('@/assets/images/kabad-type-img-5.png'),
+      img: require('@/assets/images/kabad-type-w-5.png'),
       title: 'Others',
       bgColor: "#73c395",
 
@@ -110,7 +64,7 @@ const index = () => {
 
     {
       id: 6,
-      img: require('@/assets/images/kabad-type-img-6.png'),
+      img: require('@/assets/images/kabad-type-w-6.png'),
       title: 'Wood',
       bgColor: "#daa99e",
 
@@ -118,7 +72,7 @@ const index = () => {
 
     {
       id: 7,
-      img: require('@/assets/images/kabad-type-img-7.png'),
+      img: require('@/assets/images/kabad-type-w-7.png'),
       title: 'Glass',
       bgColor: "#48bbc1",
 
@@ -126,7 +80,7 @@ const index = () => {
 
     {
       id: 8,
-      img: require('@/assets/images/kabad-type-img-8.png'),
+      img: require('@/assets/images/kabad-type-w-8.png'),
       title: 'Metal',
       bgColor: "#9fdab8",
 
@@ -134,7 +88,7 @@ const index = () => {
 
     {
       id: 9,
-      img: require('@/assets/images/kabad-type-img-9.png'),
+      img: require('@/assets/images/kabad-type-w-9.png'),
       title: 'E-waste',
       bgColor: "#9dbc6e",
 
@@ -290,27 +244,70 @@ const index = () => {
         </ImageBackground>
 
         <SafeAreaView style={styles.actAppntMain}>
+
+          <View style={styles.userInfoTopBx}>
+          <View style={styles.userInfoImg}>
+            <Image style={styles.userImgTop} source={require('@/assets/images/profile-img.png')} />
+          </View>
+
+          <View style={styles.userTopDet}>
+            <Text style={styles.userTopText}>Hi Sustainability Champion, Sunil Sharma</Text>
+            <Text style={styles.userTopPara}>Let's move closer for greener environment</Text>
+          </View>
+          
+          </View>
+
+          <View style={styles.bigImpComp}>
+          <View style={styles.headingBx}>
+            <Image style={styles.leafImg} source={require('@/assets/images/leaf-left.png')} />
+            <Text style={styles.headingText}>Your Impact</Text>
+            <Image style={styles.leafImg} source={require('@/assets/images/leaf-right.png')} />
+
+          </View>
+
+          <View style={styles.bigImpList}>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={ImpData}
+              renderItem={({ item }) => <BigimpBx impData={item} />}
+              keyExtractor={item => item.id}
+            />
+          </View>
+
+
+        </View>
       
           <View  style={styles.actApntFlexBx}>
             <Text style={styles.apntTitle}>
-              Active Appointments
+               Appointments
             </Text>
 
-            <TouchableOpacity activeOpacity={0.67} style={styles.viewApntBtn}>
+            <TouchableOpacity onPress={() => router.push("ApntList")} activeOpacity={0.67} style={styles.viewApntBtn}>
               <Text style={styles.ViewText}>View All</Text>
             </TouchableOpacity>
 
           </View>
 
-          <View style={styles.apntDataList}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={ApntData}
-              keyExtractor={item => item.id}
-              renderItem={({ item , index}) => <ApntCard item={item} index={index} />}
-            />
+       
+
+          <View style={styles.apntBx}>
+            <View style={styles.apntLeftInfo}>
+              <Image source={require('@/assets/images/user-img.png')} />
+              <View style={styles.userInfo}>
+                <Text style={styles.usertitle}>Kabadi Name</Text>
+                <Text style={styles.userName}>Rajesh Varma</Text>
+              </View>
+            </View>
+
+            <TouchableOpacity onPress={() => router.push("ApntList")} activeOpacity={0.67} style={[styles.viewApntBtn, styles.trackBtn]}>
+            <Ionicons style={styles.reloadIcon} name="reload" size={18} color="#026874" />
+              <Text style={[styles.ViewText, styles.trackText]}>
+                Track</Text>
+            </TouchableOpacity>
+            
           </View>
+          
 
           <View style={styles.kabadTypeLists}>
             <FlatList
@@ -322,7 +319,7 @@ const index = () => {
             />
           </View>
 
-          <View style={styles.checkRateMain}>
+          {/* <View style={styles.checkRateMain}>
 
             <TouchableOpacity style={styles.checkTodTextBx}>
               <Text style={styles.checkRateText}> Check Today's Rate </Text>
@@ -350,7 +347,7 @@ const index = () => {
 
             </View>
 
-          </View>
+          </View> */}
 
           <View style={[styles.actApntFlexBx, styles.actApntFlexBx2]}>
             <Text style={styles.apntTitle}>
@@ -372,29 +369,10 @@ const index = () => {
 
         </SafeAreaView>
 
-        <View style={styles.bigImpComp}>
-          <View style={styles.headingBx}>
-            <Image style={styles.leafImg} source={require('@/assets/images/leaf-left.png')} />
-            <Text style={styles.headingText}>Big Impact</Text>
-            <Image style={styles.leafImg} source={require('@/assets/images/leaf-right.png')} />
-
-          </View>
-
-          <View style={styles.bigImpList}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={ImpData}
-              renderItem={({ item }) => <BigimpBx impData={item} />}
-              keyExtractor={item => item.id}
-            />
-          </View>
+       
 
 
-        </View>
-
-
-        <View style={styles.regCalendarMain}>
+        {/* <View style={styles.regCalendarMain}>
 
           <View style={[styles.actApntFlexBxx]}>
             <Text style={styles.apntTitle}>
@@ -449,7 +427,7 @@ const index = () => {
         
 
           
-        </View>
+        </View> */}
         
       </ScrollView>
     </SafeAreaProvider>
@@ -461,6 +439,99 @@ export default index
 
 const styles = StyleSheet.create({
 
+  apntBx:{
+    position : 'relative',
+    width : '90%',
+    marginHorizontal : 'auto',
+    paddingHorizontal : 20,
+    marginTop : 20,
+    alignItems : 'center',
+    justifyContent : 'space-between',
+    flexDirection : 'row',
+    backgroundColor : "#ffe2dd",
+    paddingBlock : 16,
+    borderRadius : 20,
+  },
+
+  usertitle:{
+    fontSize : 12,
+    marginBlock : 3,
+    color : "#7c7c7c",
+  },
+
+  userName : {
+    fontSize : 16,
+    fontWeight : '600',
+    color : "#026874",
+  },
+
+  trackBtn :{
+    gap : 4,
+    flexDirection : 'row',
+    backgroundColor : 'transparent',
+  },
+
+  trackText:{
+    fontSize : 15,
+    color : "#026874",
+    fontWeight : '600',
+  },
+
+  apntLeftInfo:{
+    flexDirection : 'row',
+    alignItems : 'center',
+    justifyContent : 'flex-start',
+    gap : 15,
+  },
+
+  userInfoTopBx:{
+    position : 'relative',
+    width : '100%',
+    flexDirection :'row',
+    gap : 20,
+    alignItems:'center',
+    justifyContent:'center',
+    textAlign : 'center',
+    marginBottom : 5,
+    marginTop : 30,
+    paddingHorizontal : 20,
+  },
+
+
+
+  userInfoImg :{
+    position : 'relative',
+    width : 80,
+    height : 80,
+  },
+
+
+  userImgTop : {
+    width : '100%',
+    height : '100%',
+    objectFit : 'cover',
+  },
+
+  userTopDet :{
+    position : 'relative',
+    maxWidth : '72%',
+  },
+
+  userTopText :{
+    fontSize : 16,
+    fontWeight : '700',
+    color : '#026874',
+    textAlign : 'center',
+    lineHeight : 22,
+    marginBottom : 6,
+  },
+
+  userTopPara :{
+    fontSize : 12,
+    color : "#7c7c7c",
+    fontWeight :'400',
+  },
+  
   shopCardFlex:{
     position : 'relative',
     width : '100%',
@@ -693,13 +764,7 @@ const styles = StyleSheet.create({
     paddingRight: 4,
   },
 
-  apntDataList: {
-    position: 'relative',
-    width: '100%',
-    marginTop: 15,
-    paddingLeft: 18,
-    paddingRight: 6,
-  },
+
 
   viewApntBtn: {
     position: 'relative',
@@ -755,7 +820,7 @@ const styles = StyleSheet.create({
 
   topHomeFlex: {
     position: 'relative',
-    top: 20,
+    top: 12,
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -768,7 +833,7 @@ const styles = StyleSheet.create({
 
   bgImage: {
     width: '100%',
-    height: hp('17.5%'),
+    height: hp('13%'),
     // height : 130
   },
 
@@ -802,4 +867,6 @@ const styles = StyleSheet.create({
   bellBtn: {
     position: "relative",
   },
+
+
 })

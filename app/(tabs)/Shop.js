@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
 
   bellBtn: {
     position: "absolute",
-    top  : '65%',
+    top  : '42%',
     right : 20,
     width : 38,
     height : 38,
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     alignItems: 'center',
     gap : 8,
-    marginTop : 6,
+    marginTop : 10,
 },
 
 editProfText:{
@@ -410,7 +410,7 @@ justifyContent : 'center',
 editprofileTopBx:{
 position : 'relative',
 width : '100%',
-height : 110,
+height : 96,
 backgroundColor : "#026874",
 overflow : 'hidden',
 },

@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
   },
 
   profImg:{
-    width : '100%',
-    height : 100,
+    width : '90%',
+    height : 90,
     objectFit : 'cover',
   },
 
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   profileBanner:{
     position : 'relative',
     width : '100%',
-    height : 250,
+    height : 200,
     backgroundColor : "#066D71",
     borderBottomRightRadius : 120,
     overflow : 'hidden',
