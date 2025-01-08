@@ -132,7 +132,7 @@ export default function App() {
             activeOpacity={0.7}
             style={[styles.signInBtn, styles.vendLoginBtn]}
           >
-            <Text style={styles.formSignText}>Vendor Login</Text>
+            <Text style={styles.formSignText}>Worker Login</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaProvider>

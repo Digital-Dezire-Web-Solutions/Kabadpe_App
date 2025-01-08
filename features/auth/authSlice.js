@@ -76,6 +76,7 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(userSignup.pending, (state, { payload }) => {
+      console.log("running this pending");
       state.loading = { ...state.loading, signup: true };
       state.errors = {
         ...state.errors,
@@ -86,6 +87,7 @@ const authSlice = createSlice({
     builder.addCase(
       userSignup.fulfilled,
       (state, { payload: { payload, data } }) => {
+        console.log("running this full", payload, data);
         state.loading = { ...state.loading, signup: false };
         state.success = { ...state.loading, signup: true };
         state.errors = {
@@ -99,6 +101,7 @@ const authSlice = createSlice({
       }
     );
     builder.addCase(userSignup.rejected, (state, { payload }) => {
+      console.log("running this rejected", payload,);
       state.loading = { ...state.loading, signup: false };
       state.errors = {
         ...state.errors,
