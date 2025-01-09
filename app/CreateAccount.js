@@ -15,11 +15,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import { Formik } from "formik";
 import { object, string } from "yup";
-import { FormError } from "./Components/FormError";
+import { FormError } from "../components/FormError";
 import { useDispatch, useSelector } from "react-redux";
 import { userSignup, userVerifySignup } from "../features/auth/authActions";
 import ReactNativeModal from "react-native-modal";
 import OTPInput from "./Components/OTPInput";
+import Toast from "react-native-toast-message";
+import { router } from "expo-router";
 const CreateAccount = () => {
   const [otp, setOpt] = useState("");
   const [otpModal, setotpModal] = useState(false);
@@ -51,8 +53,17 @@ const CreateAccount = () => {
       router.navigate("Spalsh");
     } else if (signup) {
       setotpModal(true);
-    } 
+    }
   }, [login, signup, verifySignup]);
+  // useEffect(() => {
+  //   // if (errorSignup || errorVerify) {
+  //   Toast.show({
+  //     type: "error",
+  //     text1: "ERROR!",
+  //     text2: "errorSignup || errorVerify",
+  //   });
+  //   // }
+  // }, [errorSignup, errorVerify]);
   return (
     <>
       <SafeAreaProvider>
@@ -207,7 +218,11 @@ const CreateAccount = () => {
                       name={"password"}
                     />
                   </View>
-
+                  <Text
+                    style={{ color: "red", marginTop: 10, textAlign: "center" }}
+                  >
+                    {errorSignup}
+                  </Text>
                   <View style={styles.signupFormBtns}>
                     <TouchableOpacity
                       onPress={handleSubmit}
@@ -240,6 +255,7 @@ const CreateAccount = () => {
           </SafeAreaView>
         </ScrollView>
         <ReactNativeModal
+          // propagateSwipe={true}
           isVisible={otpModal}
           animationIn={"bounceInUp"}
           animationInTiming={800}
@@ -266,11 +282,13 @@ const CreateAccount = () => {
               <OTPInput
                 length={5}
                 onOTPComplete={(otp) => {
-                  dispatch(userVerifySignup({ otp, email:user?.email }));
+                  dispatch(userVerifySignup({ otp, email: user?.email }));
                 }}
               />
             </View>
-
+            <Text style={{ color: "red", marginTop: 10, textAlign: "center" }}>
+              {errorVerify}
+            </Text>
             <View style={styles.notgetOtpbx}>
               <Text style={styles.didnotgetotptext}>
                 Did not get OTP Code ?
