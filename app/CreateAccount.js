@@ -1,5 +1,6 @@
 import {
   Image,
+  Keyboard,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -282,6 +283,7 @@ const CreateAccount = () => {
               <OTPInput
                 length={5}
                 onOTPComplete={(otp) => {
+                  Keyboard.dismiss();
                   dispatch(userVerifySignup({ otp, email: user?.email }));
                 }}
               />
