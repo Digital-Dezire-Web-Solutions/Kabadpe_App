@@ -28,6 +28,7 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(userLogin.pending, (state, { payload }) => {
+      console.log("login is pending with", payload);
       state.loading = {
         ...state.loading,
         login: true,
@@ -45,6 +46,7 @@ const authSlice = createSlice({
       userLogin.fulfilled,
       (state, { payload: { data, payload } }) => {
         setInLocalStorage("token", data?.token);
+        console.log("login is full with", data, payload);
         state.success = {
           ...state.success,
           login: true,
@@ -62,6 +64,7 @@ const authSlice = createSlice({
       }
     );
     builder.addCase(userLogin.rejected, (state, { payload }) => {
+      console.log("login is reject with", payload);
       state.loading = {
         ...state.loading,
         login: false,

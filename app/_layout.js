@@ -1,19 +1,42 @@
-import { Stack } from "expo-router";
-import { Provider } from "react-redux";
+import { router, Stack } from "expo-router";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "../features/store";
 import Toast from "react-native-toast-message";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { Modal } from "react-native";
+import { useEffect } from "react";
+import { userFetch } from "../features/user/userActions";
+import StackScreen from "../components/StackScreen";
 // import { Modal, View } from "react-native";
 // import ReactNativeModal from "react-native-modal";
 export default function RootLayout() {
+  // const dispatch = useDispatch();
+  // const {
+  //   user,
+  //   success: { login, signup, verifySignup },
+  //   errors: {
+  //     login: errorLogin,
+  //     signup: errorSignup,
+  //     verifySignup: errorVerify,
+  //   },
+  // } = useSelector((s) => s.auth);
+  // const { userInfo } = useSelector((s) => s?.user);
+  // useEffect(() => {
+  //   dispatch(userFetch());
+  // }, [verifySignup, login]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     router.navigate("Spalsh");
+  //   }
+  // }, [userInfo]);
   return (
     // -------------------------------------
     <SafeAreaProvider>
       <RootSiblingParent>
         <Provider store={store}>
-          <Stack screenOptions={{ headerShown: false }}>
+          <StackScreen />
+          {/* <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
             <Stack.Screen name="(tabs)" />
             <Stack.Screen
@@ -44,13 +67,9 @@ export default function RootLayout() {
               name="CreateAccount"
               options={{ animation: "fade_from_bottom" }}
             />
-          </Stack>
+          </Stack> */}
         </Provider>
-        {/* <Modal transparent pointerEvents="none"> */}
-        {/* <View style={{ flex: 1, pointerEvents: "box-none" }}> */}
         <Toast />
-        {/* </View> */}
-        {/* </Modal> */}
       </RootSiblingParent>
     </SafeAreaProvider>
   );
