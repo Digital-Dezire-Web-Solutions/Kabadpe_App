@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ENV_API_BASE_URL } from "../lib/backend";
-
+import { resolvePromise } from "../lib/http";
 export const signup = async ({
   fullname,
   email,
@@ -111,3 +111,41 @@ export const verifysignup = async ({
   const { data: res } = await axios.post(apiUrl, setting[loginType]?.payload);
   return res;
 };
+
+export const userForgetPassRequestOTP = resolvePromise(async (email) => {
+  const apiUrl = ENV_API_BASE_URL + "/auth/forgetpass/request/otp";
+  const { data: res } = await axios.put(apiUrl, { email });
+  return res?.code;
+});
+
+export const userForgetPassRequestReset = resolvePromise(
+  async ({ code, otp }) => {
+    const apiUrl = ENV_API_BASE_URL + "/auth/forgetpass/request/reset";
+    const { data: res } = await axios.put(
+      apiUrl,
+      { otp },
+      {
+        headers: { code },
+      }
+    );
+    return res?.code;
+  }
+);
+
+export const userForgetPassCallback = resolvePromise(
+  async ({ password, code }) => {
+    const apiUrl = ENV_API_BASE_URL + "/auth/forgetpass/callback";
+    const { data: res } = await axios.put(
+      apiUrl,
+      { password },
+      { headers: { code } }
+    );
+    return res?.message;
+  }
+);
+
+export const userForgetPassResendOTP = resolvePromise(async (email) => {
+  const apiUrl = ENV_API_BASE_URL + "/auth/forgetpass/resendOTP";
+  const { data: res } = await axios.put(apiUrl, { email });
+  return res?.code;
+});

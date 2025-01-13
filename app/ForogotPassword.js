@@ -12,11 +12,24 @@ import React, { useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
 import ReactNativeModal from "react-native-modal";
 import OTPInput from "./Components/OTPInput";
+import { Formik } from "formik";
+import { object, string } from "yup";
+import { FormError } from "../components/FormError";
+import {
+  userForgetPassRequestOTP,
+  userForgetPassRequestReset,
+} from "../services/auth";
+import { router } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const ForogotPassword = () => {
+  const [showPassword, setShowPassword] = useState(true);
+  const [resErrors, setResErrors] = useState({});
+  const [codes, setCode] = useState({});
   const [email, setEmail] = useState("");
   const [bgColor, setBgColor] = useState("#026874");
   const [otp, setOtp] = useState(false);
+  const [resetForm, setResetForm] = useState(false);
   const emailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const handleModal = () => {
@@ -24,7 +37,16 @@ const ForogotPassword = () => {
       setOtp(true);
     }
   };
-
+  const handleSubmit = async ({ email }) => {
+    const res = await userForgetPassRequestOTP({ email });
+    if (res?.error) {
+      setResErrors({ request: res?.message });
+      return;
+    }
+    setCode({ otp: res });
+    setOtp(true);
+    setResetForm(false);
+  };
   return (
     <>
       <SafeAreaView style={styles.forgotPasswordComp}>
@@ -36,46 +58,73 @@ const ForogotPassword = () => {
             />
           </View>
 
-          <Text style={styles.loginTitle}>Forgot Password</Text>
+          <Text style={styles.loginTitle}>Forgot Password </Text>
           <Text style={styles.forgotpoasswrdText}>
             Please enter your email address to reset your password.
           </Text>
         </View>
-
-        <View style={styles.forgotpasswordform}>
-          <View style={styles.InputBx}>
-            <Text style={styles.label}>Emai Id / Mobile No.</Text>
-            <View style={styles.input}>
-              <Feather
-                style={styles.icon}
-                name="mail"
-                size={15}
-                color="#a6a4a4"
-              />
-              <TextInput
-                style={styles.mainInput}
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-                placeholder="Enter your email id or mobile no..."
-              />
+        <Formik
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={object().shape({
+            email: string()
+              .required("Email is required")
+              .email("Invalid email format"),
+          })}
+          onSubmit={handleSubmit}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+          }) => (
+            <View style={styles.forgotpasswordform}>
+              <View style={styles.InputBx}>
+                <Text style={styles.label}>Emai Id </Text>
+                {/* Mobile No. */}
+                <View style={styles.input}>
+                  <Feather
+                    style={styles.icon}
+                    name="mail"
+                    size={15}
+                    color="#a6a4a4"
+                  />
+                  <TextInput
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values?.email}
+                    style={styles.mainInput}
+                    placeholder="Enter your email id"
+                    // or mobile no...
+                  />
+                </View>
+                <FormError error={errors} touched={touched} name={"email"} />
+              </View>
+              <Text
+                style={{ color: "red", marginTop: 10, textAlign: "center" }}
+              >
+                {resErrors?.request}
+              </Text>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                activeOpacity={0.7}
+                style={[
+                  styles.signInBtn,
+                  styles.forgotpasswrdBtn,
+                  { backgroundColor: bgColor },
+                ]}
+                onPressIn={() => setBgColor("#046e7a")} // Change to darker color when pressed
+                onPressOut={() => setBgColor("#026874")}
+              >
+                <Text style={styles.formSignText}>Continue</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => handleModal()}
-            activeOpacity={0.7}
-            style={[
-              styles.signInBtn,
-              styles.forgotpasswrdBtn,
-              { backgroundColor: bgColor },
-            ]}
-            onPressIn={() => setBgColor("#046e7a")} // Change to darker color when pressed
-            onPressOut={() => setBgColor("#026874")}
-          >
-            <Text style={styles.formSignText}>Continue</Text>
-          </TouchableOpacity>
-        </View>
-
+          )}
+        </Formik>
         <Text style={styles.remebEmil}>Don't remember your email? </Text>
         <View style={styles.remembrEmailText}>
           <Text style={[styles.remebEmil, { marginTop: 0 }]}>
@@ -102,29 +151,174 @@ const ForogotPassword = () => {
               source={require("../assets/images/password-access.png")}
             />
           </View>
+          {!resetForm ? (
+            <>
+              <View style={styles.otptextBx}>
+                <Text style={styles.otptext}>Enter OTP</Text>
+                <Text style={styles.sixdigittext}>
+                  An 5 digit code has been sent to Your Email
+                </Text>
+              </View>
+              <Text
+                style={{ color: "red", marginTop: 10, textAlign: "center" }}
+              >
+                {resErrors?.otp}
+              </Text>
+              <View style={styles.otpinptflexBx}>
+                <OTPInput
+                  onOTPComplete={async (otp) => {
+                    const res = await userForgetPassRequestReset({
+                      otp,
+                      code: codes?.otp,
+                    });
+                    if (res?.error) {
+                      setResErrors({ otp: res?.message });
+                      return;
+                    }
+                    setCode({ callback: res });
+                    setResetForm(true);
+                  }}
+                  length={5}
+                />
+              </View>
 
-          <View style={styles.otptextBx}>
-            <Text style={styles.otptext}>Enter OTP</Text>
-            <Text style={styles.sixdigittext}>
-              An 6 digit code has been sent to +91 9971464759
-            </Text>
-          </View>
+              <View style={styles.notgetOtpbx}>
+                <Text style={styles.didnotgetotptext}>
+                  Did not get OTP Code ?
+                </Text>
+                <TouchableOpacity style={styles?.resentcodeBtn}>
+                  <Text style={styles.resentCodetext}>Resent Code</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <Formik
+              validationSchema={object().shape({
+                password: string().required("Password is required"),
+                confirmNewPassword: string()
+                  .required("Confirm Password is required")
+                  .oneOf([ref("password"), null], "Passwords must match"),
+              })}
+              initialValues={{ password: "", confirmNewPassword: "" }}
+              onSubmit={async ({ password }) => {
+                const res = await userForgetPassCallback({
+                  password,
+                  code: codes?.callback,
+                });
+                if (res?.error) {
+                  setResErrors({ OTP: res?.message });
+                  return;
+                }
+                router.navigate("/");
+                Toast.show({
+                  type: "success",
+                  text1: "Success!",
+                  text2: "Password Saved Succesfully",
+                });
+              }}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+              }) => (
+                <View>
+                  <View style={styles.loginForm}>
+                    <View style={styles.InputBx}>
+                      <Text style={styles.label}>Password</Text>
+                      <View style={styles.input}>
+                        <Feather
+                          style={styles.icon}
+                          name="lock"
+                          size={15}
+                          color="#a6a4a4"
+                        />
+                        <TextInput
+                          style={styles.mainInput}
+                          onChangeText={handleChange("password")}
+                          onBlur={handleBlur("password")}
+                          value={values?.password}
+                          placeholder="Enter your password..."
+                          secureTextEntry={showPassword ? true : false}
+                        />
 
-          <View style={styles.otpinptflexBx}>
-            <OTPInput />
-            <OTPInput />
-            <OTPInput />
-            <OTPInput />
-          </View>
+                        <TouchableOpacity
+                          onPress={() => setShowPassword(!showPassword)}
+                          activeOpacity={0.6}
+                          style={styles.passwordtoggleBtn}
+                        >
+                          {showPassword ? (
+                            <Feather name="eye-off" size={20} color="#a6a4a4" />
+                          ) : (
+                            <Feather name="eye" size={20} color="#a6a4a4" />
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                      <FormError
+                        error={errors}
+                        touched={touched}
+                        name={"password"}
+                      />
+                    </View>
 
-          <View style={styles.notgetOtpbx}>
-            <Text style={styles.didnotgetotptext}>Did not get OTP Code ?</Text>
-            <TouchableOpacity style={styles?.resentcodeBtn}>
-              <Text style={styles.resentCodetext}>Resent Code</Text>
-            </TouchableOpacity>
-          </View>
+                    <View style={styles.InputBx}>
+                      <Text style={styles.label}>Password</Text>
+                      <View style={styles.input}>
+                        <Feather
+                          style={styles.icon}
+                          name="lock"
+                          size={15}
+                          color="#a6a4a4"
+                        />
+                        <TextInput
+                          style={styles.mainInput}
+                          onChangeText={handleChange("confirmNewPassword")}
+                          onBlur={handleBlur("confirmNewPassword")}
+                          value={values?.confirmNewPassword}
+                          placeholder="Enter your password..."
+                          secureTextEntry={showPassword ? true : false}
+                        />
 
-          <View style={styles.otpverifyBtn}>
+                        <TouchableOpacity
+                          onPress={() => setShowPassword(!showPassword)}
+                          activeOpacity={0.6}
+                          style={styles.passwordtoggleBtn}
+                        >
+                          {showPassword ? (
+                            <Feather name="eye-off" size={20} color="#a6a4a4" />
+                          ) : (
+                            <Feather name="eye" size={20} color="#a6a4a4" />
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                      <FormError
+                        error={errors}
+                        touched={touched}
+                        name={"confirmNewPassword"}
+                      />
+                    </View>
+                  </View>
+                  <Text
+                    style={{ color: "red", marginTop: 10, textAlign: "center" }}
+                  >
+                    {resErrors?.callback}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    // onPress={() => router.navigate("Spalsh")}
+                    activeOpacity={0.7}
+                    style={styles.signInBtn}
+                  >
+                    <Text style={styles.formSignText}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+          )}
+          {/* <View style={styles.otpverifyBtn}>
             <TouchableOpacity
               activeOpacity={0.7}
               style={[
@@ -138,7 +332,7 @@ const ForogotPassword = () => {
             >
               <Text style={styles.formSignText}>Verify OTP</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </ReactNativeModal>
     </>
@@ -147,8 +341,7 @@ const ForogotPassword = () => {
 
 export default ForogotPassword;
 
-const styles = StyleSheet.create(
-  {
+const styles = StyleSheet.create({
   otpverifyBtn: {
     position: "absolute",
     bottom: 30,
