@@ -36,8 +36,6 @@ const ForogotPassword = () => {
             <Feather style={styles.icon} name="mail" size={15} color="#a6a4a4" />
             <TextInput style={styles.mainInput} value={email} onChangeText={(text) => setEmail(text)} placeholder="Enter your email id or mobile no..." />
 
-            
-              
             </View>
           </View>
 
@@ -54,7 +52,7 @@ const ForogotPassword = () => {
             <Text style={styles.remebEmil}>Don't remember your email? </Text>
             <View style={styles.remembrEmailText}>
             <Text style={[styles.remebEmil, {marginTop : 0}]}>Contact us at </Text>
-            <TouchableOpacity activeOpacity={0.6} style={styles.linkBtn}><Text style={styles.linkText}>help@kabadpe.ai</Text></TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.6} style={styles.linkBtn}><Text style={styles.linkText}>support@kabadpe.com</Text></TouchableOpacity>
           </View>
           
       </SafeAreaView>
@@ -280,10 +278,9 @@ const styles = StyleSheet.create({
   },
 
   label:{
-    fontSize : 15,
     color : "#0d0d0d",
     letterSpacing : 0,
-    fontSize : 15,
+    fontSize : 13.5,
     color : "#242424",
   },
 

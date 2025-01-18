@@ -122,7 +122,7 @@ angleBx:{
 editprofileTopBx:{
     position : 'relative',
     width : '100%',
-    height : 110,
+    height : 80,
     backgroundColor : "#026874",
     overflow : 'hidden',
 },

@@ -167,7 +167,7 @@ const Appointment = () => {
           </View>
 
           <SafeAreaProvider>
-          <ScrollView style={[styles.CompaniesList , styles.slotsList]} showsVerticalScrollIndicator={false}>
+          <View style={[styles.CompaniesList , styles.slotsList]} showsVerticalScrollIndicator={false}>
 
           <FlatList 
           data={slots}
@@ -188,7 +188,7 @@ const Appointment = () => {
           keyExtractor={item => item.id}
 
           />
-          </ScrollView>
+          </View>
           </SafeAreaProvider>
           </View>
         );

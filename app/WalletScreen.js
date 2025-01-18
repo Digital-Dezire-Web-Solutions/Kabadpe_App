@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        marginTop: 12,
+        marginTop: 9,
     },
 
     editProfText: {
@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
     editprofileTopBx: {
         position: 'relative',
         width: '100%',
-        height: 110,
+        height : 80,
         backgroundColor: "#026874",
         overflow: 'hidden',
     },

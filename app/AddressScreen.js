@@ -4,9 +4,17 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
+import SugestDropdown from './Components/SugestDropdown';
 const AddressScreen = () => {
     const [locMark , setLocMark] = useState('home-filled');
     const [fullName , setFullName] = useState('Suni Sharma');
+    const [stateIndia , setStateIndia] =  useState('');
+    const [city , setCity] =  useState('');
+    const [areas , setAreas] =  useState('');
+    const [subArea , setSubArea] =  useState('');
+    const [pincode, setPincode] = useState('');
+
+
     const router  =  useRouter();
 
     const LocMark = [
@@ -22,15 +30,47 @@ const AddressScreen = () => {
         },
         {
             id :3,
-            icon : "home-work",
-            text : "My Place",
+            icon : "local-convenience-store",
+            text : "Shop",
         },
+
+        // {
+        //     id :4,
+        //     icon : "other-houses",
+        //     text : "Other",
+        // },
+
         {
             id :4,
-            icon : "other-houses",
-            text : "Other",
+            icon : "local-mall",
+            text : "Malls/Outlet",
         },
     ] 
+
+    const states = [ 
+        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+        "Goa", "Gujarat", "Jharkhand", "Kerala", "Karnataka", "Punjab", "Rajasthan", "Uttar Pradesh", 
+    ]
+
+    const citiesData = [
+        "Bengaluru", 'Kolkata', "Hyderabad", "Mumbai", "Chennai", "Jaipur", "Surat", "Ahmedabad", "New Delhi", "Lucknow", "Goa", "Chandigarh", "Patna", "Agra", "Nagpur"
+    ]
+
+    const areasData = [
+        "Seelumpur", "Krishna Nagar", "Gandhi Nagar", "Laxmi Nagar", "Anand Vihar",
+        "Madhu Vihar", "Shanti Mohalla", "Daryanganj",
+    ];
+
+    const subareasData = [
+        "kanti Nagar", "Bihari Colony", "Azad Nagar", "Kundan Nagar", "Khureji",
+        "Lal Quater", "Daryanganj",
+    ];
+
+    const pincodes = [
+        "110031", "110059", "110002", "110004", "110025",
+        "110009", "110035", "110006", "110015"
+    ];
+    
 
     const handleBackNavigate =() => {
         router.back();
@@ -51,7 +91,7 @@ const AddressScreen = () => {
         </TouchableOpacity>
     </SafeAreaView>
         
-        <View style={styles.AddressPage}>
+        <ScrollView style={styles.AddressPage} nestedScrollEnabled={true}>
             <ImageBackground style={styles.addrsbg} source={require('../assets/images/profileEdit-Bg.png')} resizeMode='cover'></ImageBackground>
 
         <View style={styles.addressComp}>
@@ -85,13 +125,17 @@ const AddressScreen = () => {
             onChange={(text) => setFullName(text)}
           placeholder="Enter Name" placeholderTextColor="#7b7b7b" />
             </View>
+                
+            <SugestDropdown data={states} value={stateIndia} setValue={setStateIndia} labelText={"State"} placeholderText={"Enter state"} />
+            
+            <SugestDropdown data={citiesData} value={city} setValue={setCity} labelText={"City"} placeholderText={"Enter city"} />
 
-            <View style={styles.userInptBx}>
-            <Text style={styles.labelText}>Complete Address</Text>
-            <TextInput style={styles.inptBx}
-          placeholder="Address" placeholderTextColor="#7b7b7b" />
-            </View>
+            <SugestDropdown data={pincodes} value={pincode} setValue={setPincode} labelText={"Pincode"} placeholderText={"Enter pincode"} />
 
+            <SugestDropdown data={areasData} value={areas} setValue={setAreas} labelText={"Area"} placeholderText={"Enter area"} />
+
+            <SugestDropdown data={subareasData} value={subArea} setValue={setSubArea} labelText={"Subarea"} placeholderText={"Enter subarea"} />
+          
 
             <View style={styles.userInptBx}>
             <Text style={styles.labelText}>Landmark</Text>
@@ -99,10 +143,11 @@ const AddressScreen = () => {
           placeholder="Enter Landmark" placeholderTextColor="#7b7b7b" />
             </View>
 
-            <View style={styles.userInptBx}>
+            <View style={[styles.userInptBx]}>
             <Text style={styles.labelText}>Floor</Text>
-            <TextInput style={styles.inptBx}
-          placeholder="Enter Floor" placeholderTextColor="#7b7b7b" />
+            <TextInput style={[styles.inptBx, {height : 45}]}
+          placeholder="Wing/Flat No./Building Name/House No./Street No./Colony Name" placeholderTextColor="#7b7b7b" 
+           />
             </View>
 
             </SafeAreaView>
@@ -116,7 +161,7 @@ const AddressScreen = () => {
         </View>
 
      
-        </View>
+        </ScrollView>
         
     </SafeAreaProvider>
    
@@ -137,9 +182,9 @@ const styles = StyleSheet.create({
     
   
     addsubmitbtn:{
-        position : 'absolute',
-        bottom : 16,
-        left: 0,
+        position : 'relative',
+        marginTop : 20,
+        marginBlockEnd : 30,
         width : '100%',
     },
 
@@ -161,7 +206,7 @@ const styles = StyleSheet.create({
         paddingHorizontal : 12,
         borderRadius : 8,
         fontSize : 13.5,
-        fontWeight : '500',
+        fontWeight : '400',
         color : "#026874",
     },
 
@@ -214,7 +259,7 @@ angleBx:{
 editprofileTopBx:{
     position : 'relative',
     width : '100%',
-    height : 110,
+    height : 80,
     backgroundColor : "#026874",
     overflow : 'hidden',
 
