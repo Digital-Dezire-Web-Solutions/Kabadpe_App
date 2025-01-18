@@ -384,12 +384,12 @@ const styles = StyleSheet.create({
         width: "100%",
         flex: 1,
         paddingHorizontal: 20,
-        paddingTop: 80,
+        paddingTop: 40,
     },
 
     newAcontBx: {
         position: "relative",
-        marginBottom: 150,
+        marginBottom: 60,
     },
 
     signInBtn: {

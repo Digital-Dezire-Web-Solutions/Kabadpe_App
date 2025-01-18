@@ -16,6 +16,7 @@ import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../features/auth/authActions";
+import { FormError } from "../components/FormError";
 export default function App() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -42,7 +43,14 @@ export default function App() {
               // router.navigate("Spalsh");
             }}
           >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
               <View>
                 <View style={styles.loginForm}>
                   <View style={styles.InputBx}>
@@ -62,6 +70,11 @@ export default function App() {
                         placeholder="Enter your email address..."
                       />
                     </View>
+                    <FormError
+                      error={errors}
+                      touched={touched}
+                      name={"email"}
+                    />
                   </View>
 
                   <View style={styles.InputBx}>
@@ -94,6 +107,11 @@ export default function App() {
                         )}
                       </TouchableOpacity>
                     </View>
+                    <FormError
+                      error={errors}
+                      touched={touched}
+                      name={"password"}
+                    />
                   </View>
 
                   <TouchableOpacity
@@ -133,7 +151,7 @@ export default function App() {
             activeOpacity={0.7}
             style={[styles.signInBtn, styles.vendLoginBtn]}
           >
-            <Text style={styles.formSignText}>Kabadi Login</Text>
+            <Text style={styles.formSignText}>Worker Login</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaProvider>
