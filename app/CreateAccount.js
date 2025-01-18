@@ -41,14 +41,6 @@ const CreateAccount = () => {
   const handleSubmit = (values) => {
     dispatch(userSignup(values));
   };
-  console.log(
-    "this is auth state",
-    otpModal,
-    login,
-    signup,
-    verifySignup,
-    user
-  );
   useEffect(() => {
     if (login || verifySignup) {
       router.navigate("Spalsh");

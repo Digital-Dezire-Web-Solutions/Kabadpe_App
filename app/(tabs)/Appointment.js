@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import WasteColectorType from "../Components/WasteColectorType";
 import ChooseWeight from "../Components/ChooseWeight";
@@ -25,23 +25,52 @@ import { Formik } from "formik";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { userAddressesFetch } from "../../services/user";
+import {
+  userFetchAvailableCompanies,
+  userFetchAvailableSlots,
+  userScheduleAppoinment,
+  userValidateServicability,
+} from "../../services/appoinment";
+import { slotLabels } from "../../lib/slot";
+import Toast from "react-native-toast-message";
 const Appointment = () => {
   const { userInfo } = useSelector((s) => s?.user);
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState({});
   const [selectedSlot, setSelectedSlot] = useState("");
   const [dateBox, setDateBox] = useState("");
   const [selectedTodayDate, setSelectedTodayDate] = useState(null);
   const [modal, setModal] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [resErrors, setResErrors] = useState({});
+  const [servicableAriaId, setServicableAriaId] = useState();
+  const [selectedServiceType, setSelectedServiceType] = useState("kabadi");
+  const [selectedSlotData, setSelectedSlotData] = useState({});
+  const [initialFormValues, setInitialFormValues] = useState({
+    appointmentContactNumber: userInfo?.phoneNumber || "",
+    appointmentPersonName: userInfo?.fullname || "",
+    frequency: "once",
+    estimateWeight: "unweighed",
+    serviceType: "kabadi",
+  });
   const router = useRouter();
   const { data: addresses, refetchAddress } = useQuery({
     queryKey: ["userAddress:appoinment:default"],
     queryFn: () => userAddressesFetch({ id: userInfo?.id }),
   });
-  console.log("user address", addresses);
+
+  const { data: availableCompanies, refetch: refetchCompanies } = useQuery({
+    queryKey: ["userAvailableCompanies"],
+    queryFn: () =>
+      userFetchAvailableCompanies({
+        ariaId: servicableAriaId,
+        date: new Date(selectedDate).toISOString(),
+        service: selectedServiceType || "kabadi",
+      }),
+  });
+
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
 
@@ -108,11 +137,77 @@ const Appointment = () => {
   };
 
   const handleSlotSelect = (slot) => {
+    setSelectedSlotData({
+      slotName: slot,
+      selectedCompany,
+      selectedDate,
+    });
     setSelectedSlot(slot);
-    setDateBox(`${selectedDate} , ${slot} `);
+    setDateBox(
+      `${selectedDate} , ${slotLabels?.[slot]}, ${
+        selectedCompany?.companyName ? selectedCompany?.companyName : ""
+      } `
+    );
     setModalVisible(false);
     Alert.alert("Success", `Added to Date Box: ${dateBox}`);
   };
+
+  const addres = selectedAddress || addresses?.[0] || {};
+  const {
+    id: selectedAddressId,
+    aria,
+    subAria,
+    street,
+    city,
+    state,
+    zipCode,
+    locationType,
+  } = addres;
+  const addresQuery = selectedAddressId
+    ? `${street} ${subAria} ${aria} ${city} ${zipCode}`
+    : null;
+  const controller = null;
+  useEffect(() => {
+    setResErrors((prev) => ({
+      ...prev,
+      address: "",
+    }));
+    if (street) {
+      (async () => {
+        const servicableAria = await userValidateServicability({
+          ...addres,
+          pincode: zipCode,
+          ariaName: aria,
+          subAriaName: subAria,
+          controller,
+        });
+        if (servicableAria?.error) {
+          setServicableAriaId("");
+          setResErrors({ address: servicableAria?.message });
+        } else {
+          setServicableAriaId(servicableAria?.id);
+          setResErrors({ address: "" });
+        }
+      })();
+    }
+  }, [addres]);
+  useEffect(() => {
+    refetchCompanies();
+  }, [selectedServiceType, selectedDate, servicableAriaId]);
+
+  const { data: timeSlots, refetch: refetchSlot } = useQuery({
+    queryKey: ["userAvailableSlot"],
+    queryFn: () =>
+      userFetchAvailableSlots({
+        franchiseId: selectedCompany?.id,
+        date: new Date(selectedDate).toISOString(),
+        aria: addres?.aria,
+        // userId: userData?.id,
+      }),
+  });
+  useEffect(() => {
+    refetchSlot();
+  }, [addres, selectedDate, selectedCompany]);
 
   const renderStep = () => {
     switch (step) {
@@ -156,22 +251,33 @@ const Appointment = () => {
               <Text style={styles.AvailCompText}>Avaiable Companies</Text>
             </View>
             <SafeAreaProvider>
-              <ScrollView
+              <View
                 style={styles.CompaniesList}
-                showsVerticalScrollIndicator={false}
+                // showsVerticalScrollIndicator={false}
               >
                 <FlatList
-                  data={companies}
-                  renderItem={({ item }) => (
-                    <View style={styles.companyBx} key={item.id}>
+                  data={availableCompanies?.error ? [] : availableCompanies}
+                  renderItem={({
+                    item: { id, companyName, profileImage, ...rest },
+                  }) => (
+                    <View style={styles.companyBx} key={id}>
                       <View style={styles.compLeftBx}>
-                        <Image style={styles.compImg} source={item.img} />
-                        <Text style={styles.nameText}> {item.name} </Text>
+                        <Image
+                          style={styles.compImg}
+                          source={
+                            id == "kabadpe"
+                              ? require("../../assets/images/kabadpe-logo.jpg")
+                              : { url: profileImage }
+                          }
+                        />
+                        <Text style={styles.nameText}> {companyName} </Text>
                       </View>
 
                       <TouchableOpacity
                         style={styles.selectBtn}
-                        onPress={() => handleCompanySelect(item.name)}
+                        onPress={() =>
+                          handleCompanySelect({ id, companyName, ...rest })
+                        }
                       >
                         <Text style={styles.selText}>Select</Text>
                       </TouchableOpacity>
@@ -179,7 +285,7 @@ const Appointment = () => {
                   )}
                   keyExtractor={(item) => item.id}
                 />
-              </ScrollView>
+              </View>
             </SafeAreaProvider>
           </View>
         );
@@ -191,14 +297,14 @@ const Appointment = () => {
             </View>
 
             <SafeAreaProvider>
-              <ScrollView
+              <View
                 style={[styles.CompaniesList, styles.slotsList]}
-                showsVerticalScrollIndicator={false}
+                // showsVerticalScrollIndicator={false}
               >
                 <FlatList
-                  data={slots}
-                  renderItem={({ item }) => (
-                    <View style={styles.slotBx} key={item.id}>
+                  data={timeSlots?.error ? [] : timeSlots}
+                  renderItem={({ item: { slotName, reminingSlot } }) => (
+                    <View style={styles.slotBx} key={slotName}>
                       <View style={styles.slotDateFlex}>
                         <View style={styles.slotsDate}>
                           <AntDesign
@@ -206,25 +312,30 @@ const Appointment = () => {
                             size={16}
                             color="#898f8b"
                           />
-                          <Text style={styles.timeText}> {item.time} </Text>
+                          <Text style={styles.timeText}>
+                            {" "}
+                            {slotLabels?.[slotName]}{" "}
+                          </Text>
                         </View>
                         <Text style={styles.slotsAvaiText}>
-                          15 slots available
+                          {reminingSlot} slots available
                         </Text>
                       </View>
-                      <TouchableOpacity
-                        style={styles.bookApntBtn}
-                        onPress={() => handleSlotSelect(item.time)}
-                      >
-                        <Text style={styles.bookApntBtnText}>
-                          Book Appointment
-                        </Text>
-                      </TouchableOpacity>
+                      {!reminingSlot ? null : (
+                        <TouchableOpacity
+                          style={styles.bookApntBtn}
+                          onPress={() => handleSlotSelect(slotName)}
+                        >
+                          <Text style={styles.bookApntBtnText}>
+                            Book Appointment
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                     </View>
                   )}
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item) => item?.slotName}
                 />
-              </ScrollView>
+              </View>
             </SafeAreaProvider>
           </View>
         );
@@ -232,9 +343,24 @@ const Appointment = () => {
         return null;
     }
   };
-  const { aria, subAria, city, state, zipCode, locationType } =
-    selectedAddress || addresses?.[0] || {};
-
+  const handleAppoinmentSubmit = async (data) => {
+    const newData = {
+      ...data,
+      appointmentDate: new Date(selectedSlotData?.selectedDate)?.toISOString(),
+      appoinmentAddress: addresQuery,
+      companyId: selectedSlotData?.selectedCompany?.id,
+      appointmentTimeSlot: selectedSlotData?.slotName,
+      appoinmentAria: addres?.id,
+      ariaId: servicableAriaId,
+      userId: userInfo?.id,
+    };
+    const res = await userScheduleAppoinment(newData);
+    if (res?.error) {
+      Toast.show({ type: "error", text1: "ERROR!", text2: res?.message });
+      return;
+    }
+    Toast.show({ type: "success", text1: "DONE!", text2: res?.message });
+  };
   return (
     <>
       <SafeAreaProvider>
@@ -251,17 +377,8 @@ const Appointment = () => {
                 Schedule Your Appointment{" "}
               </Text>
               <Formik
-                initialValues={
-                  {
-                    // fullname: "",
-                    // email: "",
-                    // password: "",
-                    // phoneNumber: "",
-                  }
-                }
-                onSubmit={(data) => {
-                  console.log("this is appoinment data", data);
-                }}
+                initialValues={initialFormValues}
+                onSubmit={handleAppoinmentSubmit}
               >
                 {({
                   handleChange,
@@ -302,7 +419,6 @@ const Appointment = () => {
                     >
                       <Text style={styles.addrssBtnText}> + Add Address</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity
                       onPress={() => setModal(true)}
                       style={styles.addrssBtnBx}
@@ -326,10 +442,19 @@ const Appointment = () => {
                         color="8c8c8c"
                       />
                     </TouchableOpacity>
-
+                    <Text
+                      style={{
+                        color: "red",
+                        marginTop: -10,
+                        textAlign: "center",
+                      }}
+                    >
+                      {resErrors?.address}
+                    </Text>
                     <WasteColectorType
                       onChange={(item) => {
                         handleChange("serviceType")(item?.value);
+                        setSelectedServiceType(item?.value);
                       }}
                       value={values?.serviceType}
                     />
@@ -415,7 +540,7 @@ const Appointment = () => {
       <AddressChooseModal
         onClick={(address) => {
           setSelectedAddress(address);
-          setModal(false)
+          setModal(false);
         }}
         addresses={!addresses?.error ? addresses : []}
         modal={modal}
