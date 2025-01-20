@@ -251,17 +251,18 @@ const styles = StyleSheet.create({
         position : 'absolute',
         top : '1%',
         left : '45%',
-        width : '80%',
+        width : '85%',
         height : '50%',
         objectFit : 'cover',
         opacity : 0.03,
       },
     
       formBg2:{
-        top : '70%',
-        left : '-30%',
-        width : '90%',
-        height : '60%',
+        top : '80%',
+        left : '-20%',
+        width : '80%',
+        height : '45%',
+
       },
   
     chekbxCont:{
