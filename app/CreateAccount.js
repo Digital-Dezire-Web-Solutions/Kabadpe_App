@@ -70,7 +70,10 @@ const CreateAccount = () => {
     <>
       <SafeAreaProvider>
         <ScrollView style={styles.newAcontComp}>
-          <ImageBackground style={styles.formBg} source={require('../assets/images/profileEdit-Bg.png')}></ImageBackground>
+          <ImageBackground style={styles.formBg} source={require('../assets/images/recycle.png')}></ImageBackground>
+
+          <ImageBackground style={[styles.formBg, styles.formBg2]} source={require('../assets/images/recycle.png')}></ImageBackground>
+          
           <SafeAreaView style={styles.newAcontBx}>
             <View style={styles.loginLogo}>
               <Image
@@ -330,12 +333,21 @@ const styles = StyleSheet.create({
 
   formBg:{
     position : 'absolute',
-    top : 0,
-    left : 0,
-    width : '100%',
-    height : '100%',
+    top : '1%',
+    left : '40%',
+    width : '95%',
+    height : '65%',
     objectFit : 'cover',
+    opacity : 0.03,
   },
+
+  formBg2:{
+    top : '70%',
+    left : '-30%',
+    width : '90%',
+    height : '60%',
+  },
+  
   signUpForm: {
     position: "relative",
     width: "100%",
