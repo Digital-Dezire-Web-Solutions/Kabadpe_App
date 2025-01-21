@@ -3,12 +3,13 @@ import React, { useState } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { Calendar } from 'react-native-calendars';
 import ReactNativeModal from 'react-native-modal'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-const ApntCard = ({ item , index, bgColor}) => {
+const ApntCard = ({ item , index, bgColor , itemStart}) => {
   const {height , width} = Dimensions.get('window');
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -209,8 +210,8 @@ const ApntCard = ({ item , index, bgColor}) => {
   return (
 <>
     <View  style={[styles.apntCardBx, {backgroundColor : bgColor}]}>
-      <View style={styles.apntCardToFlex}>
-          <View style={styles.userInfoBx}>
+      <View style={[styles.apntCardToFlex, {alignItems : itemStart}]}>
+          <View style={[styles.userInfoBx, {alignItems : itemStart}]}>
           <Image style={styles.userImg} source={item.image} />
           <View style={styles.userDet}>
            {item.nameTitle && <Text style={styles.userNameTitle}>
@@ -224,6 +225,10 @@ const ApntCard = ({ item , index, bgColor}) => {
               </>
            
             )}
+         {item.locat &&   <View style={[styles.dateCaleBx, styles.dateCaleBx2]}>
+      <AntDesign name="calendar" size={14} color="#3c3c3c" />
+      <Text style={[styles.apntDate, {fontSize : 11.5}]}> {dateBox} </Text>
+      </View>}
           </View>
           </View>
 
@@ -235,21 +240,28 @@ const ApntCard = ({ item , index, bgColor}) => {
         
       </View>
 
-      <View style={styles.dateCaleBx}>
+     {item.nameTitle && <View style={styles.dateCaleBx}>
       <AntDesign name="calendar" size={17} color="#3c3c3c" />
       <Text style={styles.apntDate}> {dateBox} </Text>
-      </View>
+      </View>}
 
       <View style={styles.apntBtnsFlex}>
         <TouchableOpacity activeOpacity={0.5} style={styles.apntResdBtn} onPress={() => setModalVisible(true)}>
-        <FontAwesome name="rotate-right" size={18} color="#fff" />
+        <FontAwesome name="rotate-right" size={16} color="#fff" />
           <Text style={styles.reshdText}>Reschedule</Text>
         </TouchableOpacity>
 
+      
+
         <TouchableOpacity  activeOpacity={0.5} onPress={() => setClose(true)} style={[styles.apntResdBtn , styles.apntResdBtn2]}>
-        <Ionicons name="close" size={18} color="#026874" />
+        <Ionicons name="close" size={16} color="#026874" />
           <Text style={[styles.reshdText , styles.reshdText2 ]}>Cancel</Text>
         </TouchableOpacity>
+
+        {item.locat &&  
+          <TouchableOpacity  activeOpacity={0.5}  style={[styles.apntResdBtn , styles.apntResdBtn4]}>
+        <FontAwesome5 name="map-marker-alt" size={16} color="#026874" />
+          </TouchableOpacity>}
         
       </View>
       
@@ -557,7 +569,7 @@ saveBtn:{
   },
 
   apntResdBtn2:{
-    width : '35%',
+    width : '30%',
     backgroundColor : 'transparent',
     gap : 4,
 
@@ -574,7 +586,7 @@ saveBtn:{
   },
 
   reshdText:{
-    fontSize : 14,
+    fontSize : 12.5,
     color : "#fff",
   },
 
@@ -586,8 +598,8 @@ saveBtn:{
 
   apntResdBtn:{
     position : 'relative',
-    width : '52%',
-    height : 40,
+    width : '45%',
+    height : 37,
     backgroundColor : "#026874",
     borderRadius : 6,
     flexDirection : 'row',
@@ -596,6 +608,11 @@ saveBtn:{
     borderWidth : 1.5,
     borderColor : "#026874",
     gap : 10,
+  },
+
+  apntResdBtn4:{
+    width : '15%',
+    backgroundColor : 'transparent',
   },
 
   dateCaleBx:{
@@ -607,6 +624,12 @@ saveBtn:{
     justifyContent : 'flex-start',
     marginTop : 10,
     paddingHorizontal : 18,
+  },
+
+  dateCaleBx2:{
+    marginTop : 6,
+    paddingHorizontal : 0,
+
   },
 
   apntDate:{
