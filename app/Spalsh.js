@@ -144,9 +144,9 @@ const Splash = () => {
           </TouchableOpacity>
           <TouchableOpacity  style={styles.WaletProfBtn}>
             <FontAwesome5 name="user-alt" size={18} color="#2ccce3" />
-            <View >
+            <TouchableOpacity onPress={() => router.navigate('Profile')}>
               <Text style={styles.waletText}> Profile </Text>
-            </View>
+            </TouchableOpacity>
           </TouchableOpacity>
         </View>
       </ScrollView>

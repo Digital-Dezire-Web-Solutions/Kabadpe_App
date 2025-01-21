@@ -768,9 +768,11 @@ const styles = StyleSheet.create({
 
   viewApntBtn: {
     position: 'relative',
-    width: 80,
+    width: 'auto',
     height: 30,
-    backgroundColor: "#026874",
+    backgroundColor: "transparent",
+    // borderWidth : .76,
+    borderColor : "#026874",
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
@@ -778,8 +780,9 @@ const styles = StyleSheet.create({
   },
 
   ViewText: {
-    fontSize: 13,
-    color: "#fff",
+    fontSize: 14,
+    fontWeight : '500',
+    color: "#026874",
   },
 
   apntTitle: {

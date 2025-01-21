@@ -31,9 +31,9 @@ const _layout = () => {
       />
 
       <Tabs.Screen
-        name="Profile"
+        name="Menu"
         options={{
-          title: "Profile",
+          title: "Menu",
         }}
       />
     </Tabs>

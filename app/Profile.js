@@ -15,13 +15,13 @@ const Profile = () => {
 
       <SafeAreaView style={styles.profileMain}>
         <View style={styles.profileBanner}>
-          <ImageBackground style={styles.bgImageProfile} source={require('../../assets/images/Mask-group.png')} resizeMode='cover'></ImageBackground>
+          <ImageBackground style={styles.bgImageProfile} source={require('../assets/images/Mask-group.png')} resizeMode='cover'></ImageBackground>
 
           
           
         </View>
         <View style={styles.profileImgBx}>
-            <Image style={styles.profImg} source={require('../../assets/images/profile-img.png')} />
+            <Image style={styles.profImg} source={require('../assets/images/profile-img.png')} />
           </View>
 
           <SafeAreaProvider>  

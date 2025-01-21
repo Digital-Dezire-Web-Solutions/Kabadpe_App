@@ -88,7 +88,7 @@ const KabadiLogin = () => {
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity
-                  // onPress={() => router.navigate("Spalsh")}
+                  onPress={() => router.navigate('Dashboard')}
                   activeOpacity={0.7}
                   style={styles.signInBtn}
                 >

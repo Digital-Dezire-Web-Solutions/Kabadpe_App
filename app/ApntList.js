@@ -89,7 +89,7 @@ const ApntList = () => {
                         data={ApntData}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item => item.id}
-                        renderItem={({ item, index }) => <ApntCard item={item} index={index} />}
+                        renderItem={({ item, index }) => <ApntCard bgColor="#eff7cf" item={item} index={index} />}
                     />
                 </View>
             </SafeAreaProvider>

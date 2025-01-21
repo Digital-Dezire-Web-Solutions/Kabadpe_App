@@ -1,4 +1,4 @@
-import { router, Stack } from "expo-router";
+import { router, Slot, Stack, } from "expo-router";
 import { Provider, useDispatch, useSelector } from "react-redux";
 // import { store } from "../features/store";
 import Toast from "react-native-toast-message";
@@ -7,8 +7,10 @@ import { RootSiblingParent } from "react-native-root-siblings";
 import { Modal } from "react-native";
 import { useEffect } from "react";
 import { userFetch } from "../features/user/userActions";
+import { StatusBar } from 'expo-status-bar';
 // import { Modal, View } from "react-native";
 // import ReactNativeModal from "react-native-modal";
+// import {JsStack} from "../components/JsStack"
 export default function StackScreen() {
   const dispatch = useDispatch();
   const {
@@ -29,14 +31,20 @@ export default function StackScreen() {
       router.navigate("Spalsh");
     }
   }, [userInfo]);
+  // const Stack=JsStack
   return (
     // -------------------------------------
     // <SafeAreaProvider>
     //   <RootSiblingParent>
     //     <Provider store={store}>
+    <>
+            <StatusBar style="light"  backgroundColor="#026874" />
+    
     <Stack screenOptions={{ headerShown: false }}> 
       <Stack.Screen name="index" />
+      {/* <Stack.Screen name="(drawer)" /> */}
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(drawer)" options={{ animation: "simple_push" }} />
       <Stack.Screen
         name="ProfileEdit"
         options={{ animation: "slide_from_right" }}
@@ -70,7 +78,16 @@ export default function StackScreen() {
           name="KabadiCreateAccount"
           options={{ animation: "fade_from_bottom" }}
         />
+           <Stack.Screen
+          name="Profile"
+          options={{ animation: "simple_push" }}
+        />
+    <Stack.Screen name='Dashboard'  options={{ animation:"fade_from_bottom", title: "Dashboard"}} />
+
+           <Slot />
     </Stack>
+    </>
+    
     //     </Provider>
     //     <Toast />
     //   </RootSiblingParent>

@@ -8,7 +8,7 @@ import ReactNativeModal from 'react-native-modal'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-const ApntCard = ({ item , index}) => {
+const ApntCard = ({ item , index, bgColor}) => {
   const {height , width} = Dimensions.get('window');
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -208,15 +208,22 @@ const ApntCard = ({ item , index}) => {
   
   return (
 <>
-    <View  style={styles.apntCardBx}>
+    <View  style={[styles.apntCardBx, {backgroundColor : bgColor}]}>
       <View style={styles.apntCardToFlex}>
           <View style={styles.userInfoBx}>
           <Image style={styles.userImg} source={item.image} />
           <View style={styles.userDet}>
-            <Text style={styles.userNameTitle}>
+           {item.nameTitle && <Text style={styles.userNameTitle}>
               {item.nameTitle}
-            </Text>
+            </Text>}
             <Text style={styles.userNameText}> {item.name} </Text>
+            {item.locat && (
+              <>
+              <Text style={styles.locatText}> {item.locat} - <Text style={styles.aproxText}>Approx. {item.dist} KM </Text>  </Text> 
+              <Text style={[styles.locatText, {fontWeight : '400'}]}>Away From You</Text>
+              </>
+           
+            )}
           </View>
           </View>
 
@@ -290,6 +297,16 @@ onBackdropPress={() => setModalVisible(false)}
 export default ApntCard
 
 const styles = StyleSheet.create({
+
+  locatText:{
+    fontSize : 12,
+    fontWeight : '500',
+    color : "#7C7C7C"
+  },
+
+  aproxText:{
+    color : "#4d4949",
+  },
 
   cancelText:{
     fontSize : 18,
@@ -653,7 +670,7 @@ saveBtn:{
     width : '100%',
     marginHorizontal : 'auto',
     // width : 300,
-    backgroundColor : "#eff7cf",
+    // backgroundColor : "#eff7cf",
     borderRadius : 12,
     paddingVertical : 12,
     marginBottom : 16,
