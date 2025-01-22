@@ -7,6 +7,7 @@ import { RootSiblingParent } from "react-native-root-siblings";
 import { Modal } from "react-native";
 import { useEffect } from "react";
 import { userFetch } from "../features/user/userActions";
+import { removeFromLocalStorage } from "@/lib/localStorage";
 // import { Modal, View } from "react-native";
 // import ReactNativeModal from "react-native-modal";
 export default function StackScreen() {
@@ -26,6 +27,7 @@ export default function StackScreen() {
   }, [verifySignup, login]);
   useEffect(() => {
     if (userInfo) {
+      console.log("its userInfo", userInfo);
       router.navigate("Spalsh");
     }
   }, [userInfo]);
@@ -60,6 +62,11 @@ export default function StackScreen() {
       />
       <Stack.Screen
         name="CreateAccount"
+        options={{ animation: "fade_from_bottom" }}
+      />
+      <Stack.Screen name="KabadiLogin" options={{ animation: "simple_push" }} />
+      <Stack.Screen
+        name="KabadiCreateAccount"
         options={{ animation: "fade_from_bottom" }}
       />
     </Stack>

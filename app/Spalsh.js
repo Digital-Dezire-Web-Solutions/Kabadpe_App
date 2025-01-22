@@ -65,7 +65,7 @@ const Splash = () => {
         style={styles.mainTitleInfo}
       >
         <Text style={styles.mainTitle}>
-          Hi Sustainability Champion, {userInfo?.fullname}{" "}
+          Hi Sustainability Champion , {userInfo?.fullname}{" "}
         </Text>
         <Text style={styles.paraText}>Let’s make our environment cleaner</Text>
       </View>
@@ -182,204 +182,207 @@ const Splash = () => {
 export default Splash;
 
 const styles = StyleSheet.create({
-  waletText: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#fff",
-    marginBottom: 4,
-  },
 
-  waletAmnt: {
-    fontSize: 13,
-    color: "#f1f1f1",
-  },
-
-  WaletProfBtn: {
-    position: "relative",
-    width: "48%",
-    backgroundColor: "#026874",
-    borderRadius: 14,
-    height: 60,
-    paddingHorizontal: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 12,
-  },
-
-  waletProfFlexBx: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 20,
-    paddingBottom: 80,
-  },
-
-  screenPara: {
-    fontSize: 14,
-    color: "#f5f5f5",
-    marginBottom: 12,
-  },
-
-  buton: {
-    position: "relative",
-    backgroundColor: "#21b5c6",
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    paddingVertical: 4,
-  },
-
-  butonTwo: {
-    backgroundColor: "#539815",
-  },
-
-  btntext: {
-    fontSize: 13,
-    color: "#fff",
-  },
-
-  screenTitleBx: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-  },
-
-  screenTitle: {
-    fontSize: 20,
-    color: "#fff",
-    letterSpacing: 0.67,
-    fontWeight: "700",
-    marginBottom: 5,
-  },
-
-  mainScreenImgBx: {
-    position: "relative",
-    width: "100%",
-    height: hp("20.4%"),
-    // height : 150,
-    marginBottom: 14,
-  },
-
-  overlayGradient: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    width: "90%",
-    height: "100%",
-    borderRadius: 12,
-  },
-
-  screensImgFlex: {
-    position: "relative",
-    width: "100%",
-    marginTop: 10,
-  },
-
-  mainImg: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    borderRadius: 12,
-  },
-
-  mainTitleInfo: {
-    position: "relative",
-    width: "100%",
-    marginTop: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  mainTitle: {
-    fontSize: 20,
-    textAlign: "center",
-    maxWidth: 250,
-    lineHeight: 26,
-    fontWeight: "600",
-    color: "#026874",
-    marginBottom: 8,
-  },
-
-  paraText: {
-    fontSize: 15,
-    fontWeight: "400",
-    color: "#7C7C7C",
-  },
-
-  greendot: {
-    position: "absolute",
-    top: 2,
-    right: 1,
-    width: 5,
-    height: 5,
-    backgroundColor: "#57BC24",
-    borderRadius: 50,
-  },
-
-  reddot: {
-    position: "absolute",
-    top: 2,
-    right: 2,
-    width: 5,
-    height: 5,
-    backgroundColor: "red",
-    borderRadius: 50,
-  },
-
-  bellBtn: {
-    position: "relative",
-  },
-
-  splashComp: {
-    position: "relative",
-    width: "100%",
-    flex: 1,
-    backgroundColor: "#eff7cf",
-    paddingHorizontal: 18,
-    paddingTop: 50,
-  },
-
-  topHeaderFlex: {
-    position: "relative",
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  leftHeaderBx: {
-    position: "relative",
-    width: "auto",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-  },
-
-  location: {
-    fontSize: 15,
-    color: "#026874",
-    fontWeight: "500",
-  },
-
-  rightHeaderIcons: {
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    gap: 13,
-  },
-});
+    waletText:{
+      fontSize : 17,
+      fontWeight : '600',
+      color : "#fff",
+      marginBottom : 4,
+    },
+  
+    waletAmnt:{
+      fontSize : 13,
+      color : "#f1f1f1",
+    },
+  
+    WaletProfBtn:{
+      position : 'relative',
+      width : '48%',
+      backgroundColor :"#026874",
+      borderRadius : 14,
+      height : 60,
+      paddingHorizontal : 14,
+      flexDirection : 'row',
+      alignItems : 'center',
+      justifyContent: 'flex-start',
+      gap : 12,
+  
+    },
+    
+    waletProfFlexBx: {
+      position: "relative",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginTop: 20,
+      paddingBottom: 80,
+    },
+  
+    screenPara: {
+      fontSize: 14,
+      color: "#f5f5f5",
+      marginBottom: 12,
+    },
+  
+    buton: {
+      position: "relative",
+      backgroundColor: "#21b5c6",
+      paddingHorizontal: 20,
+      borderRadius: 12,
+      paddingVertical: 4,
+    },
+  
+    butonTwo: {
+      backgroundColor: "#539815",
+    },
+  
+    btntext: {
+      fontSize: 13,
+      color: "#fff",
+    },
+  
+    screenTitleBx: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      alignItems: "flex-start",
+      justifyContent: "center",
+      paddingHorizontal: 20,
+    },
+  
+    screenTitle: {
+      fontSize: 20,
+      color: "#fff",
+      letterSpacing: 0.67,
+      fontWeight: "700",
+      marginBottom: 5,
+    },
+  
+    mainScreenImgBx: {
+      position: "relative",
+      width: '100%',
+      height: hp('20.4%'),
+      // height : 150,
+      marginBottom: 14,
+    },
+  
+    overlayGradient: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      width: "90%",
+      height: "100%",
+      borderRadius: 12,
+    },
+  
+    screensImgFlex: {
+      position: "relative",
+      width: "100%",
+      marginTop: 10,
+    },
+  
+    mainImg: {
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      borderRadius: 12,
+    },
+  
+    mainTitleInfo: {
+      position: "relative",
+      width: "100%",
+      marginTop: 40,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  
+    mainTitle: {
+      fontSize: 20,
+      textAlign: "center",
+      maxWidth: 250,
+      lineHeight: 26,
+      fontWeight: "600",
+      color: "#026874",
+      marginBottom: 8,
+    },
+  
+    paraText: {
+      fontSize: 15,
+      fontWeight: "400",
+      color: "#7C7C7C",
+    },
+  
+    greendot: {
+      position: "absolute",
+      top: 2,
+      right: 1,
+      width: 5,
+      height: 5,
+      backgroundColor: "#57BC24",
+      borderRadius: 50,
+    },
+  
+    reddot: {
+      position: "absolute",
+      top: 2,
+      right: 2,
+      width: 5,
+      height: 5,
+      backgroundColor: "red",
+      borderRadius: 50,
+    },
+  
+    bellBtn: {
+      position: "relative",
+    },
+  
+    splashComp: {
+      position: "relative",
+      width: "100%",
+      flex: 1,
+      backgroundColor: "#eff7cf",
+      paddingHorizontal: 18,
+      paddingTop: 30,
+    },
+  
+    topHeaderFlex: {
+      position: "relative",
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+  
+    leftHeaderBx: {
+      position: "relative",
+      width: "auto",
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "row",
+      gap: 10,
+    },
+  
+    location: {
+      fontSize: 15,
+      color: "#026874",
+      fontWeight: "500",
+    },
+  
+    rightHeaderIcons: {
+      position: "relative",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
+      gap: 13,
+    },
+    
+  });

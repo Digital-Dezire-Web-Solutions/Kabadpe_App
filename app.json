@@ -19,8 +19,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-   
-      }
+      },
+      "package": "com.kabadepe",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "config": {
+    "googleMaps": {
+      "apiKey": "AIzaSyBPOPPXBdFH_v4U4-6M2xkKZdsTSzlKBjQ"
+    }
+  }
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +41,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "da5a381c-60c9-4a93-a7ed-53166fb94728"
+      }
     }
   }
 }

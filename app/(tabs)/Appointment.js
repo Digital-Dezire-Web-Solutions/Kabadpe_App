@@ -34,6 +34,7 @@ import {
 import { slotLabels } from "../../lib/slot";
 import Toast from "react-native-toast-message";
 const Appointment = () => {
+  const [addres, setAddres] = useState({});
   const { userInfo } = useSelector((s) => s?.user);
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -43,7 +44,7 @@ const Appointment = () => {
   const [dateBox, setDateBox] = useState("");
   const [selectedTodayDate, setSelectedTodayDate] = useState(null);
   const [modal, setModal] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState({});
   const [resErrors, setResErrors] = useState({});
   const [servicableAriaId, setServicableAriaId] = useState();
   const [selectedServiceType, setSelectedServiceType] = useState("kabadi");
@@ -73,51 +74,6 @@ const Appointment = () => {
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
-
-  const companies = [
-    {
-      id: 1,
-      img: require("../../assets/images/kabadpe-logo.jpg"),
-      name: "KabadPe",
-    },
-    {
-      id: 2,
-      img: require("../../assets/images/cmp-4.jpg"),
-      name: "Extra Frames",
-    },
-    {
-      id: 3,
-      img: require("../../assets/images/kabadpe-logo.jpg"),
-      name: "KabadPe",
-    },
-  ];
-
-  const slots = [
-    {
-      id: 1,
-      time: "8:00 AM - 10:00 AM",
-    },
-    {
-      id: 2,
-      time: "10:00 AM - 12:00 PM",
-    },
-    {
-      id: 3,
-      time: "12:00 PM - 3:00 PM",
-    },
-    {
-      id: 4,
-      time: "3:00 PM - 5:00 PM",
-    },
-    {
-      id: 5,
-      time: "5:00 PM - 7:00 PM",
-    },
-    {
-      id: 6,
-      time: "7:00 PM - 9:00 PM",
-    },
-  ];
 
   const handleDateSelect = (date) => {
     setSelectedDate(date.dateString);
@@ -149,10 +105,18 @@ const Appointment = () => {
       } `
     );
     setModalVisible(false);
-    Alert.alert("Success", `Added to Date Box: ${dateBox}`);
+    setStep(1);
+    // Alert.alert("Success", `Added to Date Box: ${dateBox}`);
   };
 
-  const addres = selectedAddress || addresses?.[0] || {};
+  // const addres =
+  //   selectedAddress || (!addresses?.error ? addresses?.[0] : {}) || {};
+  useEffect(() => {
+    if (!addresses?.error && addresses?.length) {
+      setSelectedAddress(addresses?.[0]);
+    }
+  }, [addresses]);
+
   const {
     id: selectedAddressId,
     aria,
@@ -162,7 +126,7 @@ const Appointment = () => {
     state,
     zipCode,
     locationType,
-  } = addres;
+  } = selectedAddress;
   const addresQuery = selectedAddressId
     ? `${street} ${subAria} ${aria} ${city} ${zipCode}`
     : null;
@@ -175,7 +139,7 @@ const Appointment = () => {
     if (street) {
       (async () => {
         const servicableAria = await userValidateServicability({
-          ...addres,
+          ...selectedAddress,
           pincode: zipCode,
           ariaName: aria,
           subAriaName: subAria,
@@ -190,24 +154,25 @@ const Appointment = () => {
         }
       })();
     }
-  }, [addres]);
+  }, [selectedAddress]);
   useEffect(() => {
-    refetchCompanies();
+    if (servicableAriaId && selectedDate) {
+      refetchCompanies();
+    }
   }, [selectedServiceType, selectedDate, servicableAriaId]);
-
   const { data: timeSlots, refetch: refetchSlot } = useQuery({
     queryKey: ["userAvailableSlot"],
     queryFn: () =>
       userFetchAvailableSlots({
         franchiseId: selectedCompany?.id,
         date: new Date(selectedDate).toISOString(),
-        aria: addres?.aria,
+        aria: selectedAddress?.aria,
         // userId: userData?.id,
       }),
   });
   useEffect(() => {
     refetchSlot();
-  }, [addres, selectedDate, selectedCompany]);
+  }, [selectedAddress, selectedDate, selectedCompany]);
 
   const renderStep = () => {
     switch (step) {
@@ -350,7 +315,7 @@ const Appointment = () => {
       appoinmentAddress: addresQuery,
       companyId: selectedSlotData?.selectedCompany?.id,
       appointmentTimeSlot: selectedSlotData?.slotName,
-      appoinmentAria: addres?.id,
+      appoinmentAria: selectedAddress?.id,
       ariaId: servicableAriaId,
       userId: userInfo?.id,
     };
@@ -431,9 +396,7 @@ const Appointment = () => {
                         />
                         <Text style={styles.placeText}>{locationType}</Text>
                       </View>
-                      <Text style={styles.addrsText}>
-                        {`${aria} ${subAria} ${city} ${state}`}
-                      </Text>
+                      <Text style={styles.addrsText}>{addresQuery}</Text>
 
                       <FontAwesome
                         name="angle-right"
@@ -455,6 +418,7 @@ const Appointment = () => {
                       onChange={(item) => {
                         handleChange("serviceType")(item?.value);
                         setSelectedServiceType(item?.value);
+                        setDateBox("");
                       }}
                       value={values?.serviceType}
                     />
@@ -499,8 +463,14 @@ const Appointment = () => {
                     <ReactNativeModal
                       isVisible={isModalVisible}
                       animationIn="fadeInUp"
-                      onBackButtonPress={() => setModalVisible(false)}
-                      onBackdropPress={() => setModalVisible(false)}
+                      onBackButtonPress={() => {
+                        setStep(1);
+                        setModalVisible(false);
+                      }}
+                      onBackdropPress={() => {
+                        setStep(1);
+                        setModalVisible(false);
+                      }}
                     >
                       <View style={styles.modal}>
                         {renderStep()}
@@ -541,6 +511,8 @@ const Appointment = () => {
         onClick={(address) => {
           setSelectedAddress(address);
           setModal(false);
+          // setSelectedSlotData({});
+          setDateBox("");
         }}
         addresses={!addresses?.error ? addresses : []}
         modal={modal}

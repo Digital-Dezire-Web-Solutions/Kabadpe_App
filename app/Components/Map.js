@@ -1,16 +1,17 @@
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-const Map = () => {
+const Map = ({ onChange }) => {
+  const [address, setAddres] = useState({});
   const [mapRegion, setMapRegion] = useState({
-    latitude: 37.78825, // Default latitude
-    longitude: -122.4324, // Default longitude
-    latitudeDelta: 0.0922, // Zoom level (latitude)
-    longitudeDelta: 0.0421, // Zoom level (longitude)
+    latitude: 37.7749, // Default to San Francisco
+    longitude: -122.4194,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
   });
 
   const userLocation = async () => {
@@ -23,6 +24,7 @@ const Map = () => {
     let location = await Location.getCurrentPositionAsync({
       enableHighAccuracy: true,
     });
+    reverseGeocode(location.coords.latitude, location.coords.longitude);
     setMapRegion({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
@@ -30,14 +32,30 @@ const Map = () => {
       longitudeDelta: 0.0421, // Zoom level (longitude)
     });
   };
+  const reverseGeocode = async (latitude, longitude) => {
+    try {
+      const addresses = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+      if (addresses.length > 0) {
+        setAddres(addresses?.[0]);
+        onChange(addresses?.[0]);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Unable to fetch address");
+    }
+  };
 
   useEffect(() => {
-    userLocation();
+    userLocation()
+      .then(() => {})
+      .catch(() => {});
   }, []);
 
   return (
     <SafeAreaProvider style={styles.container}>
-      <MapView style={styles.map} region={mapRegion}>
+      <MapView provider={PROVIDER_GOOGLE} style={styles.map} region={mapRegion}>
         <Marker coordinate={mapRegion} title="Marker" />
       </MapView>
       <Button title="Get Location" onPress={userLocation} />

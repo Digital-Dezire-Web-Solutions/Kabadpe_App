@@ -10,8 +10,11 @@ import ReactNativeModal from "react-native-modal";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
+import { useDispatch } from "react-redux";
+import { addutilityAction } from "../../features/utilitySlice";
 
 const AddressChooseModal = ({ modal, setModal, addresses, onClick }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <>
@@ -69,6 +72,24 @@ const AddressChooseModal = ({ modal, setModal, addresses, onClick }) => {
                   </Text>
 
                   <MaterialIcons
+                    onPress={() => {
+                      dispatch(
+                        addutilityAction({
+                          name: "initAddress",
+                          value: {
+                            id,
+                            aria,
+                            subAria,
+                            city,
+                            state,
+                            zipCode,
+                            locationType,
+                            ...rest,
+                          },
+                        })
+                      );
+                      router.navigate("AddressScreen");
+                    }}
                     name="edit"
                     size={18}
                     style={styles.arrowRight}

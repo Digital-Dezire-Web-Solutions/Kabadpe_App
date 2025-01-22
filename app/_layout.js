@@ -46,3 +46,40 @@ export default function RootLayout() {
     </SafeAreaProvider>
   );
 }
+
+  {/* <View style={styles.InputBx}>
+                            <Text style={styles.label}>Full Name / पूरा नाम</Text>
+                            <View style={styles.input}>
+                                <AntDesign
+                                    style={styles.icon}
+                                    name="user"
+                                    size={15}
+                                    color="#a6a4a4"
+                                />
+                                <TextInput
+                                    style={styles.mainInput}
+                                    name="name"
+                                    placeholder="Enter your name..."
+                                />
+                            </View>
+                        </View>
+
+                        <View style={styles.InputBx}>
+                            <Text style={styles.label}>WhatsApp No. / व्हाट्सएप नंबर</Text>
+                            <View style={styles.input}>
+                                <FontAwesome
+                                    style={styles.icon}
+                                    name="whatsapp"
+                                    size={15}
+                                    color="#a6a4a4"
+                                />
+                                <TextInput
+                                    style={styles.mainInput}
+                                    maxLength={10}
+                                    name="whatsappnumber"
+                                    keyboardType="numeric"
+                                    placeholder="Enter your whatsapp no..."
+                                />
+                            </View>
+                        </View> */}
+

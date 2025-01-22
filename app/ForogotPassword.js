@@ -508,12 +508,11 @@ const styles = StyleSheet.create({
     color: "#212121",
   },
 
-  label: {
-    fontSize: 15,
-    color: "#0d0d0d",
-    letterSpacing: 0,
-    fontSize: 15,
-    color: "#242424",
+  label:{
+    color : "#0d0d0d",
+    letterSpacing : 0,
+    fontSize : 13.5,
+    color : "#242424",
   },
 
   InputBx: {

@@ -26,6 +26,8 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { userAppoinmentsFetch } from "../../services/appoinment";
 // import * as Animatable from 'react-native-animatable';
 
 const index = () => {
@@ -199,7 +201,14 @@ const index = () => {
       rating: "3.6",
     },
   ];
-
+  const { data: appoinments, refetch } = useQuery({
+    queryKey: ["userAppoinments:1"],
+    queryFn: () => userAppoinmentsFetch(),
+  });
+  const item =
+    (!appoinments?.error ? appoinments : [])?.sort(
+      (a, b) => new Date(b?.updatedOn) - new Date(a?.updatedOn)
+    )?.[0] || {};
   return (
     <SafeAreaProvider>
       <ScrollView style={styles.homeComp}>
@@ -247,7 +256,7 @@ const index = () => {
 
             <View style={styles.userTopDet}>
               <Text style={styles.userTopText}>
-                Hi Sustainability Champion, {userInfo?.fullname}
+                Hi Sustainability Champion , {userInfo?.fullname}
               </Text>
               <Text style={styles.userTopPara}>
                 Let's move closer for greener environment
@@ -291,29 +300,49 @@ const index = () => {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.apntBx}>
-            <View style={styles.apntLeftInfo}>
-              <Image source={require("@/assets/images/user-img.png")} />
-              <View style={styles.userInfo}>
-                <Text style={styles.usertitle}>Kabadi Name</Text>
-                <Text style={styles.userName}>Rajesh Varma</Text>
+          {item?.Franchise?.companyName ? (
+            <View style={styles.apntBx}>
+              <View style={styles.apntLeftInfo}>
+                <Image
+                  style={{
+                    width: 60,
+                    height: 60,
+                    objectFit: "cover",
+                    borderRadius: 50,
+                  }}
+                  source={
+                    item?.KabadCollector?.profileImage
+                      ? { uri: item?.KabadCollector?.profileImage }
+                      : require("../../assets/images/profile-img.png")
+                  }
+                />
+                <View style={styles.userInfo}>
+                  <Text style={styles.usertitle}>
+                    {" "}
+                    {item?.KabadCollector?.fullname || "Worker Assigning..."}
+                  </Text>
+                  <Text style={styles.userName}>
+                    {" "}
+                    {item?.Franchise?.companyName}{" "}
+                  </Text>
+                </View>
               </View>
-            </View>
 
-            <TouchableOpacity
-              onPress={() => router.push("ApntList")}
-              activeOpacity={0.67}
-              style={[styles.viewApntBtn, styles.trackBtn]}
-            >
-              <Ionicons
-                style={styles.reloadIcon}
-                name="reload"
-                size={18}
-                color="#026874"
-              />
-              <Text style={[styles.ViewText, styles.trackText]}>Track</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                onPress={() => router.push("ApntList")}
+                activeOpacity={0.67}
+                style={[styles.viewApntBtn, styles.trackBtn]}
+              >
+                <Ionicons
+                  style={styles.reloadIcon}
+                  name="reload"
+                  size={18}
+                  color="#026874"
+                />
+                <Text style={[styles.ViewText, styles.trackText]}>Track</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
 
           <View style={styles.kabadTypeLists}>
             <FlatList
@@ -751,17 +780,18 @@ const styles = StyleSheet.create({
 
   viewApntBtn: {
     position: "relative",
-    width: 80,
+    width: "auto",
     height: 30,
-    backgroundColor: "#026874",
+    backgroundColor: "transparent",
     borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
   },
 
   ViewText: {
-    fontSize: 13,
-    color: "#fff",
+    fontSize: 14,
+    color: "#026874",
+    fontWeight: "500",
   },
 
   apntTitle: {

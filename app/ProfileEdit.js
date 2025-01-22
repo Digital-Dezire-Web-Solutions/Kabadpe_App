@@ -624,13 +624,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  editprofileTopBx: {
-    position: "relative",
-    width: "100%",
-    height: 96,
-    backgroundColor: "#026874",
-    overflow: "hidden",
-  },
+    editprofileTopBx:{
+        position : 'relative',
+        width : '100%',
+        height : 80,
+        backgroundColor : "#026874",
+        overflow : 'hidden',
+    },
 
   profTopBg: {
     position: "absolute",

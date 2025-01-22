@@ -1,41 +1,21 @@
-import { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  Image,
-  TouchableHighlight,
-  TextInput,
-} from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import Feather from "@expo/vector-icons/Feather";
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import ReactNativeModal from "react-native-modal";
 import { useRouter } from "expo-router";
-import { Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../features/auth/authActions";
-import { FormError } from "../components/FormError";
-export default function App() {
-  const {
-    user,
-    success: { login, signup, verifySignup },
-    errors: {
-      login: errorLogin,
-      signup: errorSignup,
-      verifySignup: errorVerify,
-    },
-  } = useSelector((s) => s.auth);
-  const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Feather from "@expo/vector-icons/Feather";
+
+const KabadiLogin = () => {
+  const [whatsApp, setWhatsApp] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const router = useRouter();
-
   return (
-    <>
-      <SafeAreaProvider style={styles.LoginComp}>
+  <>
+  <SafeAreaProvider>
+    <SafeAreaView style={styles.kabadiPage}>
+    <View style={[styles.LoginComp, styles.KabadiComp]}>
         <View style={styles.loginBx}>
           <View style={styles.loginLogo}>
             <Image
@@ -43,47 +23,27 @@ export default function App() {
               source={require("../assets/images/kabadpe-logo.jpg")}
             />
           </View>
-          <Text style={styles.loginTitle}>Sign In to Kabadpe</Text>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            onSubmit={(values) => {
-              dispatch(userLogin({ ...values, loginType: "user" }));
-              // console.log(values);
-              // router.navigate("Spalsh");
-            }}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
-              <View>
+          <Text style={styles.loginTitle}>Sign In as Kabadi</Text>
+          </View>
+          </View>
+
                 <View style={styles.loginForm}>
                   <View style={styles.InputBx}>
-                    <Text style={styles.label}>Email Address</Text>
+                    <Text style={styles.label}>Whatsapp No.</Text>
                     <View style={styles.input}>
-                      <Feather
+                      <FontAwesome6
                         style={styles.icon}
-                        name="mail"
+                        name="whatsapp"
                         size={15}
                         color="#a6a4a4"
                       />
                       <TextInput
                         style={styles.mainInput}
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values?.email}
-                        placeholder="Enter your email address..."
+                        onChangeText={(text) => setWhatsApp(text)}
+                        value={whatsApp}
+                        placeholder="Enter your whatsapp number..."
                       />
                     </View>
-                    <FormError
-                      error={errors}
-                      touched={touched}
-                      name={"email"}
-                    />
                   </View>
 
                   <View style={styles.InputBx}>
@@ -97,9 +57,8 @@ export default function App() {
                       />
                       <TextInput
                         style={styles.mainInput}
-                        onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
-                        value={values?.password}
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
                         placeholder="Enter your password..."
                         secureTextEntry={showPassword ? true : false}
                       />
@@ -116,15 +75,10 @@ export default function App() {
                         )}
                       </TouchableOpacity>
                     </View>
-                    <FormError
-                      error={errors}
-                      touched={touched}
-                      name={"password"}
-                    />
                   </View>
 
                   <TouchableOpacity
-                    onPress={() => router.navigate("ForogotPassword")}
+                    onPress={() => router.navigate("ForgetPassword")}
                     style={styles.forgotPasswrdBtn}
                     activeOpacity={0.6}
                   >
@@ -133,29 +87,15 @@ export default function App() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <Text
-                  style={{
-                    color: "red",
-                    marginTop: -25,
-                    marginBottom: 10,
-                    textAlign: "center",
-                  }}
-                >
-                  {errorLogin}
-                </Text>
                 <TouchableOpacity
-                  onPress={handleSubmit}
                   // onPress={() => router.navigate("Spalsh")}
                   activeOpacity={0.7}
                   style={styles.signInBtn}
                 >
                   <Text style={styles.formSignText}>Sign In</Text>
                 </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-          <TouchableOpacity
-            onPress={() => router.navigate("CreateAccount")}
+                <TouchableOpacity
+            onPress={() => router.navigate("KabadiCreateAccount")}
             activeOpacity={0.7}
             style={[styles.signInBtn, styles.newAcntBtn]}
           >
@@ -165,37 +105,60 @@ export default function App() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.navigate("KabadiLogin")}
+          onPress={() => router.navigate("/")}
             activeOpacity={0.7}
             style={[styles.signInBtn, styles.vendLoginBtn]}
           >
-            <Text style={styles.formSignText}>Worker Login</Text>
+            <Text style={styles.formSignText}>User Login</Text>
           </TouchableOpacity>
-        </View>
-      </SafeAreaProvider>
 
-      {/* <ReactNativeModal isVisible={true} animationIn={"fadeInUp"} style={{
-      justifyContent : 'flex-end' , margin : 0
-    }}>
-
-      <SafeAreaView style={styles.forgotPasswordModal}>
-
-        <View style={styles.lock_img}>
-          <Image style={styles.lockImg} source={require('@/assets/images/padlock.png')} />
-        </View>
-        
-      </SafeAreaView>
-
-    </ReactNativeModal> */}
-    </>
-  );
+          <View style={styles.workerareabx}>
+            <Text style={styles.workertextcolor}>Worker Area</Text>
+          </View>
+          
+    </SafeAreaView>
+  </SafeAreaProvider>
+  </>
+  )
 }
 
+export default KabadiLogin
+
 const styles = StyleSheet.create({
+  kabadiPage:{
+    position : 'relative',
+    flex : 1,
+    width : '100%',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fafafa",
+    paddingHorizontal: 20,
+
+  },
+
+
   loginForm: {
     position: "relative",
     marginTop: 15,
     marginBottom: 35,
+  },
+
+  workerareabx:{
+    position : 'absolute',
+    top : 0,
+    right : 0,
+    paddingBlock : 4,
+    borderBottomWidth : .65,
+    borderBottomColor : "#0eb0a0",
+    paddingInlineEnd : 8,
+    paddingInlineStart : 8,
+    
+  },
+
+  workertextcolor:{
+    fontSize : 12,
+    color : "#0eb0a0",
   },
 
   forgotPasswrdBtn: {
@@ -218,8 +181,8 @@ const styles = StyleSheet.create({
   },
 
   vendLoginBtn: {
-    backgroundColor: "#0ebdc4",
-    borderColor: "#0ebdc4",
+    backgroundColor: "#0eb0a0",
+    borderColor: "#0eb0a0",
   },
 
   formSignText: {
@@ -288,15 +251,11 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
 
+
   LoginComp: {
     position: "relative",
     width: "100%",
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    backgroundColor: "#fafafa",
+ 
   },
 
   loginBx: {
@@ -329,4 +288,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#224242",
   },
-});
+
+ 
+})

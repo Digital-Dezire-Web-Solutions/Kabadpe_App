@@ -1,5 +1,6 @@
 import {
   Image,
+  ImageBackground,
   Keyboard,
   SafeAreaView,
   ScrollView,
@@ -61,6 +62,10 @@ const CreateAccount = () => {
     <>
       <SafeAreaProvider>
         <ScrollView style={styles.newAcontComp}>
+          <ImageBackground
+            style={styles.formBg}
+            source={require("../assets/images/profileEdit-Bg.png")}
+          ></ImageBackground>
           <SafeAreaView style={styles.newAcontBx}>
             <View style={styles.loginLogo}>
               <Image
@@ -267,7 +272,7 @@ const CreateAccount = () => {
             <View style={styles.otptextBx}>
               <Text style={styles.otptext}>Enter OTP</Text>
               <Text style={styles.sixdigittext}>
-                An 6 digit code has been sent to +91 9971464759
+                An 5 digit code has been sent to your Email
               </Text>
             </View>
 
@@ -317,10 +322,18 @@ const CreateAccount = () => {
 export default CreateAccount;
 
 const styles = StyleSheet.create({
+  formBg: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
   signUpForm: {
     position: "relative",
     width: "100%",
-    marginTop: 30,
+    marginTop: 10,
   },
 
   googleText: {
@@ -368,7 +381,7 @@ const styles = StyleSheet.create({
   signupFormBtns: {
     position: "relative",
     width: "100%",
-    marginTop: 50,
+    marginTop: 10,
   },
 
   formSignText: {
@@ -387,12 +400,12 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 80,
+    paddingTop: 40,
   },
 
   newAcontBx: {
     position: "relative",
-    marginBottom: 150,
+    marginBottom: 80,
   },
 
   signInBtn: {
@@ -650,7 +663,7 @@ const styles = StyleSheet.create({
       position: "relative",
       width: "100%",
       gap: 8,
-      marginTop: 25,
+      marginTop: 20,
     },
 
     forgotpoasswrdText: {

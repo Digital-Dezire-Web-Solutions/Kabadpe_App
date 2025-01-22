@@ -5,14 +5,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Map from "./Components/Map";
 import { useRouter } from "expo-router";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { useDispatch } from "react-redux";
+import { addutilityAction } from "../features/utilitySlice";
 
 const MapScreen = () => {
+  const dispatch = useDispatch();
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const router = useRouter();
 
   const handleBackNavigate = () => {
@@ -44,12 +48,22 @@ const MapScreen = () => {
         </TouchableOpacity>
       </SafeAreaView>
 
-      <Map />
+      <Map
+        onChange={(address) => {
+          setSelectedAddress(address);
+          dispatch(addutilityAction({ name: "initAddress", value: null }));
+          dispatch(addutilityAction({ name: "mapAddress", value: address }));
+        }}
+      />
 
       <View style={styles.bottomAdressBx}>
         <View style={styles.locatMarker}>
           <FontAwesome6 name="location-dot" size={18} color="#fff" />
-          <Text style={styles.locText}>Civil Lines, Jaipur</Text>
+          <Text style={styles.locText}>
+            {selectedAddress
+              ? `${selectedAddress?.street}, ${selectedAddress?.city}, ${selectedAddress?.region}, ${selectedAddress?.postalCode}`
+              : null}
+          </Text>
         </View>
 
         <TouchableOpacity
@@ -138,7 +152,7 @@ const styles = StyleSheet.create({
   editprofileTopBx: {
     position: "relative",
     width: "100%",
-    height: 110,
+    height: 80,
     backgroundColor: "#026874",
     overflow: "hidden",
   },

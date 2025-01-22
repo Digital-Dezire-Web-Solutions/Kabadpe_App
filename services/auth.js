@@ -96,7 +96,7 @@ export const verifysignup = async ({
   const setting = {
     user: {
       path: "/auth/verifySignup",
-      payload: { email, otp, device: "mobile" },
+      payload: { email, otp }, //device: "mobile"
     },
     collector: {
       path: "/_auth/kabadCollector/verifySignup",
