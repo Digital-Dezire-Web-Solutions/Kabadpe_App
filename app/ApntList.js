@@ -12,7 +12,7 @@ const ApntList = () => {
         router.back();
     }
     const ApntData = [
-
+        
         {
             id: 1,
             image: require('@/assets/images/user-img.png'),

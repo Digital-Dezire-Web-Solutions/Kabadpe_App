@@ -8,8 +8,9 @@ import { Calendar } from 'react-native-calendars';
 import ReactNativeModal from 'react-native-modal'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 
-const ApntCard = ({ item , index, bgColor , itemStart}) => {
+const ApntCard = ({ item , index, bgColor , itemStart, apntCancelBtn}) => {
   const {height , width} = Dimensions.get('window');
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -22,6 +23,7 @@ const ApntCard = ({ item , index, bgColor , itemStart}) => {
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split('T')[0];
+  const router  =  useRouter();
 
 
   const companies = [
@@ -253,18 +255,25 @@ const ApntCard = ({ item , index, bgColor , itemStart}) => {
 
       
 
-        <TouchableOpacity  activeOpacity={0.5} onPress={() => setClose(true)} style={[styles.apntResdBtn , styles.apntResdBtn2]}>
-        <Ionicons name="close" size={16} color="#026874" />
-          <Text style={[styles.reshdText , styles.reshdText2 ]}>Cancel</Text>
-        </TouchableOpacity>
 
         {item.locat &&  
-          <TouchableOpacity  activeOpacity={0.5}  style={[styles.apntResdBtn , styles.apntResdBtn4]}>
+          <TouchableOpacity onPress={() => router.navigate("LocateAddress")}  activeOpacity={0.5}  style={[styles.apntResdBtn , styles.apntResdBtn4]}>
         <FontAwesome5 name="map-marker-alt" size={16} color="#026874" />
           </TouchableOpacity>}
+
+          {item.locat &&  
+          <TouchableOpacity  activeOpacity={0.5}  style={[styles.apntResdBtn , styles.apntResdBtn4]}>
+        <FontAwesome5 name="cart-plus" size={16} color="#026874" />
+          </TouchableOpacity>}
+          
+        <TouchableOpacity  activeOpacity={0.5} onPress={apntCancelBtn} style={[styles.apntResdBtn , styles.apntResdBtn4]}>
+        <Ionicons name="close" size={18} color="#026874" />
+        </TouchableOpacity>
         
       </View>
+
       
+             
     </View>
 
 <ReactNativeModal isVisible={isModalVisible} animationIn="fadeInUp" 

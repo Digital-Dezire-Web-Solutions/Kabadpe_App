@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-const Map = () => {
+const Map = ({state}) => {
     const [mapRegion , setMapRegion] = useState({
         latitude: 37.78825, // Default latitude
         longitude: -122.4324, // Default longitude
@@ -43,12 +43,17 @@ const Map = () => {
     </MapView>
     <Button title='Get Location' onPress={userLocation} />
 
-    <View style={styles.addresSerch}>
+   {!state ? <View style={styles.addresSerch}>
     <View style={styles.addressSerchBx}>
     <AntDesign name="search1" size={18} color="#026874" />
         <TextInput style={styles.addrsTextSrch} placeholder='Search Address' placeholderTextColor={"#898f8b"} />
 
     </View>
+    </View> : null}
+
+
+    <View style={styles.addressInfoBx}>
+
     </View>
     
   </SafeAreaProvider>

@@ -83,6 +83,10 @@ export default function StackScreen() {
           options={{ animation: "simple_push" }}
         />
     <Stack.Screen name='Dashboard'  options={{ animation:"fade_from_bottom", title: "Dashboard"}} />
+    <Stack.Screen name='LocateAddress'  options={{ animation:"fade_from_bottom", title: "LocateAddress"}} />
+    <Stack.Screen name='BuyWaste'  options={{ animation:"simple_push", title: "BuyWaste"}} />
+
+
 
            <Slot />
     </Stack>
