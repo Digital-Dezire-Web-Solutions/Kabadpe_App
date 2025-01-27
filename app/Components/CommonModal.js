@@ -46,7 +46,8 @@ const CommonModal = ({cancelApntPopup,setterFunc, state}) => {
                           </ReactNativeModal>}
 
 
-                          {state === 'leaveReqSent' && <ReactNativeModal isVisible={cancelApntPopup} animationIn={"fadeIn"} 
+                          {state === 'leaveReqSent' && 
+                          <ReactNativeModal isVisible={cancelApntPopup} animationIn={"fadeIn"} 
                            onBackButtonPress={() => setterFunc(false)}
                            onBackdropPress={() => setterFunc(false)}
                           >
