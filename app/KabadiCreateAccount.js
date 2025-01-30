@@ -1,4 +1,4 @@
-import { FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -46,6 +46,9 @@ const KabadiCreateAccount = () => {
     return (
         <SafeAreaProvider>
             <ScrollView style={styles.newAcontComp} nestedScrollEnabled={true} >
+                <ImageBackground style={styles.formBg} source={require('../assets/images/recycle.png')}></ImageBackground>
+                
+                          <ImageBackground style={[styles.formBg, styles.formBg2]} source={require('../assets/images/recycle.png')}></ImageBackground>
                 <SafeAreaView style={styles.newAcontBx}>
                     <View style={styles.loginLogo}>
                         <Image
@@ -244,6 +247,23 @@ export default KabadiCreateAccount
 
 const styles = StyleSheet.create({
 
+    formBg:{
+        position : 'absolute',
+        top : '1%',
+        left : '45%',
+        width : '85%',
+        height : '50%',
+        objectFit : 'cover',
+        opacity : 0.03,
+      },
+    
+      formBg2:{
+        top : '80%',
+        left : '-20%',
+        width : '80%',
+        height : '45%',
+
+      },
   
     chekbxCont:{
         position: 'relative',

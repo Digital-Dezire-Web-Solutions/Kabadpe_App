@@ -2,14 +2,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Feather from '@expo/vector-icons/Feather';
 const TabBar = ({ state, descriptors, navigation }) => {
-
+console.log(state.routes , "hijjjjj");
     const icons = {
         index : (props) => <AntDesign name="home" size={18} color="#fff" {...props} />,
         Appointment : (props) => <AntDesign name="calendar" size={18} color="#fff" {...props} />,
         Shop : (props) => <FontAwesome5 name="shopping-basket" size={18} color="#fff" {...props} />,
-        Profile : (props) => <AntDesign name="user" size={18} color="#fff" {...props} />,
-
+        Menu : (props) => <Feather name="menu" size={18} color="#fff" {...props} />,
+      
     }
 
   return (
@@ -58,7 +59,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
           onLongPress={onLongPress}
         >
 
-           { icons[route.name]({
+           { icons[route?.name]({
                 color : isFocused ? "#34E6ED" : "#fff"
             })}
             

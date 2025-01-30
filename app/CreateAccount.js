@@ -24,7 +24,8 @@ import ReactNativeModal from "react-native-modal";
 import OTPInput from "./Components/OTPInput";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
-const CreateAccount = () => {
+import GoogelLogin from "./oauthredirect";
+const CreateAccount = ({ child = "no" }) => {
   const [otp, setOpt] = useState("");
   const [otpModal, setotpModal] = useState(false);
   const [bgColor, setBgColor] = useState("#026874");
@@ -58,6 +59,7 @@ const CreateAccount = () => {
   //   });
   //   // }
   // }, [errorSignup, errorVerify]);
+
   return (
     <>
       <SafeAreaProvider>
@@ -242,10 +244,17 @@ const CreateAccount = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.googleBtn}
+                      onPress={() => {
+                        router.push({
+                          pathname: "oauthredirect",
+                          params: { init: "yes" },
+                        });
+                      }}
                     >
                       <AntDesign name="google" size={18} color="#026874" />
                       <Text style={styles.googleText}> Google </Text>
                     </TouchableOpacity>
+                    {/* <GoogelLogin path="/CreateAccount" /> */}
                   </View>
                 </View>
               )}
@@ -324,12 +333,21 @@ export default CreateAccount;
 const styles = StyleSheet.create({
   formBg: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
+    top: "1%",
+    left: "40%",
+    width: "95%",
+    height: "65%",
     objectFit: "cover",
+    opacity: 0.03,
   },
+
+  formBg2: {
+    top: "70%",
+    left: "-30%",
+    width: "90%",
+    height: "60%",
+  },
+
   signUpForm: {
     position: "relative",
     width: "100%",

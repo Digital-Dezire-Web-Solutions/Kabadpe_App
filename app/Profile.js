@@ -13,7 +13,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import { userAddressesFetch } from "../../services/user";
+import { userAddressesFetch } from "../services/user";
 
 const Profile = () => {
   const router = useRouter();
@@ -31,7 +31,7 @@ const Profile = () => {
       <View style={styles.profileBanner}>
         <ImageBackground
           style={styles.bgImageProfile}
-          source={require("../../assets/images/Mask-group.png")}
+          source={require("../assets/images/Mask-group.png")}
           resizeMode="cover"
         ></ImageBackground>
       </View>
@@ -41,7 +41,7 @@ const Profile = () => {
           source={
             userInfo?.profileImage
               ? { uri: userInfo?.profileImage }
-              : require("../../assets/images/profile-img.png")
+              : require("../assets/images/profile-img.png")
           }
         />
       </View>

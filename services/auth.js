@@ -149,3 +149,10 @@ export const userForgetPassResendOTP = resolvePromise(async (email) => {
   const { data: res } = await axios.put(apiUrl, { email });
   return res?.code;
 });
+
+export const userGoogleLogin = resolvePromise(async ({ app = "", token }) => {
+  const apiUrl =
+    ENV_API_BASE_URL + `/auth/google/${app}/callback?token=${token}`;
+  const { data: res } = await axios.get(apiUrl);
+  return res?.token;
+});

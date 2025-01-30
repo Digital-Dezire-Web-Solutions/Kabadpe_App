@@ -3,9 +3,9 @@ import { getFromLocalStorage } from "../lib/localStorage";
 import { ENV_API_BASE_URL } from "../lib/backend";
 import { resolvePromise } from "@/lib/http";
 import * as FileSystem from "expo-file-system";
-export const getUser = async ({ type = "user" }) => {
+export const getUser = async ({ type = "user", tk}) => {
   const apiUrl = ENV_API_BASE_URL + `/${type}`;
-  const token = await getFromLocalStorage("token");
+  const token = tk || (await getFromLocalStorage("token"));
   const { data: res } = await axios.get(apiUrl, {
     headers: {
       Authorization: token,

@@ -452,11 +452,22 @@ const ApntCard = ({ item, index, refetch }) => {
 export default ApntCard;
 
 const styles = StyleSheet.create({
-  cancelText: {
-    fontSize: 18,
-    color: "#0d0d0d",
-    fontWeight: "500",
-    marginTop: 5,
+
+  locatText:{
+    fontSize : 12,
+    fontWeight : '500',
+    color : "#7C7C7C"
+  },
+
+  aproxText:{
+    color : "#4d4949",
+  },
+
+  cancelText:{
+    fontSize : 18,
+    color : "#0d0d0d",
+    fontWeight : '500',
+    marginTop : 5,
   },
 
   cancelTextBtn: {
@@ -689,24 +700,25 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  apntResdBtn2: {
-    width: "35%",
-    backgroundColor: "transparent",
-    gap: 4,
+  apntResdBtn2:{
+    width : '30%',
+    backgroundColor : 'transparent',
+    gap : 4,
+
   },
 
-  apntBtnsFlex: {
-    position: "relative",
-    marginTop: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 18,
+  apntBtnsFlex:{
+    position : 'relative',
+    marginTop : 16,
+    flexDirection : 'row',
+    justifyContent : 'space-between',
+    alignItems: 'center',
+    paddingHorizontal : 18,
   },
 
-  reshdText: {
-    fontSize: 14,
-    color: "#fff",
+  reshdText:{
+    fontSize : 12.5,
+    color : "#fff",
   },
 
   reshdText2: {
@@ -714,18 +726,28 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  apntResdBtn: {
-    position: "relative",
-    width: "52%",
-    height: 40,
-    backgroundColor: "#026874",
-    borderRadius: 6,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1.5,
-    borderColor: "#026874",
-    gap: 10,
+  apntResdBtn:{
+    position : 'relative',
+    width : '45%',
+    height : 37,
+    backgroundColor : "#026874",
+    borderRadius : 6,
+    flexDirection : 'row',
+    alignItems: 'center',
+    justifyContent : 'center',
+    borderWidth : 1.5,
+    borderColor : "#026874",
+    gap : 10,
+  },
+
+  apntResdBtn4:{
+    width : '15%',
+    backgroundColor : 'transparent',
+  },
+
+  apntResdBtn4:{
+    width : '15%',
+    backgroundColor : 'transparent',
   },
 
   dateCaleBx: {
@@ -737,6 +759,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginTop: 10,
     paddingHorizontal: 18,
+  },
+
+  dateCaleBx2:{
+    marginTop : 6,
+    paddingHorizontal : 0,
+
+  },
+
+  dateCaleBx2:{
+    marginTop : 6,
+    paddingHorizontal : 0,
+
   },
 
   apntDate: {
@@ -799,9 +833,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginHorizontal: "auto",
     // width : 300,
-    backgroundColor: "#eff7cf",
-    borderRadius: 12,
-    paddingVertical: 12,
-    marginBottom: 16,
+    // backgroundColor : "#eff7cf",
+    borderRadius : 12,
+    paddingVertical : 12,
+    marginBottom : 16,
   },
 });

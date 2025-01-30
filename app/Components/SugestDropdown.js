@@ -7,6 +7,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 
@@ -65,8 +66,7 @@ const SugestDropdown = ({
         <TextInput
           ref={inputRef} // Attach the ref to the input
           style={styles.inptBx}
-          //   onFo={handleTouchStart}
-          //   onTouchStart={handleTouchStart}
+          onFocus={handleTouchStart}
           value={value}
           mode="flat"
           underlineColor="transparent"
@@ -77,24 +77,23 @@ const SugestDropdown = ({
         />
 
         {dropdown && (
-          <View ref={dropdownRef} style={styles.sugestionDropdown}>
-            <FlatList
-              scrollEnabled={false}
-              nestedScrollEnabled={true}
-              style={styles.scrollbar}
-              data={filterData}
-              renderItem={({ item }) => (
-                <TouchableOpacity
+          <ScrollView
+            nestedScrollEnabled
+            ref={dropdownRef}
+            style={{ ...styles.sugestionDropdown, ...styles.scrollbar }}
+          >
+            {filterData?.map((item) => {
+              return (
+                <TouchableOpacity key={item}
                   activeOpacity={0.2}
                   style={styles.dropdownItem}
                   onPress={() => handleSelection(item)}
                 >
                   <Text style={styles.itemText}>{item}</Text>
                 </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
+              );
+            })}
+          </ScrollView>
         )}
       </View>
     </TouchableWithoutFeedback>
@@ -118,7 +117,7 @@ const styles = StyleSheet.create({
   },
 
   scrollbar: {
-    height: 200,
+    maxHeight: 200,
   },
 
   itemText: {
