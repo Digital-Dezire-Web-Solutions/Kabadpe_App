@@ -54,6 +54,7 @@ const Map = ({ onChange }) => {
   }, []);
 
   return (
+
     <SafeAreaProvider style={styles.container}>
       <MapView provider={PROVIDER_GOOGLE} style={styles.map} region={mapRegion}>
         <Marker coordinate={mapRegion} title="Marker" />
@@ -77,15 +78,67 @@ const Map = ({ onChange }) => {
 export default Map;
 
 const styles = StyleSheet.create({
-  container: {
-    position: "relative",
-    width: "100%",
-    flex: 1,
+
+  locateBtn:{
+      position : 'absolute',
+      bottom : 20,
+      right : 20,
+      paddingHorizontal : 15,
+      paddingBlock : 5,
+      borderWidth : .76,
+      borderColor : "#eee",
+      borderRadius : 6,
   },
-  map: {
-    width: "100%",
-    height: "100%",
+
+  locateBtnText:{
+    fontSize : 13.4,
+    color : "#f5f5f5",
   },
+
+  addressInfoBx:{
+    position : 'absolute',
+    bottom : 0,
+    left : 0,
+    width : '100%',
+    height : 180,
+    backgroundColor : '#026874',
+    paddingBlock : 20,
+    paddingHorizontal : 20,
+    flexDirection : 'row',
+    alignItems : 'flex-start', 
+    justifyContent : 'flex-start',
+    gap  : 10,
+  },
+
+  locateText :{
+    fontSize : 12,
+    color : "#f5f5f5",
+    paddingBottom : 4,
+    borderBottomWidth : .4,
+    borderBottomColor : "#eee",
+    marginBottom : 6,
+    maxWidth : 270,
+  },
+
+  locateIconBx:{
+    position : 'relative',
+    width : 40,
+    height : 40,
+    backgroundColor : "#C7EAEB",
+    borderRadius : 40,
+    alignItems : 'center',
+    justifyContent: 'center',
+  },
+  
+    container: {
+        position : 'relative',
+        width : '100%',
+        flex: 1,
+      },
+      map: {
+        width: '100%',
+        height: '100%',
+      },
 
   addrsTextSrch: {
     fontSize: 14,
