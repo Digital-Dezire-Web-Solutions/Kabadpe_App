@@ -1,142 +1,178 @@
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import ReactNativeModal from "react-native-modal";
 import { useRouter } from "expo-router";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Feather from "@expo/vector-icons/Feather";
+import { Formik } from "formik";
+import { object, string } from "yup";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../features/auth/authActions";
 
 const KabadiLogin = () => {
   const [whatsApp, setWhatsApp] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const handleSubmit = async (data) => {
+    dispatch(userLogin({ ...data, loginType: "collector" }));
+  };
   return (
-  <>
-  <SafeAreaProvider>
-    <SafeAreaView style={styles.kabadiPage}>
-    <View style={[styles.LoginComp, styles.KabadiComp]}>
-        <View style={styles.loginBx}>
-          <View style={styles.loginLogo}>
-            <Image
-              style={styles.logoImg}
-              source={require("../assets/images/kabadpe-logo.jpg")}
-            />
-          </View>
-          <Text style={styles.loginTitle}>Sign In as Kabadi</Text>
-          </View>
-          </View>
-
-                <View style={styles.loginForm}>
-                  <View style={styles.InputBx}>
-                    <Text style={styles.label}>Whatsapp No.</Text>
-                    <View style={styles.input}>
-                      <FontAwesome6
-                        style={styles.icon}
-                        name="whatsapp"
-                        size={15}
-                        color="#a6a4a4"
-                      />
-                      <TextInput
-                        style={styles.mainInput}
-                        onChangeText={(text) => setWhatsApp(text)}
-                        value={whatsApp}
-                        placeholder="Enter your whatsapp number..."
-                      />
-                    </View>
+    <>
+      <SafeAreaProvider>
+        <Formik
+          initialValues={{
+            password: "",
+            phoneNumber: "",
+          }}
+          validationSchema={object().shape({
+            password: string().required("Password is required"),
+            phoneNumber: string()
+              .required("Phone number is required")
+              .matches(/^\d{10}$/, "Phone number must be exactly 10 digits"),
+          })}
+          onSubmit={handleSubmit}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+          }) => (
+            <SafeAreaView style={styles.kabadiPage}>
+              <View style={[styles.LoginComp, styles.KabadiComp]}>
+                <View style={styles.loginBx}>
+                  <View style={styles.loginLogo}>
+                    <Image
+                      style={styles.logoImg}
+                      source={require("../assets/images/kabadpe-logo.jpg")}
+                    />
                   </View>
-
-                  <View style={styles.InputBx}>
-                    <Text style={styles.label}>Password</Text>
-                    <View style={styles.input}>
-                      <Feather
-                        style={styles.icon}
-                        name="lock"
-                        size={15}
-                        color="#a6a4a4"
-                      />
-                      <TextInput
-                        style={styles.mainInput}
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
-                        placeholder="Enter your password..."
-                        secureTextEntry={showPassword ? true : false}
-                      />
-
-                      <TouchableOpacity
-                        onPress={() => setShowPassword(!showPassword)}
-                        activeOpacity={0.6}
-                        style={styles.passwordtoggleBtn}
-                      >
-                        {showPassword ? (
-                          <Feather name="eye-off" size={20} color="#a6a4a4" />
-                        ) : (
-                          <Feather name="eye" size={20} color="#a6a4a4" />
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-
-                  <TouchableOpacity
-                    onPress={() => router.navigate("ForgetPassword")}
-                    style={styles.forgotPasswrdBtn}
-                    activeOpacity={0.6}
-                  >
-                    <Text style={styles.forgotPasswordText}>
-                      Forgot Password
-                    </Text>
-                  </TouchableOpacity>
+                  <Text style={styles.loginTitle}>Sign In as Kabadi</Text>
                 </View>
+              </View>
+
+              <View style={styles.loginForm}>
+                <View style={styles.InputBx}>
+                  <Text style={styles.label}>Whatsapp No.</Text>
+                  <View style={styles.input}>
+                    <FontAwesome6
+                      style={styles.icon}
+                      name="whatsapp"
+                      size={15}
+                      color="#a6a4a4"
+                    />
+                    <TextInput
+                      style={styles.mainInput}
+                      onChangeText={handleChange("phoneNumber")}
+                      onBlur={handleBlur("phoneNumber")}
+                      value={values?.phoneNumber}
+                      placeholder="Enter your whatsapp number..."
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.InputBx}>
+                  <Text style={styles.label}>Password</Text>
+                  <View style={styles.input}>
+                    <Feather
+                      style={styles.icon}
+                      name="lock"
+                      size={15}
+                      color="#a6a4a4"
+                    />
+                    <TextInput
+                      style={styles.mainInput}
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                      value={values?.password}
+                      placeholder="Enter your password..."
+                      secureTextEntry={showPassword ? true : false}
+                    />
+
+                    <TouchableOpacity
+                      onPress={() => setShowPassword(!showPassword)}
+                      activeOpacity={0.6}
+                      style={styles.passwordtoggleBtn}
+                    >
+                      {showPassword ? (
+                        <Feather name="eye-off" size={20} color="#a6a4a4" />
+                      ) : (
+                        <Feather name="eye" size={20} color="#a6a4a4" />
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
                 <TouchableOpacity
-                  onPress={() => router.navigate('Dashboard')}
-                  activeOpacity={0.7}
-                  style={styles.signInBtn}
+                  onPress={() => router.navigate("ForgetPassword")}
+                  style={styles.forgotPasswrdBtn}
+                  activeOpacity={0.6}
                 >
-                  <Text style={styles.formSignText}>Sign In</Text>
+                  <Text style={styles.forgotPasswordText}>Forgot Password</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-            onPress={() => router.navigate("KabadiCreateAccount")}
-            activeOpacity={0.7}
-            style={[styles.signInBtn, styles.newAcntBtn]}
-          >
-            <Text style={[styles.formSignText, styles.formSignText2]}>
-              Create Account
-            </Text>
-          </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                activeOpacity={0.7}
+                style={styles.signInBtn}
+              >
+                <Text style={styles.formSignText}>Sign In</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => router.navigate("KabadiCreateAccount")}
+                activeOpacity={0.7}
+                style={[styles.signInBtn, styles.newAcntBtn]}
+              >
+                <Text style={[styles.formSignText, styles.formSignText2]}>
+                  Create Account
+                </Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-          onPress={() => router.navigate("/")}
-            activeOpacity={0.7}
-            style={[styles.signInBtn, styles.vendLoginBtn]}
-          >
-            <Text style={styles.formSignText}>User Login</Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => router.navigate("/")}
+                activeOpacity={0.7}
+                style={[styles.signInBtn, styles.vendLoginBtn]}
+              >
+                <Text style={styles.formSignText}>User Login</Text>
+              </TouchableOpacity>
 
-          <View style={styles.workerareabx}>
-            <Text style={styles.workertextcolor}>Worker Area</Text>
-          </View>
-          
-    </SafeAreaView>
-  </SafeAreaProvider>
-  </>
-  )
-}
+              <View style={styles.workerareabx}>
+                <Text style={styles.workertextcolor}>Worker Area</Text>
+              </View>
+            </SafeAreaView>
+          )}
+        </Formik>
+      </SafeAreaProvider>
+    </>
+  );
+};
 
-export default KabadiLogin
+export default KabadiLogin;
 
 const styles = StyleSheet.create({
-  kabadiPage:{
-    position : 'relative',
-    flex : 1,
-    width : '100%',
+  kabadiPage: {
+    position: "relative",
+    flex: 1,
+    width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fafafa",
     paddingHorizontal: 20,
-
   },
-
 
   loginForm: {
     position: "relative",
@@ -144,21 +180,20 @@ const styles = StyleSheet.create({
     marginBottom: 35,
   },
 
-  workerareabx:{
-    position : 'absolute',
-    top : 0,
-    right : 0,
-    paddingBlock : 4,
-    borderBottomWidth : .65,
-    borderBottomColor : "#0eb0a0",
-    paddingInlineEnd : 8,
-    paddingInlineStart : 8,
-    
+  workerareabx: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    paddingBlock: 4,
+    borderBottomWidth: 0.65,
+    borderBottomColor: "#0eb0a0",
+    paddingInlineEnd: 8,
+    paddingInlineStart: 8,
   },
 
-  workertextcolor:{
-    fontSize : 12,
-    color : "#0eb0a0",
+  workertextcolor: {
+    fontSize: 12,
+    color: "#0eb0a0",
   },
 
   forgotPasswrdBtn: {
@@ -251,11 +286,9 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
 
-
   LoginComp: {
     position: "relative",
     width: "100%",
- 
   },
 
   loginBx: {
@@ -288,6 +321,4 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#224242",
   },
-
- 
-})
+});

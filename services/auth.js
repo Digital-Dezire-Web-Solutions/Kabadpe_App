@@ -156,3 +156,11 @@ export const userGoogleLogin = resolvePromise(async ({ app = "", token }) => {
   const { data: res } = await axios.get(apiUrl);
   return res?.token;
 });
+
+export const userValidateKabadPeRefrral = resolvePromise(async (code) => {
+  const apiUrl = ENV_API_BASE_URL + `/kabadCollector/refrral/validate`;
+  const { data: res } = await axios.get(apiUrl, {
+    params: { code },
+  });
+  return res?.franchise;
+});

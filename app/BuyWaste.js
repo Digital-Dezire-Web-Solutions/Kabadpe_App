@@ -241,7 +241,7 @@ const BuyWaste = () => {
                                 <View style={styles.reddot}></View>
                             </TouchableOpacity>
                             <TouchableOpacity activeOpacity={0.2} onPress={() => handleSideMenuDrawer()} style={styles.menuIcon}>
-                                <Image style={{ width: '100%', height: '100%', objectFit: 'cover', }} source={require('../../KabadpeApp/assets/images/menu-2.png')} />
+                                <Image style={{ width: '100%', height: '100%', objectFit: 'cover', }} source={require('..//assets/images/menu-2.png')} />
                                 {/* <Text>Menu</Text> */}
                             </TouchableOpacity>
                         </View>
