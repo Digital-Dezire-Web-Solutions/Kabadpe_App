@@ -84,7 +84,7 @@ const ForogotPassword = () => {
           }) => (
             <View style={styles.forgotpasswordform}>
               <View style={styles.InputBx}>
-                <Text style={styles.label}>Emai Id </Text>
+                <Text style={styles.label}>Email Id </Text>
                 {/* Mobile No. */}
                 <View style={styles.input}>
                   <Feather

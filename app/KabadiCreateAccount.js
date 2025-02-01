@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Keyboard,
   ScrollView,
   StyleSheet,
   Text,
@@ -30,6 +31,7 @@ import { userSignup, userVerifySignup } from "../features/auth/authActions";
 import OTPInput from "./Components/OTPInput";
 import { useDispatch, useSelector } from "react-redux";
 import { userFetch } from "../features/user/userActions";
+import { FormError } from "../components/FormError";
 const KabadiCreateAccount = () => {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
@@ -176,7 +178,13 @@ const KabadiCreateAccount = () => {
                       name="name"
                       placeholder="Enter your name..."
                     />
+                    
                   </View>
+                  <FormError
+                      error={errors}
+                      touched={touched}
+                      name={"fullname"}
+                    />
                 </View>
 
                 <View style={styles.InputBx}>
@@ -201,6 +209,11 @@ const KabadiCreateAccount = () => {
                       placeholder="Enter your whatsapp no..."
                     />
                   </View>
+                  <FormError
+                    error={errors}
+                    touched={touched}
+                    name={"phoneNumber"}
+                  />
                 </View>
 
                 <SugestionInpt
@@ -221,7 +234,7 @@ const KabadiCreateAccount = () => {
                   placeHolderText={"Enter your workarea pincode..."}
                   iconName={"pin"}
                 />
-
+                <FormError error={errors} touched={touched} name={"pincode"} />
                 <SugestionInpt
                   data={arias?.map(({ value }) => value)}
                   onChange={(value) => {
@@ -242,7 +255,7 @@ const KabadiCreateAccount = () => {
                   placeHolderText={"Enter your area..."}
                   iconName={"location-pin"}
                 />
-
+                <FormError error={errors} touched={touched} name={"ariaName"} />
                 <SugestionInpt
                   data={subArias?.map(({ value }) => value)}
                   onChange={handleChange("subAriaName")}
@@ -250,7 +263,11 @@ const KabadiCreateAccount = () => {
                   placeHolderText={"Enter your subarea..."}
                   iconName={"location"}
                 />
-
+                <FormError
+                  error={errors}
+                  touched={touched}
+                  name={"subAriaName"}
+                />
                 <View style={styles.InputBx}>
                   <Text style={styles.label}>
                     Choose Work Type / कार्य का प्रकार चुनें
@@ -310,7 +327,11 @@ const KabadiCreateAccount = () => {
                     />
                   </View>
                 </ReactNativeModal>
-
+                <FormError
+                  error={errors}
+                  touched={touched}
+                  name={"workerRole"}
+                />
                 {values?.workerRole == "kabadi" ? (
                   <View style={styles.InputBx}>
                     <Text style={styles.label}>
@@ -375,6 +396,7 @@ const KabadiCreateAccount = () => {
                       placeholder="Enter your emai id..."
                     />
                   </View>
+                  <FormError error={errors} touched={touched} name={"email"} />
                 </View>
 
                 <View style={styles.InputBx}>
@@ -397,6 +419,11 @@ const KabadiCreateAccount = () => {
                       placeholder="Enter your password..."
                     />
                   </View>
+                  <FormError
+                    error={errors}
+                    touched={touched}
+                    name={"password"}
+                  />
                 </View>
 
                 <View style={styles.InputBx}>
@@ -420,6 +447,11 @@ const KabadiCreateAccount = () => {
                     />
                   </View>
                 </View>
+                <FormError
+                  error={errors}
+                  touched={touched}
+                  name={"emergencyPhone"}
+                />
               </View>
 
               <View style={styles.chekbxCont}>
@@ -439,7 +471,9 @@ const KabadiCreateAccount = () => {
                   पढ़ें और अनुरोध बटन पर क्लिक करने से पहले पुष्टि करें
                 </Text>
               </View>
-
+              <Text style={{ color: "red", textAlign: "center" }}>
+                {errorSignup}
+              </Text>
               <View style={styles.signupFormBtns}>
                 <TouchableOpacity
                   onPress={handleSubmit}
