@@ -30,7 +30,7 @@ export default function StackScreen() {
   useEffect(() => {
     if (userInfo) {
       console.log("its userInfo", userInfo, userInfo?.role);
-      const initPage = { user: "Spalsh", kabadCollector: "Dashboard" };
+      const initPage = { user: "Spalsh", kabadCollector: "Dashboard" }; //kabadCollector: "UnderMaintenace"
       router.navigate(initPage?.[userInfo?.role]);
     }
   }, [userInfo]);

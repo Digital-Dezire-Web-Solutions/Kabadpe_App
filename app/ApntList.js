@@ -108,6 +108,7 @@ const ApntList = () => {
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => (
               <ApntCard
+                bgColor="#eff7cf"
                 refetch={refetch}
                 item={item}
                 index={index}

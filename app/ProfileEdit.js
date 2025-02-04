@@ -127,7 +127,9 @@ const ProfileEdit = () => {
     dispatch(userFetch({}));
     Toast.show({ type: "success", text1: "DONE!", text2: res });
   };
-
+  const areaText = `${aria ? aria : ""} ${subAria ? subAria : ""} ${
+    city ? city : ""
+  } ${zipCode ? zipCode : ""}`;
   return (
     <>
       <SafeAreaView style={styles.editprofileTopBx}>
@@ -332,7 +334,7 @@ const ProfileEdit = () => {
                   <Text style={styles.placeText}>{locationType}</Text>
                 </View>
                 <Text style={styles.addrsText}>
-                  {`${aria}, ${subAria}, ${city}, ${zipCode}`}
+                  {areaText}
                 </Text>
 
                 <FontAwesome

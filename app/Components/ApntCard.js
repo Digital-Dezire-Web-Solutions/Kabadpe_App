@@ -32,7 +32,7 @@ import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { userAddressesFetch } from "@/services/user";
-const ApntCard = ({ item, index, refetch }) => {
+const ApntCard = ({ item, index, refetch, bgColor, itemStart }) => {
   const { height, width } = Dimensions.get("window");
   const [step, setStep] = useState(1);
   const { userInfo } = useSelector((s) => s?.user);
@@ -278,12 +278,17 @@ const ApntCard = ({ item, index, refetch }) => {
   };
   return (
     <>
-      <View style={styles.apntCardBx}>
-        <View style={styles.apntCardToFlex}>
-          <View style={styles.userInfoBx}>
+      <View style={[styles.apntCardBx, { backgroundColor: bgColor }]}>
+        <View style={[styles.apntCardToFlex, { alignItems: itemStart }]}>
+          <View style={[styles.userInfoBx, { alignItems: itemStart }]}>
             <Image
               style={styles.userImg}
-              source={{ uri: item?.KabadCollector?.profileImage }}
+              source={
+                item?.KabadCollector?.profileImage
+                  ? { uri: item?.KabadCollector?.profileImage }
+                  : require("../../assets/images/profile-img.png")
+              }
+              // source={{ uri: item?.KabadCollector?.profileImage }}
             />
             <View style={styles.userDet}>
               <Text style={styles.userNameTitle}>
@@ -452,22 +457,21 @@ const ApntCard = ({ item, index, refetch }) => {
 export default ApntCard;
 
 const styles = StyleSheet.create({
-
-  locatText:{
-    fontSize : 12,
-    fontWeight : '500',
-    color : "#7C7C7C"
+  locatText: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#7C7C7C",
   },
 
-  aproxText:{
-    color : "#4d4949",
+  aproxText: {
+    color: "#4d4949",
   },
 
-  cancelText:{
-    fontSize : 18,
-    color : "#0d0d0d",
-    fontWeight : '500',
-    marginTop : 5,
+  cancelText: {
+    fontSize: 18,
+    color: "#0d0d0d",
+    fontWeight: "500",
+    marginTop: 5,
   },
 
   cancelTextBtn: {
@@ -700,25 +704,24 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  apntResdBtn2:{
-    width : '30%',
-    backgroundColor : 'transparent',
-    gap : 4,
-
+  apntResdBtn2: {
+    width: "30%",
+    backgroundColor: "transparent",
+    gap: 4,
   },
 
-  apntBtnsFlex:{
-    position : 'relative',
-    marginTop : 16,
-    flexDirection : 'row',
-    justifyContent : 'space-between',
-    alignItems: 'center',
-    paddingHorizontal : 18,
+  apntBtnsFlex: {
+    position: "relative",
+    marginTop: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 18,
   },
 
-  reshdText:{
-    fontSize : 12.5,
-    color : "#fff",
+  reshdText: {
+    fontSize: 12.5,
+    color: "#fff",
   },
 
   reshdText2: {
@@ -726,28 +729,23 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  apntResdBtn:{
-    position : 'relative',
-    width : '45%',
-    height : 37,
-    backgroundColor : "#026874",
-    borderRadius : 6,
-    flexDirection : 'row',
-    alignItems: 'center',
-    justifyContent : 'center',
-    borderWidth : 1.5,
-    borderColor : "#026874",
-    gap : 10,
+  apntResdBtn: {
+    position: "relative",
+    width: "45%",
+    height: 37,
+    backgroundColor: "#026874",
+    borderRadius: 6,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1.5,
+    borderColor: "#026874",
+    gap: 10,
   },
 
-  apntResdBtn4:{
-    width : '15%',
-    backgroundColor : 'transparent',
-  },
-
-  apntResdBtn4:{
-    width : '15%',
-    backgroundColor : 'transparent',
+  apntResdBtn4: {
+    width: "15%",
+    backgroundColor: "transparent",
   },
 
   dateCaleBx: {
@@ -761,16 +759,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
 
-  dateCaleBx2:{
-    marginTop : 6,
-    paddingHorizontal : 0,
-
-  },
-
-  dateCaleBx2:{
-    marginTop : 6,
-    paddingHorizontal : 0,
-
+  dateCaleBx2: {
+    marginTop: 6,
+    paddingHorizontal: 0,
   },
 
   apntDate: {
@@ -834,8 +825,8 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
     // width : 300,
     // backgroundColor : "#eff7cf",
-    borderRadius : 12,
-    paddingVertical : 12,
-    marginBottom : 16,
+    borderRadius: 12,
+    paddingVertical: 12,
+    marginBottom: 16,
   },
 });

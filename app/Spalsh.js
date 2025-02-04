@@ -100,7 +100,7 @@ const Splash = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           animation={"fadeInUp"}
           duration={1000}
           delay={600}
@@ -154,18 +154,18 @@ const Splash = () => {
               <Text style={styles.btntext}>Blogging</Text>
             </TouchableHighlight>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
 
       <View style={styles.waletProfFlexBx}>
         <TouchableOpacity
-          onPress={() => router.navigate("WalletScreen")}
+          onPress={() => router.navigate("UnderMaintenace")} //router.navigate("WalletScreen")
           style={styles.WaletProfBtn}
         >
           <Entypo name="wallet" size={20} color="#2ccce3" />
           <View>
             <Text style={styles.waletText}> Wallet </Text>
-            <Text style={styles.waletAmnt}> 2100.00 </Text>
+            <Text style={styles.waletAmnt}> - - </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity

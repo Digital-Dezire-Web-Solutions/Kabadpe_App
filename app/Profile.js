@@ -26,6 +26,9 @@ const Profile = () => {
     queryFn: () => userAddressesFetch({ id: userInfo?.id }),
   });
   const { aria, subAria, zipCode, city, state } = addresses?.[0] || {};
+  const areaText = `${aria ? aria : ""} ${subAria ? subAria : ""} ${
+    city ? city : ""
+  } ${zipCode ? zipCode : ""}`;
   return (
     <SafeAreaView style={styles.profileMain}>
       <View style={styles.profileBanner}>
@@ -76,9 +79,7 @@ const Profile = () => {
 
             <View style={styles.userProfInfoBx}>
               <Text style={styles.labelText}>Address</Text>
-              <Text
-                style={styles.userDetText}
-              >{`${aria}, ${subAria}, ${city}, ${zipCode}`}</Text>
+              <Text style={styles.userDetText}>{areaText}</Text>
             </View>
           </View>
 
