@@ -28,7 +28,6 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(userLogin.pending, (state, { payload }) => {
-      console.log("login is pending with", payload);
       state.loading = {
         ...state.loading,
         login: true,
@@ -45,8 +44,7 @@ const authSlice = createSlice({
     builder.addCase(
       userLogin.fulfilled,
       (state, { payload: { data, payload } }) => {
-        setInLocalStorage("token", data?.token);
-        console.log("login is full with", data, payload);
+        setInLocalStorage("token", data?.token);;
         state.success = {
           ...state.success,
           login: true,
@@ -64,7 +62,6 @@ const authSlice = createSlice({
       }
     );
     builder.addCase(userLogin.rejected, (state, { payload }) => {
-      console.log("login is reject with", payload);
       state.loading = {
         ...state.loading,
         login: false,
@@ -79,7 +76,6 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(userSignup.pending, (state, { payload }) => {
-      console.log("running this pending");
       state.loading = { ...state.loading, signup: true };
       state.errors = {
         ...state.errors,
@@ -91,7 +87,6 @@ const authSlice = createSlice({
     builder.addCase(
       userSignup.fulfilled,
       (state, { payload: { payload, data } }) => {
-        console.log("running this full", payload, data);
         state.loading = { ...state.loading, signup: false };
         state.success = { ...state.loading, signup: true };
         state.errors = {
@@ -105,7 +100,6 @@ const authSlice = createSlice({
       }
     );
     builder.addCase(userSignup.rejected, (state, { payload }) => {
-      console.log("running this rejected", payload);
       state.loading = { ...state.loading, signup: false };
       state.errors = {
         ...state.errors,

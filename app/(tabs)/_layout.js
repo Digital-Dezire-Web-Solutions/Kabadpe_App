@@ -23,12 +23,12 @@ const _layout = () => {
         }}
       />
 
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="Shop"
         options={{
           title: "Shop",
         }}
-      />
+      /> */}
 
       <Tabs.Screen
         name="Menu"

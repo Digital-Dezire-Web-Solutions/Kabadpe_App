@@ -24,7 +24,8 @@ import ReactNativeModal from "react-native-modal";
 import OTPInput from "./Components/OTPInput";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
-const CreateAccount = () => {
+import GoogelLogin from "./oauthredirect";
+const CreateAccount = ({ child = "no" }) => {
   const [otp, setOpt] = useState("");
   const [otpModal, setotpModal] = useState(false);
   const [bgColor, setBgColor] = useState("#026874");
@@ -42,14 +43,6 @@ const CreateAccount = () => {
   const handleSubmit = (values) => {
     dispatch(userSignup(values));
   };
-  console.log(
-    "this is auth state",
-    otpModal,
-    login,
-    signup,
-    verifySignup,
-    user
-  );
   useEffect(() => {
     if (login || verifySignup) {
       router.navigate("Spalsh");
@@ -66,14 +59,15 @@ const CreateAccount = () => {
   //   });
   //   // }
   // }, [errorSignup, errorVerify]);
+
   return (
     <>
       <SafeAreaProvider>
         <ScrollView style={styles.newAcontComp}>
-          <ImageBackground style={styles.formBg} source={require('../assets/images/recycle.png')}></ImageBackground>
-
-          <ImageBackground style={[styles.formBg, styles.formBg2]} source={require('../assets/images/recycle.png')}></ImageBackground>
-          
+          <ImageBackground
+            style={styles.formBg}
+            source={require("../assets/images/profileEdit-Bg.png")}
+          ></ImageBackground>
           <SafeAreaView style={styles.newAcontBx}>
             <View style={styles.loginLogo}>
               <Image
@@ -250,10 +244,17 @@ const CreateAccount = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.googleBtn}
+                      onPress={() => {
+                        router.push({
+                          pathname: "oauthredirect",
+                          params: { init: "yes" },
+                        });
+                      }}
                     >
                       <AntDesign name="google" size={18} color="#026874" />
                       <Text style={styles.googleText}> Google </Text>
                     </TouchableOpacity>
+                    {/* <GoogelLogin path="/CreateAccount" /> */}
                   </View>
                 </View>
               )}
@@ -280,7 +281,7 @@ const CreateAccount = () => {
             <View style={styles.otptextBx}>
               <Text style={styles.otptext}>Enter OTP</Text>
               <Text style={styles.sixdigittext}>
-                An 6 digit code has been sent to +91 9971464759
+                An 5 digit code has been sent to your Email
               </Text>
             </View>
 
@@ -330,24 +331,23 @@ const CreateAccount = () => {
 export default CreateAccount;
 
 const styles = StyleSheet.create({
-
-  formBg:{
-    position : 'absolute',
-    top : '1%',
-    left : '40%',
-    width : '95%',
-    height : '65%',
-    objectFit : 'cover',
-    opacity : 0.03,
+  formBg: {
+    position: "absolute",
+    top: "1%",
+    left: "40%",
+    width: "95%",
+    height: "65%",
+    objectFit: "cover",
+    opacity: 0.03,
   },
 
-  formBg2:{
-    top : '70%',
-    left : '-30%',
-    width : '90%',
-    height : '60%',
+  formBg2: {
+    top: "70%",
+    left: "-30%",
+    width: "90%",
+    height: "60%",
   },
-  
+
   signUpForm: {
     position: "relative",
     width: "100%",

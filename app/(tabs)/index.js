@@ -1,228 +1,224 @@
-import { Dimensions, FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React from "react";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import ApntCard from '../Components/ApntCard'
-import KabadTypeBx from '../Components/KabadTypeBx';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import BigimpBx from '../Components/BigimpBx';
-import ProdCard from '../Components/ProdCard';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import ApntCard from "../Components/ApntCard";
+import KabadTypeBx from "../Components/KabadTypeBx";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import BigimpBx from "../Components/BigimpBx";
+import ProdCard from "../Components/ProdCard";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useRouter } from "expo-router";
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { userAppoinmentsFetch } from "../../services/appoinment";
 // import * as Animatable from 'react-native-animatable';
 
 const index = () => {
-  const { height, width } = Dimensions.get('window');
-  const router =  useRouter();
- 
-
-  
- 
+  const { height, width } = Dimensions.get("window");
+  const { userInfo } = useSelector((s) => s?.user);
+  const router = useRouter();
 
   const kabadListData = [
-
     {
       id: 1,
-      img: require('@/assets/images/kabad-type-w.png'),
-      title: 'Paper',
+      img: require("@/assets/images/kabad-type-w.png"),
+      title: "Paper",
       bgColor: "#cdce5a",
     },
 
     {
       id: 2,
-      img: require('@/assets/images/kabad-type-w-2.png'),
-      title: 'Plastic',
+      img: require("@/assets/images/kabad-type-w-2.png"),
+      title: "Plastic",
       bgColor: "#73c395",
     },
 
     {
       id: 3,
-      img: require('@/assets/images/kabad-type-w-3.png'),
-      title: 'Clothes',
+      img: require("@/assets/images/kabad-type-w-3.png"),
+      title: "Clothes",
       bgColor: "#9dbc6e",
-
     },
 
     {
       id: 4,
-      img: require('@/assets/images/kabad-type-w-4.png'),
-      title: 'Vehicle',
+      img: require("@/assets/images/kabad-type-w-4.png"),
+      title: "Vehicle",
       bgColor: "#6abac1",
-
     },
 
     {
       id: 5,
-      img: require('@/assets/images/kabad-type-w-5.png'),
-      title: 'Others',
+      img: require("@/assets/images/kabad-type-w-5.png"),
+      title: "Others",
       bgColor: "#73c395",
-
     },
 
     {
       id: 6,
-      img: require('@/assets/images/kabad-type-w-6.png'),
-      title: 'Wood',
+      img: require("@/assets/images/kabad-type-w-6.png"),
+      title: "Wood",
       bgColor: "#daa99e",
-
     },
 
     {
       id: 7,
-      img: require('@/assets/images/kabad-type-w-7.png'),
-      title: 'Glass',
+      img: require("@/assets/images/kabad-type-w-7.png"),
+      title: "Glass",
       bgColor: "#48bbc1",
-
     },
 
     {
       id: 8,
-      img: require('@/assets/images/kabad-type-w-8.png'),
-      title: 'Metal',
+      img: require("@/assets/images/kabad-type-w-8.png"),
+      title: "Metal",
       bgColor: "#9fdab8",
-
     },
 
     {
       id: 9,
-      img: require('@/assets/images/kabad-type-w-9.png'),
-      title: 'E-waste',
+      img: require("@/assets/images/kabad-type-w-9.png"),
+      title: "E-waste",
       bgColor: "#9dbc6e",
-
     },
-
-
-  ]
+  ];
 
   const ImpData = [
-
     {
       id: 1,
-      icon: require('@/assets/images/img-1.png'),
-      textOne: '200',
+      icon: require("@/assets/images/img-1.png"),
+      textOne: "200",
       kgText: "kg",
-      text: 'plastic we saved',
+      text: "plastic we saved",
     },
 
     {
       id: 2,
-      icon: require('@/assets/images/img-2.png'),
-      textOne: '40',
-      text: 'tree planted',
+      icon: require("@/assets/images/img-2.png"),
+      textOne: "40",
+      text: "tree planted",
     },
-
 
     {
       id: 3,
-      icon: require('@/assets/images/img-3.png'),
-      textOne: '1200',
+      icon: require("@/assets/images/img-3.png"),
+      textOne: "1200",
       kgText: "kg",
-      text: 'CO offset',
+      text: "CO offset",
     },
-
 
     {
       id: 4,
-      icon: require('@/assets/images/img-4.png'),
-      textOne: '469',
+      icon: require("@/assets/images/img-4.png"),
+      textOne: "469",
       kgText: "kg",
-      text: 'plastic recycled',
+      text: "plastic recycled",
     },
 
     {
       id: 5,
-      icon: require('@/assets/images/img-5.png'),
-      textOne: '330',
-      text: 'aware climate',
+      icon: require("@/assets/images/img-5.png"),
+      textOne: "330",
+      text: "aware climate",
     },
-
 
     {
       id: 6,
-      icon: require('@/assets/images/img-6.png'),
-      textOne: '13.8',
+      icon: require("@/assets/images/img-6.png"),
+      textOne: "13.8",
       crText: "cr.",
-      text: 'litres water saved',
+      text: "litres water saved",
     },
-
 
     {
       id: 7,
-      icon: require('@/assets/images/img-7.png'),
-      textOne: '5.65',
+      icon: require("@/assets/images/img-7.png"),
+      textOne: "5.65",
       kwhText: "kwh",
-      text: 'plastic recycled',
+      text: "plastic recycled",
     },
-
 
     {
       id: 8,
-      icon: require('@/assets/images/img-8.png'),
-      textOne: '469',
+      icon: require("@/assets/images/img-8.png"),
+      textOne: "469",
       thText: "th.",
-      text: 'plastic recycled',
+      text: "plastic recycled",
     },
-
-  ]
+  ];
 
   const shopProData = [
-
     {
-      id : 1,
-      prodImg : require('@/assets/images/prod-img-1.png'),
-      prodName : 'Hand Sanitizer',
-      prodPrice : 200.00,
-      oldPrice : '30.00',
-      rating : '4.0',
+      id: 1,
+      prodImg: require("@/assets/images/prod-img-1.png"),
+      prodName: "Hand Sanitizer",
+      prodPrice: 200.0,
+      oldPrice: "30.00",
+      rating: "4.0",
     },
 
     {
-      id : 2,
-      prodImg : require('@/assets/images/prod-img-2.png'),
-      prodName : 'Virgin Olive Oil',
-      prodPrice : 200.00,
-      oldPrice : '30.00',
-      rating : '4.5',
+      id: 2,
+      prodImg: require("@/assets/images/prod-img-2.png"),
+      prodName: "Virgin Olive Oil",
+      prodPrice: 200.0,
+      oldPrice: "30.00",
+      rating: "4.5",
     },
-
 
     {
-      id : 3,
-      prodImg : require('@/assets/images/prod-img-3.png'),
-      prodName : 'Olive Oil',
-      prodPrice : 180.00,
-      oldPrice : '50.00',
-      rating : '4.2',
+      id: 3,
+      prodImg: require("@/assets/images/prod-img-3.png"),
+      prodName: "Olive Oil",
+      prodPrice: 180.0,
+      oldPrice: "50.00",
+      rating: "4.2",
     },
-
 
     {
-      id : 4,
-      prodImg : require('@/assets/images/prod-img-4.png'),
-      prodName : 'Tomato Ketchup',
-      prodPrice : 140.00,
-      oldPrice : '60.00',
-      rating : '3.6',
+      id: 4,
+      prodImg: require("@/assets/images/prod-img-4.png"),
+      prodName: "Tomato Ketchup",
+      prodPrice: 140.0,
+      oldPrice: "60.00",
+      rating: "3.6",
     },
-    
-    
-  ]
-  
+  ];
+  const { data: appoinments, refetch } = useQuery({
+    queryKey: ["userAppoinments:1"],
+    queryFn: () => userAppoinmentsFetch(),
+  });
+  const item =
+    (!appoinments?.error ? appoinments : [])?.sort(
+      (a, b) => new Date(b?.updatedOn) - new Date(a?.updatedOn)
+    )?.[0] || {};
   return (
-
     <SafeAreaProvider>
       <ScrollView style={styles.homeComp}>
-        <ImageBackground source={require('@/assets/images/kabadpe-bg.png')} resizeMode="cover"
-          style={styles.bgImage}>
+        <ImageBackground
+          source={require("@/assets/images/kabadpe-bg.png")}
+          resizeMode="cover"
+          style={styles.bgImage}
+        >
           <View style={styles.topHomeFlex}>
-
-
-            <Text style={styles.kabadText}>
-              Kabadpe
-            </Text>
+            <Text style={styles.kabadText}>Kabadpe</Text>
 
             <View style={styles.rightHeaderIcons}>
               <TouchableOpacity>
@@ -239,75 +235,114 @@ const index = () => {
                 <View style={styles.reddot}></View>
               </TouchableOpacity>
             </View>
-
           </View>
         </ImageBackground>
 
         <SafeAreaView style={styles.actAppntMain}>
-
           <View style={styles.userInfoTopBx}>
-          <View style={styles.userInfoImg}>
-            <Image style={styles.userImgTop} source={require('@/assets/images/profile-img.png')} />
-          </View>
+            <View style={styles.userInfoImg}>
+              <Image
+                onError={(e) => {
+                  // console.log("onerror happned");
+                }}
+                style={styles.userImgTop}
+                source={
+                  userInfo?.profileImage
+                    ? { uri: userInfo?.profileImage }
+                    : require("../../assets/images/profile-img.png")
+                }
+              />
+            </View>
 
-          <View style={styles.userTopDet}>
-            <Text style={styles.userTopText}>Hi Sustainability Champion, Sunil Sharma</Text>
-            <Text style={styles.userTopPara}>Let's move closer for greener environment</Text>
-          </View>
-          
+            <View style={styles.userTopDet}>
+              <Text style={styles.userTopText}>
+                Hi Sustainability Champion , {userInfo?.fullname}
+              </Text>
+              <Text style={styles.userTopPara}>
+                Let's move closer for greener environment
+              </Text>
+            </View>
           </View>
 
           <View style={styles.bigImpComp}>
-          <View style={styles.headingBx}>
-            <Image style={styles.leafImg} source={require('@/assets/images/leaf-left.png')} />
-            <Text style={styles.headingText}>Your Impact</Text>
-            <Image style={styles.leafImg} source={require('@/assets/images/leaf-right.png')} />
-
-          </View>
-
-          <View style={styles.bigImpList}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={ImpData}
-              renderItem={({ item }) => <BigimpBx impData={item} />}
-              keyExtractor={item => item.id}
-            />
-          </View>
-
-
-        </View>
-      
-          <View  style={styles.actApntFlexBx}>
-            <Text style={styles.apntTitle}>
-               Appointments
-            </Text>
-
-            <TouchableOpacity onPress={() => router.push("ApntList")} activeOpacity={0.67} style={styles.viewApntBtn}>
-              <Text style={styles.ViewText}>View All</Text>
-            </TouchableOpacity>
-
-          </View>
-
-       
-
-          <View style={styles.apntBx}>
-            <View style={styles.apntLeftInfo}>
-              <Image source={require('@/assets/images/user-img.png')} />
-              <View style={styles.userInfo}>
-                <Text style={styles.usertitle}>Kabadi Name</Text>
-                <Text style={styles.userName}>Rajesh Varma</Text>
-              </View>
+            <View style={styles.headingBx}>
+              <Image
+                style={styles.leafImg}
+                source={require("@/assets/images/leaf-left.png")}
+              />
+              <Text style={styles.headingText}>Your Impact</Text>
+              <Image
+                style={styles.leafImg}
+                source={require("@/assets/images/leaf-right.png")}
+              />
             </View>
 
-            <TouchableOpacity onPress={() => router.push("ApntList")} activeOpacity={0.67} style={[styles.viewApntBtn, styles.trackBtn]}>
-            <Ionicons style={styles.reloadIcon} name="reload" size={18} color="#026874" />
-              <Text style={[styles.ViewText, styles.trackText]}>
-                Track</Text>
-            </TouchableOpacity>
-            
+            <View style={styles.bigImpList}>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={ImpData}
+                renderItem={({ item }) => <BigimpBx impData={item} />}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
           </View>
-          
+
+          <View style={styles.actApntFlexBx}>
+            <Text style={styles.apntTitle}>Appointments</Text>
+
+            <TouchableOpacity
+              onPress={() => router.push("ApntList")}
+              activeOpacity={0.67}
+              style={styles.viewApntBtn}
+            >
+              <Text style={styles.ViewText}>View All</Text>
+            </TouchableOpacity>
+          </View>
+
+          {item?.Franchise?.companyName ? (
+            <View style={styles.apntBx}>
+              <View style={styles.apntLeftInfo}>
+                <Image
+                  style={{
+                    width: 60,
+                    height: 60,
+                    objectFit: "cover",
+                    borderRadius: 50,
+                  }}
+                  source={
+                    item?.KabadCollector?.profileImage
+                      ? { uri: item?.KabadCollector?.profileImage }
+                      : require("../../assets/images/profile-img.png")
+                  }
+                />
+                <View style={styles.userInfo}>
+                  <Text style={styles.usertitle}>
+                    {" "}
+                    {item?.KabadCollector?.fullname || "Worker Assigning..."}
+                  </Text>
+                  <Text style={styles.userName}>
+                    {" "}
+                    {item?.Franchise?.companyName}{" "}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => router.push("ApntList")}
+                activeOpacity={0.67}
+                style={[styles.viewApntBtn, styles.trackBtn]}
+              >
+                <Ionicons
+                  style={styles.reloadIcon}
+                  name="reload"
+                  size={18}
+                  color="#026874"
+                />
+                <Text style={[styles.ViewText, styles.trackText]}>Track</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
 
           <View style={styles.kabadTypeLists}>
             <FlatList
@@ -315,7 +350,7 @@ const index = () => {
               showsHorizontalScrollIndicator={false}
               data={kabadListData}
               renderItem={({ item }) => <KabadTypeBx kabadItem={item} />}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item.id}
             />
           </View>
 
@@ -350,27 +385,20 @@ const index = () => {
           </View> */}
 
           <View style={[styles.actApntFlexBx, styles.actApntFlexBx2]}>
-            <Text style={styles.apntTitle}>
-              Your Offers
-            </Text>
+            <Text style={styles.apntTitle}>Your Offers</Text>
 
             <TouchableOpacity activeOpacity={0.67} style={styles.viewApntBtn}>
               <Text style={styles.ViewText}> All Offers</Text>
             </TouchableOpacity>
-
           </View>
 
           <View style={[styles.adervBgBx, styles.offerBgBx]}>
-
-            <Image style={styles.adervBgImg} source={require('@/assets/images/offer-bg.png')}
+            <Image
+              style={styles.adervBgImg}
+              source={require("@/assets/images/offer-bg.png")}
             />
-
           </View>
-
         </SafeAreaView>
-
-       
-
 
         {/* <View style={styles.regCalendarMain}>
 
@@ -428,189 +456,181 @@ const index = () => {
 
           
         </View> */}
-        
       </ScrollView>
     </SafeAreaProvider>
+  );
+};
 
-  )
-}
-
-export default index
+export default index;
 
 const styles = StyleSheet.create({
-
-  apntBx:{
-    position : 'relative',
-    width : '90%',
-    marginHorizontal : 'auto',
-    paddingHorizontal : 20,
-    marginTop : 20,
-    alignItems : 'center',
-    justifyContent : 'space-between',
-    flexDirection : 'row',
-    backgroundColor : "#ffe2dd",
-    paddingBlock : 16,
-    borderRadius : 20,
+  apntBx: {
+    position: "relative",
+    width: "90%",
+    marginHorizontal: "auto",
+    paddingHorizontal: 20,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    backgroundColor: "#ffe2dd",
+    paddingBlock: 16,
+    borderRadius: 20,
   },
 
-  usertitle:{
-    fontSize : 12,
-    marginBlock : 3,
-    color : "#7c7c7c",
+  usertitle: {
+    fontSize: 12,
+    marginBlock: 3,
+    color: "#7c7c7c",
   },
 
-  userName : {
-    fontSize : 16,
-    fontWeight : '600',
-    color : "#026874",
+  userName: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#026874",
   },
 
-  trackBtn :{
-    gap : 4,
-    flexDirection : 'row',
-    backgroundColor : 'transparent',
+  trackBtn: {
+    gap: 4,
+    flexDirection: "row",
+    backgroundColor: "transparent",
   },
 
-  trackText:{
-    fontSize : 15,
-    color : "#026874",
-    fontWeight : '600',
+  trackText: {
+    fontSize: 15,
+    color: "#026874",
+    fontWeight: "600",
   },
 
-  apntLeftInfo:{
-    flexDirection : 'row',
-    alignItems : 'center',
-    justifyContent : 'flex-start',
-    gap : 15,
+  apntLeftInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    gap: 15,
   },
 
-  userInfoTopBx:{
-    position : 'relative',
-    width : '100%',
-    flexDirection :'row',
-    gap : 20,
-    alignItems:'center',
-    justifyContent:'center',
-    textAlign : 'center',
-    marginBottom : 5,
-    marginTop : 30,
-    paddingHorizontal : 20,
+  userInfoTopBx: {
+    position: "relative",
+    width: "100%",
+    flexDirection: "row",
+    gap: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    marginBottom: 5,
+    marginTop: 30,
+    paddingHorizontal: 20,
   },
 
-
-
-  userInfoImg :{
-    position : 'relative',
-    width : 80,
-    height : 80,
+  userInfoImg: {
+    position: "relative",
+    width: 80,
+    height: 80,
   },
 
-
-  userImgTop : {
-    width : '100%',
-    height : '100%',
-    objectFit : 'cover',
+  userImgTop: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    borderRadius: 50,
   },
 
-  userTopDet :{
-    position : 'relative',
-    maxWidth : '72%',
+  userTopDet: {
+    position: "relative",
+    maxWidth: "72%",
   },
 
-  userTopText :{
-    fontSize : 16,
-    fontWeight : '700',
-    color : '#026874',
-    textAlign : 'center',
-    lineHeight : 22,
-    marginBottom : 6,
+  userTopText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#026874",
+    textAlign: "center",
+    lineHeight: 22,
+    marginBottom: 6,
   },
 
-  userTopPara :{
-    fontSize : 12,
-    color : "#7c7c7c",
-    fontWeight :'400',
+  userTopPara: {
+    fontSize: 12,
+    color: "#7c7c7c",
+    fontWeight: "400",
   },
-  
-  shopCardFlex:{
-    position : 'relative',
-    width : '100%',
-    flex : 1,
-    marginTop : 20,
-    paddingBottom : 80,
+
+  shopCardFlex: {
+    position: "relative",
+    width: "100%",
+    flex: 1,
+    marginTop: 20,
+    paddingBottom: 80,
   },
 
   columnWrapper: {
-    justifyContent: 'space-between', // Ensures spacing between columns
+    justifyContent: "space-between", // Ensures spacing between columns
     marginBottom: 12, // Add spacing between rows
   },
   listContent: {
-    paddingLeft : 12,
-    paddingRight : 18,
+    paddingLeft: 12,
+    paddingRight: 18,
   },
 
-  calendImg:{
-    width : 110,
-    height : 74,
-    objectFit : 'cover',
+  calendImg: {
+    width: 110,
+    height: 74,
+    objectFit: "cover",
   },
 
-  calendText:{
-    fontSize : 17,
-    fontWeight : '600',
-    maxWidth : wp('60%'),
-    lineHeight : 22,
+  calendText: {
+    fontSize: 17,
+    fontWeight: "600",
+    maxWidth: wp("60%"),
+    lineHeight: 22,
     marginBottom: 20,
   },
 
-  BussText:{
-    fontSize : 14,
-    fontWeight : '500',
-    color : "#fff",
+  BussText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#fff",
   },
 
-  regBusBtn:{
-    position : 'relative',
-    width : wp('45%'),
-    height : 40,
-    backgroundColor : "#03989E",
-    borderRadius : 5,
-    alignItems: 'center',
-    justifyContent : 'center',
+  regBusBtn: {
+    position: "relative",
+    width: wp("45%"),
+    height: 40,
+    backgroundColor: "#03989E",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
-  regCalendBx:{
-    position : 'relative',
-    width : '100%',
-    marginTop : 20,
-    backgroundColor : '#EFF7CF',
-    borderRadius : 8,
-    paddingVertical : 18,
-    paddingHorizontal : 16,
-    flexDirection : 'row',
-    alignItems: 'center',
-    justifyContent : 'space-between',
-
+  regCalendBx: {
+    position: "relative",
+    width: "100%",
+    marginTop: 20,
+    backgroundColor: "#EFF7CF",
+    borderRadius: 8,
+    paddingVertical: 18,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
-  leftcalendinfo:{
-    position : 'relative',
-    width : 'auto',
+  leftcalendinfo: {
+    position: "relative",
+    width: "auto",
   },
 
   regCalendarMain: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
     // marginTop: -8,
-    paddingLeft : 14,
-    paddingRight : 16,
-
-
+    paddingLeft: 14,
+    paddingRight: 16,
   },
 
   bigImpList: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
     paddingLeft: 18,
     paddingRight: 6,
   },
@@ -622,8 +642,8 @@ const styles = StyleSheet.create({
   },
 
   bigImpComp: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
   },
 
   leafImg: {
@@ -633,19 +653,17 @@ const styles = StyleSheet.create({
   },
 
   headingBx: {
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     gap: 6,
     marginBottom: 20,
     paddingHorizontal: 18,
-
-
   },
 
   offerBgBx: {
-    position: 'relative',
+    position: "relative",
     height: 190,
     paddingLeft: 14,
     paddingRight: 18,
@@ -654,14 +672,14 @@ const styles = StyleSheet.create({
   },
 
   checkTodInfo: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 14,
     zIndex: 10,
   },
@@ -672,13 +690,13 @@ const styles = StyleSheet.create({
 
   bookApntText: {
     fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center',
+    fontWeight: "500",
+    textAlign: "center",
     color: "#fff",
   },
 
   bookApntBtn: {
-    position: 'relative',
+    position: "relative",
     width: 160,
     paddingVertical: 10,
     backgroundColor: "#03989E",
@@ -688,83 +706,77 @@ const styles = StyleSheet.create({
   checkTodText: {
     fontSize: 20,
     color: "#fff",
-    fontWeight: '500',
+    fontWeight: "500",
   },
 
   adervBgBx: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
     height: 150,
     marginTop: 10,
     zIndex: 10,
-
   },
 
   overlayImg: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     backgroundColor: "#0d0d0d",
     opacity: 0.5,
     borderRadius: 16,
     zIndex: 1,
-
   },
 
   adervBgImg: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
     borderRadius: 16,
-
-
   },
 
   checkRateText: {
     fontSize: 15,
     color: "#57BC24",
-    fontWeight: '500',
+    fontWeight: "500",
   },
 
   arowBorder: {
-    position: 'relative',
+    position: "relative",
     width: 20,
     height: 20,
     borderWidth: 1,
     borderRadius: 20,
     borderColor: "#57BC24",
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   checkTodTextBx: {
-    position: 'relative',
-    marginLeft: 'auto',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "relative",
+    marginLeft: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 5,
   },
 
   checkRateMain: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
     marginTop: 30,
     paddingLeft: 14,
     paddingRight: 18,
   },
 
   kabadTypeLists: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
     marginTop: 20,
     paddingLeft: 18,
     paddingRight: 4,
   },
-
-
 
   viewApntBtn: {
     position: 'relative',
@@ -774,9 +786,8 @@ const styles = StyleSheet.create({
     // borderWidth : .76,
     borderColor : "#026874",
     borderRadius: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   ViewText: {
@@ -792,51 +803,48 @@ const styles = StyleSheet.create({
   },
 
   actAppntMain: {
-    position: 'relative',
-    width: '100%',
-
+    position: "relative",
+    width: "100%",
   },
 
   actApntFlexBx: {
-    position: 'relative',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    position: "relative",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
     paddingHorizontal: 18,
-
   },
 
   kabadText: {
     fontSize: 20,
     color: "#fff",
-    fontWeight: '600',
-    letterSpacing: .67,
+    fontWeight: "600",
+    letterSpacing: 0.67,
   },
 
   homeComp: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
     flex: 1,
     backgroundColor: "#fff",
   },
 
   topHomeFlex: {
-    position: 'relative',
+    position: "relative",
     top: 12,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 18,
-
   },
 
   bgImage: {
-    width: '100%',
-    height: hp('13%'),
+    width: "100%",
+    height: hp("13%"),
     // height : 130
   },
 
@@ -870,6 +878,4 @@ const styles = StyleSheet.create({
   bellBtn: {
     position: "relative",
   },
-
-
-})
+});

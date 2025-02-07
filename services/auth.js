@@ -96,7 +96,7 @@ export const verifysignup = async ({
   const setting = {
     user: {
       path: "/auth/verifySignup",
-      payload: { email, otp, device: "mobile" },
+      payload: { email, otp }, //device: "mobile"
     },
     collector: {
       path: "/_auth/kabadCollector/verifySignup",
@@ -148,4 +148,67 @@ export const userForgetPassResendOTP = resolvePromise(async (email) => {
   const apiUrl = ENV_API_BASE_URL + "/auth/forgetpass/resendOTP";
   const { data: res } = await axios.put(apiUrl, { email });
   return res?.code;
+});
+
+export const userGoogleLogin = resolvePromise(async ({ app = "", token }) => {
+  const apiUrl =
+    ENV_API_BASE_URL + `/auth/google/${app}/callback?token=${token}`;
+  const { data: res } = await axios.get(apiUrl);
+  return res?.token;
+});
+
+export const userValidateKabadPeRefrral = resolvePromise(async (code) => {
+  const apiUrl = ENV_API_BASE_URL + `/kabadCollector/refrral/validate`;
+  const { data: res } = await axios.get(apiUrl, {
+    params: { code },
+  });
+  return res?.franchise;
+});
+
+
+
+// worker pssword
+
+export const workerForgetPassRequestOTP = resolvePromise(
+  async (phoneNumber) => {
+    const apiUrl =
+      ENV_API_BASE_URL + "/_auth/kabadCollector/forgetpass/request/otp";
+    const { data: res } = await axios.put(apiUrl, { phoneNumber });
+    return res?.code;
+  }
+);
+
+export const workerForgetPassRequestReset = resolvePromise(
+  async ({ code, otp }) => {
+    const apiUrl =
+      ENV_API_BASE_URL + "/_auth/kabadCollector/forgetpass/request/reset";
+    const { data: res } = await axios.put(
+      apiUrl,
+      { otp },
+      {
+        headers: { code },
+      }
+    );
+    return res?.code;
+  }
+);
+
+export const workerForgetPassCallback = resolvePromise(
+  async ({ password, code }) => {
+    const apiUrl =
+      ENV_API_BASE_URL + "/_auth/kabadCollector/forgetpass/callback";
+    const { data: res } = await axios.put(
+      apiUrl,
+      { password },
+      { headers: { code } }
+    );
+    return res?.message;
+  }
+);
+
+export const workerForgetPassResendOTP = resolvePromise(async (phoneNumber) => {
+  const apiUrl =
+    ENV_API_BASE_URL + "/_auth/kabadCollector/forgetpass/resend/otp";
+  const { data: res } = await axios.put(apiUrl, { phoneNumber });
+  return res
 });

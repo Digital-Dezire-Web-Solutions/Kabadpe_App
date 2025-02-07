@@ -17,7 +17,17 @@ import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../features/auth/authActions";
 import { FormError } from "../components/FormError";
+import AntDesign from "@expo/vector-icons/AntDesign";
 export default function App() {
+  const {
+    user,
+    success: { login, signup, verifySignup },
+    errors: {
+      login: errorLogin,
+      signup: errorSignup,
+      verifySignup: errorVerify,
+    },
+  } = useSelector((s) => s.auth);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +46,7 @@ export default function App() {
           </View>
           <Text style={styles.loginTitle}>Sign In to Kabadpe</Text>
           <Formik
-            initialValues={{ email: "" }}
+            initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
               dispatch(userLogin({ ...values, loginType: "user" }));
               // console.log(values);
@@ -124,10 +134,19 @@ export default function App() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-
+                <Text
+                  style={{
+                    color: "red",
+                    marginTop: -25,
+                    marginBottom: 10,
+                    textAlign: "center",
+                  }}
+                >
+                  {errorLogin}
+                </Text>
                 <TouchableOpacity
-                  // onPress={handleSubmit}
-                  onPress={() => router.navigate("Spalsh")}
+                  onPress={handleSubmit}
+                  // onPress={() => router.navigate("Spalsh")}
                   activeOpacity={0.7}
                   style={styles.signInBtn}
                 >
@@ -147,11 +166,24 @@ export default function App() {
           </TouchableOpacity>
 
           <TouchableOpacity
-          onPress={() => router.navigate("KabadiLogin")}
+            onPress={() => router.navigate("KabadiLogin")}
             activeOpacity={0.7}
             style={[styles.signInBtn, styles.vendLoginBtn]}
           >
             <Text style={styles.formSignText}>Worker Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.googleBtn}
+            onPress={() => {
+              router.push({
+                pathname: "oauthredirect",
+                params: { init: "yes" },
+              });
+            }}
+          >
+            <AntDesign name="google" size={18} color="#026874" />
+            <Text style={styles.googleText}> Google </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaProvider>
@@ -183,6 +215,20 @@ const styles = StyleSheet.create({
   forgotPasswrdBtn: {
     position: "relative",
     marginTop: 10,
+  },
+  googleBtn: {
+    position: "relative",
+    width: "100%",
+    marginTop: 20,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 45,
+    borderRadius: 50,
+    borderWidth: 1.2,
+    borderColor: "#026874",
+    flexDirection: "row",
+    gap: 8,
   },
 
   forgotPasswordText: {

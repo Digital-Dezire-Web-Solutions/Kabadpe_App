@@ -4,7 +4,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { workers } from "../../lib/worker";
 
 const WasteColectorType = ({ ...rest }) => {
-  const data = workers?.map(({ hindiLable: label, value }) => ({
+  const data = workers?.map(({ label, value }) => ({
     label,
     value,
   }));

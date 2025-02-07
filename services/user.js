@@ -2,10 +2,10 @@ import axios from "axios";
 import { getFromLocalStorage } from "../lib/localStorage";
 import { ENV_API_BASE_URL } from "../lib/backend";
 import { resolvePromise } from "@/lib/http";
-
-export const getUser = async ({ type = "user" }) => {
+import * as FileSystem from "expo-file-system";
+export const getUser = async ({ type = "user", tk}) => {
   const apiUrl = ENV_API_BASE_URL + `/${type}`;
-  const token = await getFromLocalStorage("token");
+  const token = tk || (await getFromLocalStorage("token"));
   const { data: res } = await axios.get(apiUrl, {
     headers: {
       Authorization: token,
@@ -17,7 +17,7 @@ export const getUser = async ({ type = "user" }) => {
 export const userAddressesFetch = resolvePromise(async ({ id }) => {
   const apiUrl = ENV_API_BASE_URL + `/user/address?id=${id}}`;
   const token = await getFromLocalStorage("token");
-  console.log("this is token 2", token);
+  // console.log("this is token 2", token);
   const { data: res } = await axios.get(apiUrl, {
     headers: {
       Authorization: token,
@@ -112,16 +112,24 @@ export const userResetPassword = resolvePromise(
 export const userProfileImageAdd = resolvePromise(async (image) => {
   const apiUrl = ENV_API_BASE_URL + `/user/profileimage`;
   const token = await getFromLocalStorage("token");
-  const { data: res } = await axios.post(
-    apiUrl,
-    { image },
-    {
-      headers: {
-        Authorization: token,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  const formData = new FormData();
+  let { fileName: name, fileSize: size, uri, mimeType } = image;
+  let nameParts = name?.split(".");
+  let fileType = nameParts[nameParts?.length - 1];
+  var fileToUpload = {
+    name: name,
+    size: size,
+    uri: uri,
+    type: "application/" + fileType,
+    // mimeType,
+  };
+  formData.append("image", fileToUpload);
+  const { data: res } = await axios.post(apiUrl, formData, {
+    headers: {
+      Authorization: token,
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res?.message;
 });
 
@@ -160,3 +168,19 @@ export const userUpdateProfileCallback = resolvePromise(
     return res?.meassage;
   }
 );
+
+export const userUpdateProfile = resolvePromise(async ({ ...data }) => {
+  const apiUrl = ENV_API_BASE_URL + `/user/personalInfo`;
+  const token = await getFromLocalStorage("token");
+  const { data: res } = await axios.put(
+    apiUrl,
+    { ...data },
+    {
+      headers: {
+        Authorization: token,
+        // "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return res?.message;
+});
