@@ -249,6 +249,8 @@ const Dashboard = () => {
         }else if(value  === "Leave Request"){
             setLeaveReq(true)
 
+        }else if(value === 'Waste Sale'){
+            router.push('WasteManagement')
         }
         else {
             setActiveTodayPopup(false)

@@ -224,7 +224,7 @@ const BuyWaste = () => {
 }
     return (
         <>
-
+            
             <SafeAreaProvider>
                 <ScrollView style={styles.buyWasteComp} nestedScrollEnabled={true}>
 

@@ -1,4 +1,4 @@
-import { FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Button, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router';
@@ -10,12 +10,13 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import FilterTrnsctn from './Components/FilterTrnsctn';
 import ReactNativeModal from 'react-native-modal';
 import TransactionsHistory from './Components/TransactionsHistory';
-const WalletScreen = () => {
+const WasteManagement = () => {
     const router = useRouter();
     const [WaletModal , setWaletModal] =  useState(false);
     const [FundModal , setFundModal] =  useState(false);
     const [trnsctnModal , setTrnsctnModal] = useState(false);
     const [trnstnSearch, setTrnstnSearch] = useState(false);
+    const [showTrnstn, setShowTrnstn] = useState(0);
 
 
     const kabadTypeLists  = [
@@ -81,65 +82,142 @@ const WalletScreen = () => {
     const TransactionsLists = [
         {
             id : 1,
-            arrowRecv : 'arrow-top-left',
-            title : 'Paid To manish',
-            text : '02:34 PM, 25 February 2024',
-            amnt : '-₹300',
+            trsctnDate : 'Jan-2025',
+            trnHitData : [
+                {
+                    id : 1,
+                    arrowRecv : 'arrow-top-left',
+                    title : 'Paid To manish',
+                    text : '02:34 PM, 25 February 2024',
+                    amnt : '-₹300',
+                },
+                {
+                    id : 2,
+                    arrowRecv : 'arrow-bottom-right',
+                    title : 'Received from Kabadpe',
+                    text : '02:34 PM, 25 February 2024',
+                    amnt : '+₹200',
+                }
+            ]
+            
+           
         },
+
+
         {
             id : 2,
-            arrowRecv : 'arrow-bottom-right',
-            title : 'Received from Kabadpe',
-            text : '02:34 PM, 25 February 2024',
-            amnt : '+₹200',
-        },
-
-        {
-            id : 3,
-            arrowRecv : 'arrow-top-left',
-            title : 'Paid To Faiz',
-            text : '02:34 PM, 25 February 2024',
-            amnt : '-₹400',
-        },
-
-        {
-            id : 4,
+            trsctnDate : 'Dec-2024',
+            trnHitData : [
+                {
+                    id : 3,
+                    arrowRecv : 'arrow-top-left',
+                    title : 'Paid To Faiz',
+                    text : '02:34 PM, 25 February 2024',
+                    amnt : '-₹400',
+                },
+                {
+                    id : 4,
             arrowRecv : 'arrow-bottom-right',
             title : 'Received from Extraframes',
             text : '02:34 PM, 25 February 2024',
             amnt : '+₹500',
+                }
+            ]
+            
+           
         },
 
         {
-            id : 5,
-            arrowRecv : 'arrow-bottom-right',
-            title : 'Received from Kabadpe',
-            text : '02:34 PM, 25 February 2024',
-            amnt : '+₹400',
+            id : 3,
+            trsctnDate : 'Nov-2024',
+            trnHitData : [
+                {
+                    id : 5,
+                    arrowRecv : 'arrow-bottom-right',
+                    title : 'Received from Kabadpe',
+                    text : '02:34 PM, 25 February 2024',
+                    amnt : '+₹400',
+                },
+                {
+                    id : 6,
+                    arrowRecv : 'arrow-top-left',
+                    title : 'Paid To Faisal',
+                    text : '02:34 PM, 25 February 2024',
+                    amnt : '-₹300',
+                }
+            ]
+            
+           
         },
 
+     
         {
-            id : 6,
-            arrowRecv : 'arrow-top-left',
-            title : 'Paid To Faisal',
-            text : '02:34 PM, 25 February 2024',
-            amnt : '-₹300',
-        },
-
-        {
-            id : 7,
+            id : 4,
+            trsctnDate : 'Oct-2024',
+            trnHitData : [
+                {
+                    id : 7,
             arrowRecv : 'arrow-top-left',
             title : 'Paid To manish',
             text : '02:34 PM, 25 February 2024',
             amnt : '-₹300',
-        },
-
-        {
-            id : 8,
+                },
+                {
+                    id : 8,
             arrowRecv : 'arrow-bottom-right',
             title : 'Received from Kabadpe',
             text : '02:34 PM, 25 February 2024',
             amnt : ' +₹500',
+                }
+            ]
+        }
+     
+    ]
+
+    const handleShowTrnsctnFunc = (indx) => {
+        setShowTrnstn(indx)
+
+    }
+
+    const collectionData = [
+
+        {
+            id : 1,
+            img : require('../assets/images/kabad-type-w.png'),
+            text : 'Paper',
+            weight : 50,
+            price : 12,
+            total : 600,
+        },
+
+        {
+            id : 2,
+            img : require('../assets/images/kabad-type-w-2.png'),
+            text : 'Plastic',
+            weight : 90,
+            price : 15,
+            total : 1350,
+
+        },
+
+        {
+            id : 3,
+            img : require('../assets/images/kabad-type-w-3.png'),
+            text : 'Clothes',
+            weight : 60,
+            price : 19,
+            total : 1100,
+
+        },
+
+        {
+            id : 4,
+            img : require('../assets/images/kabad-type-w-8.png'),
+            text : 'Metal',
+            weight : 100,
+            price : 24,
+            total : 2400,
+
         },
         
     ]
@@ -166,12 +244,40 @@ const WalletScreen = () => {
                         <ImageBackground style={styles.walletBg} source={require('../assets/images/wallet-bg.png')} resizeMode='cover'></ImageBackground>
 
                         <View style={styles.waletIconBx}>
-                            <Image style={styles.walletIcon} source={require('../assets/images/wallet-icon.png')} />
+                            <Image style={styles.walletIcon} source={require('../assets/images/waste-icon.png')} />
                         </View>
 
-                        <View style={styles.walletInfoBx}>
-                            <Text style={styles.walletAmntText}>Wallet Amount</Text>
-                            <Text style={styles.walletPrice}>₹ 2100.00</Text>
+                        <View style={styles.wasteDataList}>
+                            <View style={styles.wasteDataListBx}>
+                                <Text style={styles.wastesaleText}>Waste Collected</Text>
+                                <View style={styles.wastepricepcs}>
+                                <Text style={styles.wastesaleText2}>120 <Text style={{fontSize : 11, fontWeight : '400'}}>(kg)</Text> </Text>
+                                <Text style={styles.wastesaleText2}>1155 <Text style={{fontSize : 11, fontWeight : '400'}}>(pcs.)</Text> </Text>
+                                </View>
+
+                                
+                                
+                            </View>
+                            <View style={styles.wasteDataListBx}>
+                                <Text style={styles.wastesaleText}>Waste Sold</Text>
+                                <View style={styles.wastepricepcs}>
+                                <Text style={styles.wastesaleText2}>120 <Text style={{fontSize : 11, fontWeight : '400'}}>(kg)</Text> </Text>
+                                <Text style={styles.wastesaleText2}>1155 <Text style={{fontSize : 11, fontWeight : '400'}}>(pcs.)</Text> </Text>
+                                </View>
+
+                                
+                                
+                            </View>
+                            <View style={styles.wasteDataListBx}>
+                                <Text style={styles.wastesaleText}>Waste in Stock</Text>
+                                <View style={styles.wastepricepcs}>
+                                <Text style={styles.wastesaleText2}>120 <Text style={{fontSize : 11, fontWeight : '400'}}>(kg)</Text> </Text>
+                                <Text style={styles.wastesaleText2}>1155 <Text style={{fontSize : 11, fontWeight : '400'}}>(pcs.)</Text> </Text>
+                                </View>
+
+                                
+                                
+                            </View>
                         </View>
 
                         <View>
@@ -180,24 +286,7 @@ const WalletScreen = () => {
 
                     </View>
 
-                    <View style={styles.walletBtnFlex}>
-
-                        <TouchableOpacity style={styles.waletBtn} onPress={() => setFundModal(true)}>
-                            <Text style={styles.waletBtnText}>Add Funds</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.waletBtn} onPress={ () => setWaletModal(true)}>
-                            <Text style={styles.waletBtnText}>Withdrawl</Text>
-                        </TouchableOpacity>
-
-                    </View>
-
-                    <TouchableOpacity style={[styles.waletBtn, styles.marketplceBtn]}>
-                        <Text style={[styles.waletBtnText, styles.waletBtnText2]}>Marketplace</Text>
-                    </TouchableOpacity>
-
-
-
+               
                 </SafeAreaView>
 
                 <View style={styles.kabadTypeListBx}>
@@ -246,31 +335,42 @@ const WalletScreen = () => {
                         
 
                         <View style={styles.trnsctionLists}>
-                        <FlatList 
-                        nestedScrollEnabled={true}
-                        data={TransactionsLists}
-                        keyExtractor={item => item.id}
-                        renderItem={({item}) => (
-                            <>
-                            
-                            <View style={styles.trnsctBx} key={item.id}>
-                                <View style={styles.trnLeftBx}>
-                                    <View style={styles.trnIconBx}>
-                                    <MaterialCommunityIcons name={item.arrowRecv} size={20} color={item.arrowRecv === "arrow-bottom-right" ? "#4CC36D" : "#f10000"} />
+
+                            {TransactionsLists.map((curElem,id) => (
+                                <View style={styles.trnstnMainBx} key={id}> 
+                                <TouchableOpacity onPress={() => handleShowTrnsctnFunc(id)} style={styles.trnsctnDateBx}>
+                                    <Text style={{fontSize : 13, color : "#fff", fontWeight : '500'}}> {curElem.trsctnDate} </Text>
+
+                                    <TouchableHighlight style={styles.arrowDropBtn}>
+                                    <MaterialCommunityIcons name="arrow-down-drop-circle-outline" size={18} color="#fff" />
+                                    </TouchableHighlight>
+                                    
+                                </TouchableOpacity>
+                                { showTrnstn === id && curElem.trnHitData.map((item) => (
+                                    <View style={styles.trnsctBx} key={item.id}>
+                                    <View style={styles.trnLeftBx}>
+                                        <View style={styles.trnIconBx}>
+                                        <MaterialCommunityIcons name={item.arrowRecv} size={20} color={item.arrowRecv === "arrow-bottom-right" ? "#4CC36D" : "#f10000"} />
+                                        </View>
+                                        <View style={styles.trnInfo}>
+                                            <Text style={styles.trnTitleText}> {item.title} </Text>
+                                           
+                                            <Text style={styles.trnText}> {item.text} </Text>
+                                        </View>
                                     </View>
-                                    <View style={styles.trnInfo}>
-                                        <Text style={styles.trnTitleText}> {item.title} </Text>
-                                        <Text style={styles.trnText}> {item.text} </Text>
+     <View style={{flexDirection : 'row', alignItems: 'center', justifyContent : 'flex-start', gap : 6,}}>
+                                    <Text style={[styles.amntText , {color : item.arrowRecv === "arrow-bottom-right" ? "#4CC36D" : "#f10000" }]}> {item.amnt} </Text>
+                                    <Image source={require('../assets/images/data-icon.png')} />
                                     </View>
+
+    
                                 </View>
-
-                                <Text style={[styles.amntText , {color : item.arrowRecv === "arrow-bottom-right" ? "#4CC36D" : "#f10000" }]}> {item.amnt} </Text>
-
-                            </View>
+                                ))}
+                                </View>
+                            ))}
+                    
+                            {/*  */}
                                 
-                            </>
-                        )}
-                        />
                         </View>
                         
                 </View>
@@ -290,11 +390,67 @@ const WalletScreen = () => {
     )
 }
 
-export default WalletScreen
+export default WasteManagement
 
 const styles = StyleSheet.create({
 
- 
+    wasteDataList:{
+        position : 'relative',
+        width : '100%',
+
+    },
+
+    trnstnMainBx:{
+        position : 'relative',
+        width : '100%',
+        marginBottom : 16,
+
+
+    },
+
+    trnsctnDateBx:{
+        position : 'relative',
+        width : '100%',
+        backgroundColor : "#026874",
+        paddingBlock : 4,
+        paddingHorizontal : 10,
+        borderTopLeftRadius : 8,
+        borderTopRightRadius : 8,
+        flexDirection : 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+
+    wasteDataListBx:{
+        position : 'relative',
+        width : '100%',
+        flexDirection : 'row',
+        alignItems: 'center',
+        justifyContent : 'flex-start',
+        gap : 4,
+        marginBottom : 8,
+    },
+
+    wastesaleText:{
+        fontSize : 13,
+        color : "#fff",
+        fontWeight : '500',
+        width : 110,
+    },
+
+    wastesaleText2:{
+        fontSize : 12.87,
+        color : "#fff",
+        fontWeight : '500',
+    },
+
+    wastepricepcs:{
+        width : 'auto',
+        flexDirection : 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap : 4
+    },
 
     walletTrnstionComp:{
         flex : 2,
@@ -360,7 +516,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection : 'row',
-        marginBottom: 16,
+        backgroundColor : "#eee",
+        marginTop : 6,
     },
 
     trnInfo:{
@@ -379,8 +536,8 @@ const styles = StyleSheet.create({
 
     trnIconBx:{
         position : 'relative',
-        width : 50,
-        height : 50,
+        width : 40,
+        height : 40,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor : "#edfaf8",
@@ -441,10 +598,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: '100%',
         marginTop: 10,
-        borderTopWidth: 3,
-        borderBottomWidth : 3,
-        paddingVertical : 22,
-        borderColor: '#d9d9d9',
+        paddingVertical : 10,
         paddingLeft : 18,
         paddingRight : 6,
     },
@@ -522,8 +676,8 @@ const styles = StyleSheet.create({
 
     waletIconBx: {
         position: 'relative',
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         backgroundColor: "#045357",
         alignItems: 'center',
         justifyContent: 'center',
@@ -550,8 +704,8 @@ const styles = StyleSheet.create({
     },
 
     walletIcon: {
-        width: 38,
-        height: 38,
+        width: 30,
+        height: 30,
         objectFit: 'cover',
     },
 
@@ -569,14 +723,14 @@ const styles = StyleSheet.create({
     waletAmntBx: {
         position: 'relative',
         width: '100%',
-        height: 140,
+        height: 120,
         backgroundColor: "#026874",
         borderRadius: 16,
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
         paddingHorizontal: 20,
-        gap: 20,
+        gap: 10,
 
     },
 
