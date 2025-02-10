@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -42,6 +42,7 @@ import { addutilityAction } from "../features/utilitySlice";
 import { useDispatch } from "react-redux";
 import ApntCardWorker from "./Components/ApntCardWorker";
 import { workerAppoinmentsFetch } from "../services/worker/appoinments";
+import { getUserLocation } from "../lib/location";
 
 const { width, height } = Dimensions.get("window");
 
@@ -63,7 +64,7 @@ const Dashboard = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [leaveReqSent, setLeaveReqSent] = useState(false);
-
+  const [userLocation, setUserLocation] = useState(null);
   const ICON_LIBRARIES = {
     FontAwesome5: FontAwesome5,
     FontAwesome6: FontAwesome6,
@@ -306,7 +307,11 @@ const Dashboard = () => {
     setPhoneNumber(sanitizedValue);
     if (sanitizedValue.length === 10) {
       const res = await workerBuyWasteRequest({ phoneNumber: sanitizedValue });
-      setUserInfo(res);
+      setUserInfo({
+        ...res,
+        phoneNumber,
+        name: res?.appointmentPersonName || res?.fullname,
+      });
     } else {
       setUserInfo(null);
     }
@@ -319,6 +324,13 @@ const Dashboard = () => {
     queryKey: ["todayWorkerAppoinments"],
     queryFn: () => workerAppoinmentsFetch({ from, to }),
   });
+
+  useEffect(() => {
+    getUserLocation().then((res) => {
+      setUserLocation(res);
+    });
+  }, []);
+  useEffect(() => {});
   return (
     <>
       <SafeAreaProvider>
@@ -463,46 +475,39 @@ const Dashboard = () => {
               <Text style={styles.ViewText}>Align Location</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.67} style={styles.viewApntBtn}>
+            <TouchableOpacity
+              onPress={() => {
+                router.navigate("apntlistWorker");
+              }}
+              activeOpacity={0.67}
+              style={styles.viewApntBtn}
+            >
               <Text style={styles.ViewText}>View All</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.apntDataList}>
-            <FlatList
-              data={!appoinments?.error ? appoinments : []}
-              scrollEnabled={false}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item, index }) => (
-                <ApntCardWorker
-                  apntCancelBtn={() => setCancelModal(true)}
-                  itemStart="flex-start"
-                  bgColor="#E5F2F2"
-                  item={item}
-                  index={index}
-                />
-              )}
-            />
-            <FlatList
-              data={ApntData}
-              scrollEnabled={false}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item, index }) => (
-                <ApntCardWorker
-                  apntCancelBtn={() => setCancelModal(true)}
-                  itemStart="flex-start"
-                  bgColor="#E5F2F2"
-                  item={item}
-                  index={index}
-                />
-              )}
-            />
-          </View>
-
-          <View style={styles.noApntBx}>
-            <Text style={styles.noApntText}>No Appointments Available</Text>
+            {!appoinments?.error && appoinments?.length ? (
+              <FlatList
+                data={appoinments}
+                scrollEnabled={false}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item, index }) => (
+                  <ApntCardWorker
+                    apntCancelBtn={() => setCancelModal(true)}
+                    itemStart="flex-start"
+                    bgColor="#E5F2F2"
+                    item={item}
+                    index={index}
+                  />
+                )}
+              />
+            ) : (
+              <View style={styles.noApntBx}>
+                <Text style={styles.noApntText}>No Appointments Available</Text>
+              </View>
+            )}
           </View>
 
           <Animated.View
@@ -768,9 +773,7 @@ const Dashboard = () => {
               <View>
                 <Text style={styles.textstyle}>
                   Customer Name:{" "}
-                  <Text style={{ fontWeight: "500" }}>
-                    {userInfo?.fullname}
-                  </Text>
+                  <Text style={{ fontWeight: "500" }}>{userInfo?.name}</Text>
                 </Text>
                 <View style={styles.btnsFlexBx}>
                   <TouchableOpacity

@@ -3,6 +3,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -22,8 +23,13 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { slotLabels } from "../../lib/slot";
+import { DateTime } from "luxon";
+import { addutilityAction } from "../../features/utilitySlice";
+import { useDispatch } from "react-redux";
 
 const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
+  const dispatch = useDispatch();
   const { height, width } = Dimensions.get("window");
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -86,12 +92,12 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
   const handleDateSelect = (date) => {
     setSelectedDate(date.dateString);
     setSelectedTodayDate(date.dateString);
-    setStep(2);
+    setStep(3);
   };
 
   const goBack = () => {
     if (step > 1) {
-      setStep(step - 1); // Go to the previous step
+      setStep(step - 2); // Go to the previous step
     }
   };
 
@@ -100,11 +106,19 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
     setStep(3);
   };
 
-  const handleSlotSelect = (slot) => {
-    setSelectedSlot(slot);
-    setDateBox(`${selectedDate} , ${slot} `);
+  const handleSlotSelect = async (slot) => {
+    const res = await adminAppoinmentReschedule({
+      id: item?.id,
+      appointmentTimeSlot: slot,
+      appointmentDate: new Date(selectedDate).toISOString(),
+    });
+    if (res?.error) {
+      Toast.show({ type: "error", text1: "ERROR!", text2: res?.message });
+      return;
+    }
     setModalVisible(false);
-    Alert.alert("Success", `Added to Date Box: ${dateBox}`);
+    Toast.show({ type: "success", text1: "DONE!", text2: res });
+    refetch();
   };
 
   const renderStep = () => {
@@ -116,6 +130,7 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
               <Text style={styles.AvailCompText}>Choose Reschedule Date</Text>
             </View>
             <Calendar
+              minDate={new Date().toISOString().split("T")[0]}
               onDayPress={handleDateSelect}
               markedDates={{
                 [today]: { selected: true, selectedColor: "#04e1ea" },
@@ -186,41 +201,38 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
               <Text style={styles.AvailCompText}>Avaiable Slots</Text>
             </View>
 
-            <SafeAreaProvider>
-              <ScrollView
+            <SafeAreaProvider style={[styles.CompaniesList, styles.slotsList]}>
+              {/* <ScrollView
                 style={[styles.CompaniesList, styles.slotsList]}
                 showsVerticalScrollIndicator={false}
-              >
-                <FlatList
-                  data={slots}
-                  renderItem={({ item }) => (
-                    <View style={styles.slotBx} key={item.id}>
-                      <View style={styles.slotDateFlex}>
-                        <View style={styles.slotsDate}>
-                          <AntDesign
-                            name="calendar"
-                            size={16}
-                            color="#898f8b"
-                          />
-                          <Text style={styles.timeText}> {item.time} </Text>
-                        </View>
-                        <Text style={styles.slotsAvaiText}>
-                          15 slots available
+              > */}
+              <FlatList
+                data={Object.keys(slotLabels)}
+                renderItem={({ item: slotName }) => (
+                  <View style={styles.slotBx} key={slotName}>
+                    <View style={styles.slotDateFlex}>
+                      <View style={styles.slotsDate}>
+                        <AntDesign name="calendar" size={16} color="#898f8b" />
+                        <Text style={styles.timeText}>
+                          {" "}
+                          {slotLabels?.[slotName]}{" "}
                         </Text>
                       </View>
-                      <TouchableOpacity
-                        style={styles.bookApntBtn}
-                        onPress={() => handleSlotSelect(item.time)}
-                      >
-                        <Text style={styles.bookApntBtnText}>
-                          Book Appointment
-                        </Text>
-                      </TouchableOpacity>
+                      {/* <Text style={styles.slotsAvaiText}>
+                        {reminingSlot} slots available
+                      </Text> */}
                     </View>
-                  )}
-                  keyExtractor={(item) => item.id}
-                />
-              </ScrollView>
+                    <TouchableOpacity
+                      style={styles.bookApntBtn}
+                      onPress={() => handleSlotSelect(slotName)}
+                    >
+                      <Text style={styles.bookApntBtnText}>Reschedule</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                keyExtractor={(item) => item}
+              />
+              {/* </ScrollView> */}
             </SafeAreaProvider>
           </View>
         );
@@ -228,7 +240,6 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
         return null;
     }
   };
-  console.log("this is the appoinment info", item);
   return (
     <>
       <View style={[styles.apntCardBx, { backgroundColor: bgColor }]}>
@@ -247,79 +258,140 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
                 {" "}
                 {item?.appointmentPersonName}{" "}
               </Text>
-              {item.locat && (
-                <>
-                  <Text style={styles.locatText}>
-                    {" "}
-                    {item.locat} -{" "}
-                    <Text style={styles.aproxText}>
-                      Approx. {item.dist} KM{" "}
-                    </Text>{" "}
-                  </Text>
-                  <Text style={[styles.locatText, { fontWeight: "400" }]}>
-                    Away From You
-                  </Text>
-                </>
-              )}
-              <View style={[styles.dateCaleBx, styles.dateCaleBx2]}>
+              {/* <Text style={styles.locatText}>
+                {" "}
+                {item.locat} -{" "}
+                <Text style={styles.aproxText}>Approx. {item.dist} KM </Text>{" "}
+              </Text>
+              <Text style={[styles.locatText, { fontWeight: "400" }]}>
+                Away From You
+              </Text> */}
+
+              {/* <View style={[styles.dateCaleBx, styles.dateCaleBx2]}>
                 <AntDesign name="calendar" size={14} color="#3c3c3c" />
                 <Text style={[styles.apntDate, { fontSize: 11.5 }]}>
-                  {" "}
-                  {dateBox}{" "}
+                  {DateTime.fromISO(item?.appointmentDate, {
+                    zone: "utc",
+                  })
+                    .setZone("Asia/Kolkata")
+                    .toFormat("ccc dd LLL yyyy")}{" "}
+                  - {slotLabels?.[item?.appointmentTimeSlot]}
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
 
-          <TouchableOpacity style={styles.callBtnBx} activeOpacity={0.6}>
-            <Ionicons name="call" size={18} color="#fff" />
-          </TouchableOpacity>
+          {item?.appointmentContactNumber ? (
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("tel:" + item?.appointmentContactNumber);
+              }}
+              style={styles.callBtnBx}
+              activeOpacity={0.6}
+            >
+              <Ionicons name="call" size={18} color="#fff" />
+            </TouchableOpacity>
+          ) : null}
         </View>
 
-        {item.nameTitle && (
-          <View style={styles.dateCaleBx}>
-            <AntDesign name="calendar" size={17} color="#3c3c3c" />
-            <Text style={styles.apntDate}> {dateBox} </Text>
-          </View>
-        )}
-
-        <View style={styles.apntBtnsFlex}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.apntResdBtn}
-            onPress={() => setModalVisible(true)}
-          >
-            <FontAwesome name="rotate-right" size={16} color="#fff" />
-            <Text style={styles.reshdText}>Reschedule</Text>
-          </TouchableOpacity>
-
-          {item.locat && (
+        <View style={styles.dateCaleBx}>
+          <AntDesign name="calendar" size={17} color="#3c3c3c" />
+          <Text style={styles.apntDate}>
+            {" "}
+            {DateTime.fromISO(item?.appointmentDate, {
+              zone: "utc",
+            })
+              .setZone("Asia/Kolkata")
+              .toFormat("ccc dd LLL yyyy")}{" "}
+            - {slotLabels?.[item?.appointmentTimeSlot]}
+          </Text>
+        </View>
+        {item?.orderStatus == "active" ? (
+          <View style={styles.apntBtnsFlex}>
             <TouchableOpacity
-              onPress={() => router.navigate("LocateAddress")}
+              activeOpacity={0.5}
+              style={styles.apntResdBtn}
+              // onPress={() => setModalVisible(true)}
+            >
+              {/* <FontAwesome name="rotate-right" size={16} color="#fff" /> */}
+              <Text style={styles.reshdText}>Rescheduled</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() =>
+                router.navigate(`test2?a=${item?.appoinmentAddress}`)
+              }
               activeOpacity={0.5}
               style={[styles.apntResdBtn, styles.apntResdBtn4]}
             >
               <FontAwesome5 name="map-marker-alt" size={16} color="#026874" />
             </TouchableOpacity>
-          )}
 
-          {item.locat && (
             <TouchableOpacity
+              onPress={() => {
+                dispatch(
+                  addutilityAction({
+                    name: "buyWasteUserInfo",
+                    value: {
+                      id: item?.userId,
+                      phoneNumber: item?.appointmentContactNumber,
+                      name: item?.appointmentPersonName,
+                      appoinmentId: item?.id,
+                      ariaId: item?.ariaId,
+                    },
+                  })
+                );
+                router.navigate("BuyWaste");
+              }}
               activeOpacity={0.5}
               style={[styles.apntResdBtn, styles.apntResdBtn4]}
             >
               <FontAwesome5 name="cart-plus" size={16} color="#026874" />
             </TouchableOpacity>
-          )}
 
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={apntCancelBtn}
-            style={[styles.apntResdBtn, styles.apntResdBtn4]}
-          >
-            <Ionicons name="close" size={18} color="#026874" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={apntCancelBtn}
+              style={[styles.apntResdBtn, styles.apntResdBtn4]}
+            >
+              <Ionicons name="close" size={18} color="#026874" />
+            </TouchableOpacity>
+          </View>
+        ) : item?.orderStatus == "fullfill" ? (
+          <View style={styles.apntBtnsFlex}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={{ ...styles.apntResdBtn, backgroundColor: "green" }}
+              disabled
+              // onPress={() => setModalVisible(true)}
+            >
+              {/* <FontAwesome name="rotate-right" size={18} color="#fff" /> */}
+              <Text style={{ ...styles.reshdText }}>Completed</Text>
+            </TouchableOpacity>
+          </View>
+        ) : item?.orderStatus == "cancel" ? (
+          <View style={styles.apntBtnsFlex}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              // onPress={() => setClose(true)}
+              disabled
+              style={[
+                { ...styles.apntResdBtn, borderColor: "red" },
+                styles.apntResdBtn2,
+              ]}
+            >
+              {/* <Ionicons name="close" size={18} color="#026874" /> */}
+              <Text
+                style={[
+                  styles.reshdText,
+                  { ...styles.reshdText2, color: "red" },
+                ]}
+              >
+                Cancelled
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
 
       <ReactNativeModal

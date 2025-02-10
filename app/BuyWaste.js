@@ -542,7 +542,7 @@ const BuyWaste = () => {
                 />
 
                 <View style={styles.profileInfoBx}>
-                  <Text style={styles.usernameText}>{userInfo?.fullname}</Text>
+                  <Text style={styles.usernameText}>{userInfo?.name}</Text>
                   <Text style={styles.phoneNum}>
                     {userInfo?.phoneNumber ? (
                       <Text style={{ fontWeight: "500" }}>
@@ -704,7 +704,7 @@ const BuyWaste = () => {
             </Text>
 
             <Text style={styles.cancelApntText}>
-              ₹{totalAmmount} has been sent to {userInfo?.fullname || "user"}{" "}
+              ₹{totalAmmount} has been sent to {userInfo?.name || "user"}{" "}
               wallet.
             </Text>
           </View>
