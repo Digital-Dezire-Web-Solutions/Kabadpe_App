@@ -27,10 +27,20 @@ import { slotLabels } from "../../lib/slot";
 import { DateTime } from "luxon";
 import { addutilityAction } from "../../features/utilitySlice";
 import { useDispatch } from "react-redux";
+import CommonModal from "./CommonModal";
+import { workerAppoinmentsAnswerAssigning } from "../../services/worker/appoinments";
 
-const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
+const ApntCardWorker = ({
+  item,
+  index,
+  bgColor,
+  itemStart,
+  apntCancelBtn,
+  refetch,
+}) => {
   const dispatch = useDispatch();
   const { height, width } = Dimensions.get("window");
+  const [cancelFormState, setCancelformState] = useState(false);
   const [step, setStep] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -253,21 +263,21 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
                   : require("../../assets/images/profile-img.png")
               }
             />
-            <View style={styles.userDet}>
-              <Text style={styles.userNameText}>
-                {" "}
-                {item?.appointmentPersonName}{" "}
-              </Text>
-              {/* <Text style={styles.locatText}>
-                {" "}
-                {item.locat} -{" "}
-                <Text style={styles.aproxText}>Approx. {item.dist} KM </Text>{" "}
-              </Text>
-              <Text style={[styles.locatText, { fontWeight: "400" }]}>
-                Away From You
-              </Text> */}
+            {item?.appoinmentAddress ? (
+              <View style={{ width: "70%" }}>
+                <Text style={{ ...styles.userNameText }}>
+                  {" "}
+                  {item?.appointmentPersonName}{" "}
+                </Text>
+                <Text style={{ ...styles.locatText }}>
+                  {item?.appoinmentAddress}
+                </Text>
+                <Text style={styles.aproxText}>Approx. {item.dist} KM </Text>
+                <Text style={[styles.locatText, { fontWeight: "400" }]}>
+                  Away From You
+                </Text>
 
-              {/* <View style={[styles.dateCaleBx, styles.dateCaleBx2]}>
+                {/* <View style={[styles.dateCaleBx, styles.dateCaleBx2]}>
                 <AntDesign name="calendar" size={14} color="#3c3c3c" />
                 <Text style={[styles.apntDate, { fontSize: 11.5 }]}>
                   {DateTime.fromISO(item?.appointmentDate, {
@@ -278,7 +288,8 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
                   - {slotLabels?.[item?.appointmentTimeSlot]}
                 </Text>
               </View> */}
-            </View>
+              </View>
+            ) : null}
           </View>
 
           {item?.appointmentContactNumber ? (
@@ -314,7 +325,9 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
               // onPress={() => setModalVisible(true)}
             >
               {/* <FontAwesome name="rotate-right" size={16} color="#fff" /> */}
-              <Text style={styles.reshdText}>Rescheduled</Text>
+              <Text style={styles.reshdText}>
+                {item?.rescheduleStatus ? "Rescheduled" : "Upcoming ..."}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -351,7 +364,9 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
 
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={apntCancelBtn}
+              onPress={() => {
+                setCancelformState(true);
+              }}
               style={[styles.apntResdBtn, styles.apntResdBtn4]}
             >
               <Ionicons name="close" size={18} color="#026874" />
@@ -435,6 +450,20 @@ const ApntCardWorker = ({ item, index, bgColor, itemStart, apntCancelBtn }) => {
           </TouchableOpacity>
         </View>
       </ReactNativeModal>
+      <CommonModal
+        state={"cancelApnt"}
+        cancelApntPopup={cancelFormState}
+        onCloseClick={() => {
+          setCancelformState(false);
+        }}
+        cancelAppointnmentClick={async () => {
+          const res = await workerAppoinmentsAnswerAssigning({
+            id: item?.id,
+            assigningStatus: "cancel",
+          });
+          refetch();
+        }}
+      />
     </>
   );
 };

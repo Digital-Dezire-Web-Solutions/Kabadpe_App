@@ -14,6 +14,7 @@ const CommonModal = ({
   cancelApntPopup,
   setterFunc,
   state,
+  cancelAppointnmentClick,
 }) => {
   const handleMarkActiveToday = async () => {
     const res = await workerMarkActiveToday();
@@ -21,8 +22,8 @@ const CommonModal = ({
       refetch();
       //   refetchStatus();
     }
-    
-    onCloseClick()
+
+    onCloseClick();
   };
   const { data: todayAvail, refetch } = useQuery({
     queryKey: ["workerTodayAvailabilityFetch"],
@@ -34,8 +35,8 @@ const CommonModal = ({
         <ReactNativeModal
           isVisible={cancelApntPopup}
           animationIn={"fadeIn"}
-          onBackButtonPress={() => setterFunc(false)}
-          onBackdropPress={() => setterFunc(false)}
+          onBackButtonPress={onCloseClick}
+          onBackdropPress={onCloseClick}
         >
           <View style={styles.apntCancelPopup}>
             <View style={styles.erroricon}>
@@ -47,7 +48,7 @@ const CommonModal = ({
             </Text>
 
             <TouchableOpacity
-              onPress={() => setterFunc(false)}
+              onPress={cancelAppointnmentClick}
               activeOpacity={0.3}
               style={styles.cancelBtn}
             >

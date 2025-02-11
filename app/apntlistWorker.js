@@ -70,6 +70,7 @@ const ApntList = () => {
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => (
               <ApntCardWorker
+                // refetch={refetch}
                 bgColor="#eff7cf"
                 refetch={refetch}
                 item={item}
