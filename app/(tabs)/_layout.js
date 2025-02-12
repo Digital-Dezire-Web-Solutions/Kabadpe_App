@@ -30,12 +30,12 @@ const _layout = () => {
         }}
       /> */}
 
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="Menu"
         options={{
           title: "Menu",
         }}
-      />
+      /> */}
     </Tabs>
   );
 };

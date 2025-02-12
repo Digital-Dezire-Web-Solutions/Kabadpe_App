@@ -312,7 +312,7 @@ const ApntCardWorker = ({
             {DateTime.fromISO(item?.appointmentDate, {
               zone: "utc",
             })
-              .setZone("Asia/Kolkata")
+              // .setZone("Asia/Kolkata")
               .toFormat("ccc dd LLL yyyy")}{" "}
             - {slotLabels?.[item?.appointmentTimeSlot]}
           </Text>

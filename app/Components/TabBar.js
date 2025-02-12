@@ -4,12 +4,12 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 const TabBar = ({ state, descriptors, navigation }) => {
-console.log(state.routes , "hijjjjj");
+console.log(state.routes , "hijjjjj,hijjjjj,hijjjjjhijjjjjhijjjjjv");
     const icons = {
         index : (props) => <AntDesign name="home" size={18} color="#fff" {...props} />,
         Appointment : (props) => <AntDesign name="calendar" size={18} color="#fff" {...props} />,
-        Shop : (props) => <FontAwesome5 name="shopping-basket" size={18} color="#fff" {...props} />,
-        Menu : (props) => <Feather name="menu" size={18} color="#fff" {...props} />,
+        // Shop : (props) => <FontAwesome5 name="shopping-basket" size={18} color="#fff" {...props} />,
+        // Menu : (props) => <Feather name="menu" size={18} color="#fff" {...props} />,
       
     }
 

@@ -5,12 +5,12 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import CarouselSlider from '../Components/CarouselSlider';
-import ShopProdCard from '../Components/ShopProdCard';
-import { ShopDataOne } from '../Components/ShopProdData';
-import { ShopDataTwo } from '../Components/ShopProdData';
-import { ShopDataThree } from '../Components/ShopProdData';
-import { ShopDataFour } from '../Components/ShopProdData';
+import CarouselSlider from './CarouselSlider';
+import ShopProdCard from './ShopProdCard';
+import { ShopDataOne } from './ShopProdData';
+import { ShopDataTwo } from './ShopProdData';
+import { ShopDataThree } from './ShopProdData';
+import { ShopDataFour } from './ShopProdData';
 
 
 const Shop = () => {

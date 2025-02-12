@@ -39,15 +39,17 @@ import {
 } from "../services/worker/availability";
 import { workerBuyWasteRequest } from "../services/worker/buyWaste";
 import { addutilityAction } from "../features/utilitySlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ApntCardWorker from "./Components/ApntCardWorker";
 import { workerAppoinmentsFetch } from "../services/worker/appoinments";
 import { getUserLocation } from "../lib/location";
+import { hashId } from "../lib/array";
 
 const { width, height } = Dimensions.get("window");
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const { userInfo: userData } = useSelector((s) => s?.user);
   const [userName, setUserName] = useState("Nawaz Akhtar");
   const [menuOpen, setMenuOpen] = useState(true);
   const [menuBtn, setMenuBtn] = useState("Dashboard");
@@ -343,11 +345,17 @@ const Dashboard = () => {
             <View style={styles.leftUserInfo}>
               <Image
                 style={styles.userImg}
-                source={require("../assets/images/Ellipse-101.jpg")}
+                source={
+                  userData?.profileImage
+                    ? { uri: userData?.profileImage }
+                    : require("../assets/images/profile-img.png")
+                }
               />
-              <View style={styles.userDet}>
-                <Text style={styles.username}>Nawaz Akhtar</Text>
-                <Text style={styles.userId}>KPW0000014</Text>
+              <View style={styles?.userDet}>
+                <Text style={styles.username}>{userData?.fullname}</Text>
+                <Text style={styles.userId}>
+                  {hashId(userData?.id, "worker")}
+                </Text>
                 <View style={styles.ratingFlex}>
                   <Entypo name="star" size={12} color="#facb3e" />
                   <Entypo name="star" size={12} color="#facb3e" />
@@ -524,12 +532,18 @@ const Dashboard = () => {
                       objectFit: "cover",
                       borderRadius: 50,
                     }}
-                    source={require("../assets/images/nawaz-bhai.jpg")}
+                    source={
+                      userData?.profileImage
+                        ? { uri: userData?.profileImage }
+                        : require("../assets/images/profile-img.png")
+                    } //hello
                   />
                 </View>
                 <View style={styles.profileInfo}>
-                  <Text style={styles.profName}>Nawaz Akhtar</Text>
-                  <Text style={styles.profId}>KPW0000014</Text>
+                  <Text style={styles.profName}>{userData?.fullname}</Text>
+                  <Text style={styles.profId}>
+                    {hashId(userData?.id, "worker")}
+                  </Text>
                   {/* <Text style={[styles.profMail, styles.profId]}>
                                     <Feather name="mail" size={14} color="#858282" /> fanddfashions@gmail.com
                                     </Text>
@@ -1555,6 +1569,6 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     flex: 1,
-    marginBlockStart: "7.5%",
+    paddingTop: 20,
   },
 });

@@ -206,9 +206,11 @@ const index = () => {
     queryFn: () => userAppoinmentsFetch(),
   });
   const item =
-    (!appoinments?.error ? appoinments : [])?.sort(
-      (a, b) => new Date(b?.updatedOn) - new Date(a?.updatedOn)
-    )?.[0] || {};
+    (!(appoinments?.error && appoinments && appoinments?.length)
+      ? appoinments
+      : []
+    )?.sort((a, b) => new Date(b?.updatedOn) - new Date(a?.updatedOn))?.[0] ||
+    {};
   return (
     <SafeAreaProvider>
       <ScrollView style={styles.homeComp}>
@@ -779,12 +781,12 @@ const styles = StyleSheet.create({
   },
 
   viewApntBtn: {
-    position: 'relative',
-    width: 'auto',
+    position: "relative",
+    width: "auto",
     height: 30,
     backgroundColor: "transparent",
     // borderWidth : .76,
-    borderColor : "#026874",
+    borderColor: "#026874",
     borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
@@ -792,7 +794,7 @@ const styles = StyleSheet.create({
 
   ViewText: {
     fontSize: 14,
-    fontWeight : '500',
+    fontWeight: "500",
     color: "#026874",
   },
 
